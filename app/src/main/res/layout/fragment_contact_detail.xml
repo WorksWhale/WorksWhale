@@ -6,250 +6,255 @@
     android:layout_height="match_parent"
     tools:context=".ContactDetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_detail_department"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingHorizontal="15dp"
-            android:text="인사부"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_department_tab" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_detail_department_tab"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/shape_my_page_gradient_background"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="15dp"
-            android:text="부서"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number" />
+            <TextView
+                android:id="@+id/tv_detail_department"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="인사부"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_department_tab" />
 
-        <TextView
-            android:id="@+id/tv_detail_memo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingHorizontal="15dp"
-            android:text="저번주 돈 안 갚은 팀원"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_memo_tab" />
+            <TextView
+                android:id="@+id/tv_detail_department_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="부서"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number" />
 
-        <TextView
-            android:id="@+id/tv_detail_memo_tab"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/shape_my_page_gradient_background"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="15dp"
-            android:text="메모"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_email" />
+            <TextView
+                android:id="@+id/tv_detail_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="저번주 돈 안 갚은 팀원"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_memo_tab" />
 
-        <TextView
-            android:id="@+id/tv_detail_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingHorizontal="15dp"
-            android:text="iamwhale@sea.com"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_email_tab" />
+            <TextView
+                android:id="@+id/tv_detail_memo_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="메모"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_email" />
 
-        <TextView
-            android:id="@+id/tv_detail_email_tab"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/shape_my_page_gradient_background"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="15dp"
-            android:text="이메일"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_department" />
+            <TextView
+                android:id="@+id/tv_detail_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="iamwhale@sea.com"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_email_tab" />
 
-        <TextView
-            android:id="@+id/tv_detail_phone_number_tab"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/shape_my_page_gradient_background"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="15dp"
-            android:text="번호"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_name" />
+            <TextView
+                android:id="@+id/tv_detail_email_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="이메일"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_department" />
 
-        <TextView
-            android:id="@+id/tv_detail_phone_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingHorizontal="15dp"
-            android:text="010-1234-5678"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number_tab" />
+            <TextView
+                android:id="@+id/tv_detail_phone_number_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="번호"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_name" />
 
-        <TextView
-            android:id="@+id/tv_detail_name_tab"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/shape_my_page_gradient_background"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="15dp"
-            android:text="이름"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_message" />
+            <TextView
+                android:id="@+id/tv_detail_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="010-1234-5678"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number_tab" />
 
-        <TextView
-            android:id="@+id/tv_detail_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingHorizontal="15dp"
-            android:text="민지"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_name_tab" />
+            <TextView
+                android:id="@+id/tv_detail_name_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="이름"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_message" />
 
-        <ImageView
-            android:id="@+id/iv_profile"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_detail_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="민지"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_name_tab" />
 
-        <TextView
-            android:id="@+id/tv_favorite"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/edge"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+            <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_favorite"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_empty_favorite"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_favorite"
-            app:layout_constraintEnd_toEndOf="@+id/tv_favorite"
-            app:layout_constraintStart_toStartOf="@+id/tv_favorite"
-            app:layout_constraintTop_toTopOf="@+id/tv_favorite" />
+            <TextView
+                android:id="@+id/tv_favorite"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
 
-        <TextView
-            android:id="@+id/tv_message"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/edge"
-            app:layout_constraintStart_toEndOf="@+id/tv_favorite"
-            app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+            <ImageView
+                android:id="@+id/iv_favorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_empty_favorite"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_favorite"
+                app:layout_constraintEnd_toEndOf="@+id/tv_favorite"
+                app:layout_constraintStart_toStartOf="@+id/tv_favorite"
+                app:layout_constraintTop_toTopOf="@+id/tv_favorite" />
 
-        <ImageView
-            android:id="@+id/iv_message"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/ic_message"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_message"
-            app:layout_constraintEnd_toStartOf="@+id/tv_toMessage"
-            app:layout_constraintStart_toStartOf="@+id/tv_message"
-            app:layout_constraintTop_toTopOf="@+id/tv_message" />
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="140dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edge"
+                app:layout_constraintStart_toEndOf="@+id/tv_favorite"
+                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
 
-        <TextView
-            android:id="@+id/tv_toMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="메시지"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_message"
-            app:layout_constraintEnd_toEndOf="@+id/tv_message"
-            app:layout_constraintTop_toTopOf="@+id/tv_message" />
+            <ImageView
+                android:id="@+id/iv_message"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_message"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_message"
+                app:layout_constraintEnd_toStartOf="@+id/tv_toMessage"
+                app:layout_constraintStart_toStartOf="@+id/tv_message"
+                app:layout_constraintTop_toTopOf="@+id/tv_message" />
 
-        <TextView
-            android:id="@+id/tv_call"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/edge"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.157"
-            app:layout_constraintStart_toEndOf="@+id/tv_message"
-            app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+            <TextView
+                android:id="@+id/tv_toMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="메시지"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_message"
+                app:layout_constraintEnd_toEndOf="@+id/tv_message"
+                app:layout_constraintTop_toTopOf="@+id/tv_message" />
 
-        <ImageView
-            android:id="@+id/iv_call"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/ic_call"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_call"
-            app:layout_constraintEnd_toStartOf="@+id/tv_toCall"
-            app:layout_constraintStart_toStartOf="@+id/tv_call"
-            app:layout_constraintTop_toTopOf="@+id/tv_call" />
+            <TextView
+                android:id="@+id/tv_call"
+                android:layout_width="140dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.157"
+                app:layout_constraintStart_toEndOf="@+id/tv_message"
+                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
 
-        <TextView
-            android:id="@+id/tv_toCall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:text="전화"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_call"
-            app:layout_constraintEnd_toEndOf="@+id/tv_call"
-            app:layout_constraintTop_toTopOf="@+id/tv_call" />
+            <ImageView
+                android:id="@+id/iv_call"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_call"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_call"
+                app:layout_constraintEnd_toStartOf="@+id/tv_toCall"
+                app:layout_constraintStart_toStartOf="@+id/tv_call"
+                app:layout_constraintTop_toTopOf="@+id/tv_call" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_toCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:text="전화"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_call"
+                app:layout_constraintEnd_toEndOf="@+id/tv_call"
+                app:layout_constraintTop_toTopOf="@+id/tv_call" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </FrameLayout>
