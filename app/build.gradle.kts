@@ -10,11 +10,13 @@ android {
 
     defaultConfig {
         applicationId = "com.example.workswhale"
-        minSdk = 31
+        minSdk = 33
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -50,4 +52,5 @@ dependencies {
 
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+
 }
