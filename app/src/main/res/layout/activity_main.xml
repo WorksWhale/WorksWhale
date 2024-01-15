@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:tabGravity="fill"
-        app:tabBackground="@drawable/shape_my_page_gradient_background"
+        app:tabBackground="@color/blue"
         app:tabTextColor="@color/white"
         app:tabTextAppearance="@style/tab_text"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,13 +73,13 @@
         <com.google.android.material.tabs.TabItem
             android:id="@+id/ti_main_contact"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:text="연락처" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/ti_main_mypage"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:text="마이페이지"/>
 
     </com.google.android.material.tabs.TabLayout>
