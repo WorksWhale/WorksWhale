@@ -48,7 +48,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_name" />
 
             <TextView
-                android:id="@+id/tv_my_page_category_phone_number"
+                android:id="@+id/tv_detail_phone_number_tab"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="4dp"
@@ -63,7 +63,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_page_name" />
 
             <TextView
-                android:id="@+id/tv_my_page_phone_number"
+                android:id="@+id/tv_detail_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -71,10 +71,10 @@
                 android:text="010-1234-5678"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_phone_number" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number_tab" />
 
             <TextView
-                android:id="@+id/tv_my_page_category_department"
+                android:id="@+id/tv_detail_department_tab"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="4dp"
@@ -86,10 +86,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_phone_number" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number" />
 
             <TextView
-                android:id="@+id/tv_my_page_department"
+                android:id="@+id/tv_detail_department"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -97,10 +97,10 @@
                 android:text="인사부"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_department" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_department_tab" />
 
             <TextView
-                android:id="@+id/tv_my_page_category_email"
+                android:id="@+id/tv_detail_email_tab"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="4dp"
@@ -112,10 +112,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_department" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_department" />
 
             <TextView
-                android:id="@+id/tv_my_page_email"
+                android:id="@+id/tv_detail_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -123,10 +123,10 @@
                 android:text="iamwhale@sea.com"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_email" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_email_tab" />
 
             <TextView
-                android:id="@+id/tv_my_page_category_memo"
+                android:id="@+id/tv_detail_memo_tab"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="4dp"
@@ -138,10 +138,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_email" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_email" />
 
             <TextView
-                android:id="@+id/tv_my_page_memo"
+                android:id="@+id/tv_detail_memo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -149,7 +149,7 @@
                 android:text="저번주 돈 안 갚은 팀원"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_memo" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_memo_tab" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>
