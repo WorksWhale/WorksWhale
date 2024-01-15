@@ -1,14 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyPageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_my_page_profile_image"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_my_page_category_name"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="이름"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_my_page_profile_image" />
+
+            <TextView
+                android:id="@+id/tv_my_page_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="민지"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_name" />
+
+            <TextView
+                android:id="@+id/tv_my_page_category_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="번호"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_name" />
+
+            <TextView
+                android:id="@+id/tv_my_page_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="010-1234-5678"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_phone_number" />
+
+            <TextView
+                android:id="@+id/tv_my_page_category_department"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="부서"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_phone_number" />
+
+            <TextView
+                android:id="@+id/tv_my_page_department"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="인사부"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_department" />
+
+            <TextView
+                android:id="@+id/tv_my_page_category_email"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="이메일"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_department" />
+
+            <TextView
+                android:id="@+id/tv_my_page_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="iamwhale@sea.com"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_email" />
+
+            <TextView
+                android:id="@+id/tv_my_page_category_memo"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="메모"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_email" />
+
+            <TextView
+                android:id="@+id/tv_my_page_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                android:text="저번주 돈 안 갚은 팀원"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_memo" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>
