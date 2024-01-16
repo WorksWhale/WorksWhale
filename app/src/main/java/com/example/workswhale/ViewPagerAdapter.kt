@@ -15,5 +15,4 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
             else -> MyPageFragment()
         }
     }
-
 }

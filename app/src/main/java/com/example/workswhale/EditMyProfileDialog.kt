@@ -1,4 +1,6 @@
 package com.example.workswhale
 
-class EditMyProfileDialog {
+import androidx.fragment.app.DialogFragment
+
+class EditMyProfileDialog: DialogFragment() {
 }

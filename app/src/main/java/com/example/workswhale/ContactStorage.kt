@@ -29,9 +29,10 @@ object ContactStorage {
         totalContactList.add(Contact.Person(R.drawable.person_10,"장원영 대리","010-7878-7878","영업부","abc@sparta.com","영업 1등"))
 
     }
+    
+    fun getTotalContactList(): ArrayList<Contact> = totalContactList
 
-//    private fun findDepartmentCount() : Int {
-//        var count = ContactStorage.totalContactList.count { it== }
-//        return count
-//    }
+    fun addContact(contact: Contact) {
+        totalContactList.add(contact)
+    }
 }
