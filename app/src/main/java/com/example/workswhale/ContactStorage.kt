@@ -12,4 +12,8 @@ object ContactStorage {
     }
 
     fun getTotalContactList(): ArrayList<Contact> = totalContactList
+
+    fun addContact(contact: Contact) {
+        totalContactList.add(contact)
+    }
 }
