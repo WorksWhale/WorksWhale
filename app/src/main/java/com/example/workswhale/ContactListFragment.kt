@@ -24,26 +24,20 @@ class ContactListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
-        return binding.root
 
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         val dataList = mutableListOf<Contact>()
 
         with(binding) {
-            rvContactlistList.layoutManager = LinearLayoutManager(this@ContactListFragment, LinearLayoutManager.VERTICAL, false)
+            rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rvContactlistList.setHasFixedSize(true)
-            rvContactlistList.adapter = ContactAdapter(dataList).apply {
+            rvContactlistList.adapter = ContactAdapter(ContactStorage.totalContactList).apply {
                 itemClick = object : ContactAdapter.ItemClick {
                     override fun onClick(view: View, position: Int) {
-
-//                        val fragment2 = ContactDetailFragment.newInstance()
-
+//
+//                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
+//
 //                        requireActivity().supportFragmentManager.beginTransaction()
-//                            .replace(R.id., fragment2)
+//                            .replace(R.id.view_pager_main, fragment2)
 //                            .addToBackStack(null)
 //                            .commit()
 
@@ -53,11 +47,18 @@ class ContactListFragment : Fragment() {
             }
             rvContactlistList.addItemDecoration( // Sticky Header 구현을 위한
                 HeaderItemDecoration(recyclerView = binding.rvContactlistList, isHeader = { position: Int ->
-                    dataList[position] is Contact.Title
+                    ContactStorage.totalContactList[position] is Contact.Title
                 }))
+
+        return binding.root
         }
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
     companion object {
         fun newInstance() =
             ContactListFragment().apply {

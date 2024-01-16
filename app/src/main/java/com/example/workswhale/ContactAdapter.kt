@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
 
-class ContactAdapter(val dataList : MutableList<Contact>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     companion object {
         private const val VIEW_TYPE_TITLE = 1
         private const val VIEW_TYPE_PERSON = 2
@@ -56,7 +56,7 @@ class ContactAdapter(val dataList : MutableList<Contact>) : RecyclerView.Adapter
 
     inner class TitleViewHolder(private val binding: ContactListTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Title) {
-            binding.tvListtitle.setText(item.department)
+            binding.tvListtitle.setText("${item.department}(${ContactStorage.totalContactList.size})")
         }
     }
 
