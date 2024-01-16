@@ -13,4 +13,6 @@
     <string name="planning_department">기획부</string>
     <string name="accounting_department">회계부</string>
     <string name="sales_department">영업부</string>
+
+    <string name="department_count">(%d)</string>
 </resources>

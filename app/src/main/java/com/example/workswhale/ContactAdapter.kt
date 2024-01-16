@@ -13,15 +13,6 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         private const val VIEW_TYPE_PERSON = 2
 
     }
-    private val departmentList: List<Int>
-        get() = listOf(
-            R.string.human_resources_department,
-            R.string.public_relations_department,
-            R.string.research_development_department,
-            R.string.planning_department,
-            R.string.accounting_department,
-            R.string.sales_department
-        )
 
     interface ItemClick {
         fun onClick(view: View, position: Int)
@@ -64,9 +55,19 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         }
     }
 
+    private val departmentList: List<Int>
+        get() = listOf(
+            R.string.human_resources_department,
+            R.string.public_relations_department,
+            R.string.research_development_department,
+            R.string.planning_department,
+            R.string.accounting_department,
+            R.string.sales_department
+        )
     inner class TitleViewHolder(private val binding: ContactListTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Title) {
             binding.tvListtitle.setText(departmentList[item.department])
+            binding.tvDepartmentCount.setText("(${ContactStorage.countDepartment(item.department)})")
         }
     }
 
