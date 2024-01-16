@@ -23,7 +23,7 @@
         android:layout_margin="20dp"
         android:backgroundTint="@color/blue"
         android:src="@drawable/img_person_add"
-        android:tint="@color/white"
+        app:tint="@color/white"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

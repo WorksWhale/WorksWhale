@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.databinding.FragmentContactListBinding
 
@@ -52,7 +53,17 @@ class ContactListFragment : Fragment() {
 
             // 플로팅 버튼 클릭시, 새로운 사람 추가 기능 구현
             ftbtnContactlist.setOnClickListener {
-
+                val dialog = AddContactDialog()
+                dialog.okClick = object: AddContactDialog.OkClick {
+                    override fun onClick() {
+                        // 리사이클러뷰 아이템 업데이트하기
+                        // adapter.notifyDataSetChanged()
+                        Toast.makeText(requireContext(), "연락처가 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                dialog.show(
+                    requireActivity().supportFragmentManager, "AddContactDialog"
+                )
             }
 
         return binding.root
