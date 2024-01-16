@@ -50,6 +50,11 @@ class ContactListFragment : Fragment() {
                     ContactStorage.totalContactList[position] is Contact.Title
                 }))
 
+            // 플로팅 버튼 클릭시, 새로운 사람 추가 기능 구현
+            ftbtnContactlist.setOnClickListener {
+
+            }
+
         return binding.root
         }
     }
