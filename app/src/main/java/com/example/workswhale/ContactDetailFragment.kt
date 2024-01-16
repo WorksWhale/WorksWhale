@@ -23,7 +23,7 @@ class ContactDetailFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String) =
             ContactDetailFragment().apply {
                 arguments = Bundle().apply {
                 }
