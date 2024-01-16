@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                     editMyPageDialog.show(
                         supportFragmentManager, "EditMyProfileDialog"
                     )
+                    adapter.editInfo("누구", "010-1111-1111", "whoami@anonymous.com")
                 }
             }
         }
