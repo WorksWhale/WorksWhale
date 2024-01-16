@@ -1,27 +1,64 @@
 package com.example.workswhale
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.workswhale.databinding.FragmentContactListBinding
 
 class ContactListFragment : Fragment() {
-
+    private var _binding: FragmentContactListBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact_list, container, false)
+        _binding = FragmentContactListBinding.inflate(inflater, container, false)
+
+        val dataList = mutableListOf<Contact>()
+
+        with(binding) {
+            rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rvContactlistList.setHasFixedSize(true)
+            rvContactlistList.adapter = ContactAdapter(ContactStorage.totalContactList).apply {
+                itemClick = object : ContactAdapter.ItemClick {
+                    override fun onClick(view: View, position: Int) {
+//
+//                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
+//
+//                        requireActivity().supportFragmentManager.beginTransaction()
+//                            .replace(R.id.view_pager_main, fragment2)
+//                            .addToBackStack(null)
+//                            .commit()
+
+                        Log.d("Click", "ContactListFragment : $position")
+                    }
+                }
+            }
+            rvContactlistList.addItemDecoration( // Sticky Header 구현을 위한
+                HeaderItemDecoration(recyclerView = binding.rvContactlistList, isHeader = { position: Int ->
+                    ContactStorage.totalContactList[position] is Contact.Title
+                }))
+
+        return binding.root
+        }
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
     companion object {
         fun newInstance() =
             ContactListFragment().apply {

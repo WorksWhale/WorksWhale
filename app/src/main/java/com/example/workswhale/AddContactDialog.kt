@@ -30,14 +30,14 @@ class AddContactDialog: DialogFragment() {
             binding.etAddContactMemo
         )
 
-    private val departmentList: List<String>
+    private val departmentList: List<Int>
         get() = listOf(
-            getString(R.string.human_resources_department),
-            getString(R.string.public_relations_department),
-            getString(R.string.research_development_department),
-            getString(R.string.planning_department),
-            getString(R.string.accounting_department),
-            getString(R.string.sales_department)
+            R.string.human_resources_department,
+            R.string.public_relations_department,
+            R.string.research_development_department,
+            R.string.planning_department,
+            R.string.accounting_department,
+            R.string.sales_department
         )
 
     override fun onCreateView(
@@ -60,12 +60,16 @@ class AddContactDialog: DialogFragment() {
         }
 
         binding.btnAddContactAdd.setOnClickListener {
-            ContactStorage.addContact(Contact(
+            var department = 0
+            departmentList.map { getString(it) }.forEachIndexed { idx, item ->
+                if (binding.spinnerAddContact.selectedItem.toString() == item) department = idx}
+            ContactStorage.addContact(Contact.Person(
                 name = binding.etAddContactName.text.toString(),
                 phoneNumber = binding.etAddContactPhoneNumber.text.toString(),
-                department = binding.spinnerAddContact.selectedItem.toString(),
+                department = department,
                 email = binding.etAddContactEmail.text.toString(),
                 memo = binding.etAddContactMemo.text.toString(),
+                profileImage = R.drawable.person_1
             ))
             okClick?.onClick()
             dismiss()
