@@ -33,13 +33,21 @@ object ContactStorage {
         totalContactList.add(Contact.Title(5))
     }
 
-//    fun getTotalContactList(): ArrayList<Contact> = totalContactList
-
     fun addContact(contact: Contact) {
         totalContactList.add(contact)
     }
-        //groupby  묶어주고 그 안의 카운트를 알 수 있다. 리스트 사이즈를 구한다
-        //title만 카운트
-        // as , is 캐스팅 -> 내부 감싸진 친구들을 캐스팅 가능
 
+    fun countDepartment(num: Int): Int {
+        var count = 0
+        for (item in totalContactList) {
+            when (item) {
+                is Contact.Person -> {
+                    if (item.department == num) count++
+                }
+                else -> Unit
+            }
+        }
+
+        return count
+    }
 }
