@@ -98,7 +98,7 @@ class AddContactDialog: DialogFragment() {
     }
 
     private fun setDepartmentSpinner() {
-        val adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, departmentList)
+        val adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, departmentList.map { getString(it) })
         binding.spinnerAddContact.adapter = adapter
     }
 
