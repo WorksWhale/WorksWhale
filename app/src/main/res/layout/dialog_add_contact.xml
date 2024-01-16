@@ -1,6 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/iv_add_contact_default_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/img_default_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_add_contact_name"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/blue"
+        android:inputType="text"
+        android:hint="이름"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_add_contact_default_image" />
+
+    <EditText
+        android:id="@+id/et_add_contact_phone_number"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:inputType="phone"
+        android:maxLength="13"
+        android:backgroundTint="@color/blue"
+        android:hint="전화번호"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_add_contact_name" />
+
+    <TextView
+        android:id="@+id/tv_add_contact_department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="16dp"
+        android:text="부서"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/et_add_contact_email"
+        app:layout_constraintTop_toBottomOf="@+id/et_add_contact_phone_number" />
+
+    <Spinner
+        android:id="@+id/spinner_add_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_add_contact_department"
+        app:layout_constraintEnd_toEndOf="@+id/et_add_contact_email"
+        app:layout_constraintTop_toTopOf="@+id/tv_add_contact_department" />
+
+    <EditText
+        android:id="@+id/et_add_contact_email"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/blue"
+        android:inputType="textEmailAddress"
+        android:hint="이메일"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_contact_department" />
+
+    <EditText
+        android:id="@+id/et_add_contact_memo"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/blue"
+        android:inputType="text"
+        android:hint="메모"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_add_contact_email" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_add_contact_cancel"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/shape_my_page_background"
+        android:text="취소"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_add_contact_add"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_add_contact_memo" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_add_contact_add"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/shape_my_page_background"
+        android:text="저장"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_add_contact_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_add_contact_cancel"
+        app:layout_constraintTop_toTopOf="@+id/btn_add_contact_cancel" />
 </androidx.constraintlayout.widget.ConstraintLayout>
