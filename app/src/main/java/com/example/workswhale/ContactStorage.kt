@@ -1,7 +1,5 @@
 package com.example.workswhale
 
-import android.provider.Settings.Global.getString
-
 object ContactStorage {
     var totalContactList: ArrayList<Contact> = ArrayList()
 
