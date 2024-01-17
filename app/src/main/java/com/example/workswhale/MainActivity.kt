@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
 
         binding.ivMainMenu.setOnClickListener {
             when (menuType) {
-                0 -> {
+                0 -> { // 그리드 교체
                     menuIcon = R.drawable.ic_main_view_type_list_btn
                     menuType = 1
                     binding.ivMainMenu.setImageResource(menuIcon)
                 }
-                1 -> {
+                1 -> { // 리스트 교체
                     menuIcon = R.drawable.ic_main_view_type_grid_btn
                     menuType = 0
                     binding.ivMainMenu.setImageResource(menuIcon)
