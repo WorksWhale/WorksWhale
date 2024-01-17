@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -19,7 +20,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/blue"
         android:hint="이름"
         android:inputType="text"
@@ -32,7 +33,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/blue"
         android:hint="전화번호"
         android:inputType="phone"
@@ -46,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="부서"
         android:textSize="18sp"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -66,7 +67,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/blue"
         android:hint="이메일"
         android:inputType="textEmailAddress"
@@ -79,13 +80,132 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/blue"
         android:hint="메모"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_add_contact_email" />
+
+    <TextView
+        android:id="@+id/tv_add_contact_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="5dp"
+        android:text="알람 설정"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/et_add_contact_memo"
+        app:layout_constraintTop_toBottomOf="@+id/et_add_contact_memo" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout_add_contact_alarm"
+        android:layout_width="290dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/shape_add_contact_alarm_layout_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_contact_alarm">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_add_contact_alarm_btn_1"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:background="@color/blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linear_layout_add_contact_alarm_btn_2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_add_contact_alarm_btn_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="OFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_add_contact_alarm_btn_2"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_add_contact_alarm_btn_1"
+            app:layout_constraintEnd_toStartOf="@+id/linear_layout_add_contact_alarm_btn_3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/linear_layout_add_contact_alarm_btn_1"
+            app:layout_constraintTop_toTopOf="@+id/linear_layout_add_contact_alarm_btn_1">
+
+            <TextView
+                android:id="@+id/tv_add_contact_alarm_btn_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="5초 뒤" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_add_contact_alarm_btn_3"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_add_contact_alarm_btn_2"
+            app:layout_constraintEnd_toStartOf="@+id/linear_layout_add_contact_alarm_btn_4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/linear_layout_add_contact_alarm_btn_2"
+            app:layout_constraintTop_toTopOf="@+id/linear_layout_add_contact_alarm_btn_2">
+
+            <TextView
+                android:id="@+id/tv_add_contact_alarm_btn_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="5분 뒤" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_add_contact_alarm_btn_4"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_add_contact_alarm_btn_3"
+            app:layout_constraintEnd_toStartOf="@+id/linear_layout_add_contact_alarm_btn_5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/linear_layout_add_contact_alarm_btn_3"
+            app:layout_constraintTop_toTopOf="@+id/linear_layout_add_contact_alarm_btn_3">
+
+            <TextView
+                android:id="@+id/tv_add_contact_alarm_btn_4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="10분 뒤" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_add_contact_alarm_btn_5"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_add_contact_alarm_btn_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/linear_layout_add_contact_alarm_btn_4"
+            app:layout_constraintTop_toTopOf="@+id/linear_layout_add_contact_alarm_btn_4">
+
+            <TextView
+                android:id="@+id/tv_add_contact_alarm_btn_5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="30분 뒤" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_add_contact_cancel"
@@ -100,7 +220,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_add_contact_add"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_add_contact_memo" />
+        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_add_contact_alarm" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_add_contact_add"
