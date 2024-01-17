@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.workswhale.databinding.FragmentContactDetailBinding
 
@@ -48,7 +49,11 @@ class ContactDetailFragment : Fragment() {
         binding = FragmentContactDetailBinding.inflate(inflater, container, false)
 
         receivedItem?.let {
-            binding!!.ivProfile.setImageResource(it.profileImage)
+            if (ContactStorage.checkStartAlphabet(it.profileImage)) {
+                binding!!.ivProfile.setImageURI(it.profileImage.toUri())
+            } else {
+                binding!!.ivProfile.setImageResource(it.profileImage.toInt())
+            }
             binding!!.tvDetailName.text = it.name
             binding!!.tvDetailPhoneNumber.text = it.phoneNumber
             binding!!.tvDetailEmail.text = it.email
