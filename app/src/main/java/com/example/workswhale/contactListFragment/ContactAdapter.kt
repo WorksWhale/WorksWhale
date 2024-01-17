@@ -1,10 +1,13 @@
-package com.example.workswhale
+package com.example.workswhale.contactListFragment
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.example.workswhale.Contact
+import com.example.workswhale.ContactStorage
+import com.example.workswhale.R
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
 

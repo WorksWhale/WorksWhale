@@ -1,9 +1,11 @@
-package com.example.workswhale
+package com.example.workswhale.mainActivity
 
 import android.graphics.drawable.Drawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.workswhale.myPageFragment.MyPageFragment
+import com.example.workswhale.contactListFragment.ContactListFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity) {
     private val myPageFragment = MyPageFragment()

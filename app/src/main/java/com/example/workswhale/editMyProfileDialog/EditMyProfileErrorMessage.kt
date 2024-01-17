@@ -1,8 +1,9 @@
-package com.example.workswhale
+package com.example.workswhale.editMyProfileDialog
 
 import androidx.annotation.StringRes
+import com.example.workswhale.R
 
-enum class AddContactErrorMessage(
+enum class EditMyProfileErrorMessage(
     @StringRes val message: Int,
 ) {
     EMPTY_NAME(R.string.empty_name_error),
