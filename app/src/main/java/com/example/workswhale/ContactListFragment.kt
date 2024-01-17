@@ -1,16 +1,10 @@
 package com.example.workswhale
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context.ALARM_SERVICE
-import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.RingtoneManager
-import android.net.Uri
-import android.os.Build
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,10 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.databinding.FragmentContactListBinding
-import java.nio.file.attribute.AclEntry.Builder
 import java.util.Calendar
 
 class ContactListFragment : Fragment() {
@@ -40,26 +33,48 @@ class ContactListFragment : Fragment() {
     ): View? {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
 
-        val dataList = mutableListOf<Contact>()
-
         with(binding) {
             rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rvContactlistList.setHasFixedSize(true)
-            rvContactlistList.adapter = ContactAdapter(ContactStorage.totalContactList).apply {
+            val adapter = ContactAdapter(ContactStorage.totalContactList).apply {
                 itemClick = object : ContactAdapter.ItemClick {
                     override fun onClick(view: View, position: Int) {
-//
-//                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
-//
-//                        requireActivity().supportFragmentManager.beginTransaction()
-//                            .replace(R.id.view_pager_main, fragment2)
-//                            .addToBackStack(null)
-//                            .commit()
+
+
+
+
+
+
+
 
                         Log.d("Click", "ContactListFragment : $position")
                     }
                 }
+                itemLongClick =
+                    object : ContactAdapter.ItemLongClick {
+                        override fun onLongClick(view: View, position: Int) {
+                            val builder = AlertDialog.Builder(requireActivity())
+                            builder.setTitle("목록 삭제")
+                            builder.setMessage("정말로 삭제하시겠습니까?")
+                            builder.setIcon(R.drawable.ic_longclick_remove)
+                            val listener = object : DialogInterface.OnClickListener{
+                                override fun onClick(dialog: DialogInterface?, which: Int) {
+                                    when(which) {
+                                        DialogInterface.BUTTON_POSITIVE -> {
+                                            ContactStorage.totalContactList.removeAt(position)
+                                            notifyItemRemoved(position)
+                                            notifyDataSetChanged()}
+                                        DialogInterface.BUTTON_NEGATIVE -> dialog?.dismiss()
+                                    }
+                                }
+                            }
+                            builder.setPositiveButton("확인", listener)
+                            builder.setNegativeButton("취소", listener)
+                            builder.show()
+                        }
+                    }
             }
+            rvContactlistList.adapter = adapter
             rvContactlistList.addItemDecoration( // Sticky Header 구현을 위한
                 HeaderItemDecoration(recyclerView = binding.rvContactlistList, isHeader = { position: Int ->
                     ContactStorage.totalContactList[position] is Contact.Title
@@ -70,8 +85,7 @@ class ContactListFragment : Fragment() {
                 val dialog = AddContactDialog()
                 dialog.okClick = object: AddContactDialog.OkClick {
                     override fun onClick(name: String, second: Int) {
-                        // 리사이클러뷰 아이템 업데이트하기
-                        // adapter.notifyDataSetChanged()
+                        adapter.notifyDataSetChanged()
                         setAlarm(name, second)
                     }
                 }
