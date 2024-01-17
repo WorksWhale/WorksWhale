@@ -15,4 +15,10 @@
     <string name="sales_department">영업부</string>
 
     <string name="department_count">(%d)</string>
+    
+    <string name="alarm_time_off">OFF</string>
+    <string name="alarm_time_five_seconds">5초 뒤</string>
+    <string name="alarm_time_five_minutes">5분 뒤</string>
+    <string name="alarm_time_ten_minutes">10분 뒤</string>
+    <string name="alarm_time_thirty_minutes">30분 뒤</string>
 </resources>
