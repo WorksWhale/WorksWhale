@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.commit
 import android.graphics.Color
+import android.widget.SearchView
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.workswhale.databinding.ActivityMainBinding
@@ -81,6 +82,21 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
                 }
             }
         })
+        var searchViewTextListener: SearchView.OnQueryTextListener =
+            object : SearchView.OnQueryTextListener {
+                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    return false
+                }
+
+                //텍스트 입력/수정시에 호출
+                override fun onQueryTextChange(s: String): Boolean {
+                    ContactAdapter.getFilter().filter(s)
+                    return false
+                }
+            }
+        //SerachView에 OnQueryTextListener를 부착
+        binding.svMainSearch.setOnQueryTextListener(searchViewTextListener)
     }
 
     override fun onDataReceived(data: Contact.Person) {

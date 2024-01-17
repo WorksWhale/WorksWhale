@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -114,7 +115,6 @@ class ContactListFragment : Fragment() {
                     requireActivity().supportFragmentManager, "AddContactDialog"
                 )
             }
-
         return binding.root
         }
     }
