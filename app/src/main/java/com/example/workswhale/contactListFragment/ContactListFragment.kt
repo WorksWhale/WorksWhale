@@ -1,4 +1,4 @@
-package com.example.workswhale
+package com.example.workswhale.contactListFragment
 
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -15,8 +15,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.workswhale.Contact
+import com.example.workswhale.ContactStorage
+import com.example.workswhale.R
+import com.example.workswhale.addContactDialog.AddContactDialog
 import com.example.workswhale.databinding.FragmentContactListBinding
 import java.util.Calendar
 
@@ -69,7 +72,9 @@ class ContactListFragment : Fragment() {
                 itemLongClick =
                     object : ContactAdapter.ItemLongClick {
                         override fun onLongClick(view: View, position: Int) {
-                            val builder = AlertDialog.Builder(requireActivity(),R.style.MyAlertDialogStyle)
+                            val builder = AlertDialog.Builder(requireActivity(),
+                                R.style.MyAlertDialogStyle
+                            )
                             builder.setTitle("목록 삭제")
                             builder.setMessage("정말로 삭제하시겠습니까?")
                             builder.setIcon(R.drawable.ic_logo_white)
@@ -99,7 +104,8 @@ class ContactListFragment : Fragment() {
             rvContactlistList.addItemDecoration( // Sticky Header 구현을 위한
                 HeaderItemDecoration(recyclerView = binding.rvContactlistList, isHeader = { position: Int ->
                     ContactStorage.totalContactList[position] is Contact.Title
-                }))
+                })
+            )
 
             // 플로팅 버튼 클릭시, 새로운 사람 추가 기능 구현
             ftbtnContactlist.setOnClickListener {

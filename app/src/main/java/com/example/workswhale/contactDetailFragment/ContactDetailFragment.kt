@@ -1,4 +1,4 @@
-package com.example.workswhale
+package com.example.workswhale.contactDetailFragment
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import com.example.workswhale.Contact
+import com.example.workswhale.ContactStorage
+import com.example.workswhale.R
 import com.example.workswhale.databinding.FragmentContactDetailBinding
 
 

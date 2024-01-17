@@ -1,4 +1,4 @@
-package com.example.workswhale
+package com.example.workswhale.mainActivity
 
 import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +9,15 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.example.workswhale.Contact
+import com.example.workswhale.contactDetailFragment.ContactDetailFragment
+import com.example.workswhale.contactListFragment.ContactListFragment
+import com.example.workswhale.R
 import com.example.workswhale.databinding.ActivityMainBinding
+import com.example.workswhale.editMyProfileDialog.EditMyProfileDialog
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener{
+class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }

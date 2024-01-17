@@ -1,4 +1,4 @@
-package com.example.workswhale
+package com.example.workswhale.myPageFragment
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle

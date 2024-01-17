@@ -1,4 +1,4 @@
-package com.example.workswhale
+package com.example.workswhale.addContactDialog
 
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +16,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import com.example.workswhale.Contact
+import com.example.workswhale.ContactStorage
+import com.example.workswhale.R
 import com.example.workswhale.databinding.DialogAddContactBinding
 import java.util.regex.Pattern
 
@@ -109,17 +112,19 @@ class AddContactDialog: DialogFragment() {
             var department = 0
             departmentList.map { getString(it) }.forEachIndexed { idx, item ->
                 if (binding.spinnerAddContact.selectedItem.toString() == item) department = idx}
-            ContactStorage.addContact(Contact.Person(
-                name = binding.etAddContactName.text.toString(),
-                phoneNumber = binding.etAddContactPhoneNumber.text.toString(),
-                department = department,
-                email = binding.etAddContactEmail.text.toString(),
-                memo = binding.etAddContactMemo.text.toString(),
-                profileImage = imageUri.toString(),
-                isLiked = false,
-                alarm = timeString
+            ContactStorage.addContact(
+                Contact.Person(
+                    name = binding.etAddContactName.text.toString(),
+                    phoneNumber = binding.etAddContactPhoneNumber.text.toString(),
+                    department = department,
+                    email = binding.etAddContactEmail.text.toString(),
+                    memo = binding.etAddContactMemo.text.toString(),
+                    profileImage = imageUri.toString(),
+                    isLiked = false,
+                    alarm = timeString
 
-            ))
+                )
+            )
             val time = calTime()
             okClick?.onClick(binding.etAddContactName.text.toString(), time)
             dismiss()
