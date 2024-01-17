@@ -34,6 +34,13 @@ import java.util.regex.Pattern
 //입력 받은 정보를 마이 페이지에 바로 업데이트하기
 
 class EditMyProfileDialog : DialogFragment() {
+
+    interface OkClick {
+        fun onClick(name: String, phoneNumber: String, email: String)
+    }
+
+    var okClick: OkClick? = null
+
     private var _binding: DialogEditMyProfileBinding? = null
     private val binding get() = _binding!!
     private val editTexts get() = listOf(binding.editTvEmail, binding.editTvName, binding.editTvPhoneNumber)
@@ -51,7 +58,7 @@ class EditMyProfileDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnCheck.isEnabled = false  //버튼을 비활성화 시킴
+        binding.btnCheck.isEnabled = false  // 버튼을 비활성화 시킴
         setTextChangeLisener()
         setFocusChangedLisener()
 
@@ -60,12 +67,16 @@ class EditMyProfileDialog : DialogFragment() {
         }
 
         binding.btnCheck.setOnClickListener {
-            //마이페이지프래그먼트로 데이터 넘기기
+            // 마이페이지프래그먼트로 데이터 넘기기
+            okClick?.onClick(
+                binding.editTvName.text.toString(),
+                binding.editTvPhoneNumber.text.toString(),
+                binding.editTvEmail.text.toString())
             dismiss()
         }
     }
 
-    //전체적으로 에러가 있는지 여부를 판단해 에러가 있는 경우(또는 아무것도 없는 경우) 버튼을 비활성화 시키는 함수
+    // 전체적으로 에러가 있는지 여부를 판단해 에러가 있는 경우(또는 아무것도 없는 경우) 버튼을 비활성화 시키는 함수
     private fun setTextChangeLisener(){
         editTexts.forEach{editText ->
             editText.addTextChangedListener {
@@ -87,7 +98,7 @@ class EditMyProfileDialog : DialogFragment() {
         }
     }
 
-    //만약에 입력받은 코드에 error가 날 경우 각각 에러메세지가 있는 함수를 실행
+    // 만약에 입력받은 코드에 error가 날 경우 각각 에러메세지가 있는 함수를 실행
     private fun EditText.setErrorMessage(){
         when(this) {
             binding.editTvName -> error = getMessageValidName()
@@ -96,18 +107,18 @@ class EditMyProfileDialog : DialogFragment() {
         }
     }
 
-    //이름부분에 에러메세지 출력하는 함수
-    private fun getMessageValidName() : String?{
+    // 이름부분에 에러메세지 출력하는 함수
+    private fun getMessageValidName() : String? {
         val name = binding.editTvName.text.toString()
         return when{
             name.isBlank() -> AddContactErrorMessage.EMPTY_NAME //이름 부분이 공백이면 AddContactErrorMessage에 EMPTY_NAME을 불러와 메세지를 띄운다.
             else -> null
-        }?.message?.let{getString(it)}
+        }?.message?.let{ getString(it) }
     }
 
-    //전화번호에 에러메세지를 출력하는 함수
-//전화번호의 길이와 전화번호 시작이 010인지 체크하는 함수의 자리가 바뀌면 오류가 생김
-//    -> 010인지 체크하는 함수는 문자열을 잘라서 하기 때문에 처음 문자를 입력받을 때는 그 길이를 충족하지 않아 오류가 생김
+    // 전화번호에 에러메세지를 출력하는 함수
+    // 전화번호의 길이와 전화번호 시작이 010인지 체크하는 함수의 자리가 바뀌면 오류가 생김
+    // -> 010인지 체크하는 함수는 문자열을 잘라서 하기 때문에 처음 문자를 입력받을 때는 그 길이를 충족하지 않아 오류가 생김
     private fun getMessageValidPhoneNumber() : String?{
         val number = binding.editTvPhoneNumber.text.toString()
         return when{

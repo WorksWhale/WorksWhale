@@ -50,10 +50,14 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> {
                     val editMyPageDialog = EditMyProfileDialog()
+                    editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
+                        override fun onClick(name: String, phoneNumber: String, email: String) {
+                            adapter.editInfo(name, phoneNumber, email)
+                        }
+                    }
                     editMyPageDialog.show(
                         supportFragmentManager, "EditMyProfileDialog"
                     )
-                    adapter.editInfo("누구", "010-1111-1111", "whoami@anonymous.com")
                 }
             }
         }
