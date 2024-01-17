@@ -51,7 +51,7 @@ class ContactListFragment : Fragment() {
                             val builder = AlertDialog.Builder(requireActivity())
                             builder.setTitle("목록 삭제")
                             builder.setMessage("정말로 삭제하시겠습니까?")
-                            builder.setIcon(R.drawable.ic_longclick_remove)
+                            builder.setIcon(R.drawable.ic_logo)
                             val listener = object : DialogInterface.OnClickListener{
                                 override fun onClick(dialog: DialogInterface?, which: Int) {
                                     when(which) {
