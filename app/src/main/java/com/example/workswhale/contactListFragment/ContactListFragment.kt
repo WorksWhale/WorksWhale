@@ -1,22 +1,23 @@
 package com.example.workswhale.contactListFragment
 
-import android.content.ContentValues.TAG
-import android.content.Context
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Context.ALARM_SERVICE
-import android.content.Intent
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.Contact
+import com.example.workswhale.ContactAdapter
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
 import com.example.workswhale.addContactDialog.AddContactDialog
@@ -26,15 +27,20 @@ import java.util.Calendar
 class ContactListFragment : Fragment() {
     private var _binding: FragmentContactListBinding? = null
     private val binding get() = _binding!!
+    private var receivedItem: Contact.Person? = null
+
+    private var itemPosition = 0
 
     interface FragmentDataListener {
-        fun onDataReceived(data: Contact.Person)
+        fun onDataReceived(data: Contact.Person, position: Int)
     }
     private var listener: FragmentDataListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            receivedItem = it.getParcelable("contact")
+            Log.d(TAG, "onCreateReceivedItem: $receivedItem")
         }
     }
 
@@ -43,25 +49,29 @@ class ContactListFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
-
+        val bundle = Bundle() // 번들을 통해 값 전달
+        Log.d(TAG, "onCreateView: $bundle")
         with(binding) {
             rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             rvContactlistList.setHasFixedSize(true)
-            val adapter = ContactAdapter(ContactStorage.totalContactList).apply {
+            val adapter = ContactAdapter(ContactStorage.totalContactList)
+                adapter.apply {
                 itemClick = object : ContactAdapter.ItemClick {
                     override fun onClick(view: View, position: Int) {
 
-                        val bundle = Bundle() // 번들을 통해 값 전달
+
 //                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
                         val clickedItem = ContactStorage.totalContactList[position]
-                      when (val item = ContactStorage.totalContactList[position]){
+                        when (val item = ContactStorage.totalContactList[position]){
                             is Contact.Person ->  {
-                                listener?.onDataReceived(item)
+                                Log.d(TAG, "position: $position")
+                                listener?.onDataReceived(item, position)
                                 Log.d(TAG, "onClickItem: $item")
                                 bundle.putParcelable(
                                     "Contact.Person",
                                     clickedItem
                                 )
+                                itemPosition = position
                             }
                             else -> Unit
                         }
@@ -106,6 +116,7 @@ class ContactListFragment : Fragment() {
                     ContactStorage.totalContactList[position] is Contact.Title
                 })
             )
+            adapter.notifyDataSetChanged()
 
             // 플로팅 버튼 클릭시, 새로운 사람 추가 기능 구현
             ftbtnContactlist.setOnClickListener {
@@ -154,9 +165,12 @@ class ContactListFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() =
+        fun newInstance(data: Contact.Person) =
             ContactListFragment().apply {
                 arguments = Bundle().apply {
+                    putParcelable("contact", data)
+                    putInt("position", itemPosition)
+                    Log.d(TAG, "itemPosition: $itemPosition")
                 }
             }
     }

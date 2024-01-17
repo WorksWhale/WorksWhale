@@ -8,7 +8,7 @@ object ContactStorage {
     }
 
     private fun addDummyContact() {
-       totalContactList.add(Contact.Title(0))
+        totalContactList.add(Contact.Title(0))
         totalContactList.add(Contact.Person(R.drawable.img_person_1.toString(),"박소담 사원","010-1212-1212",0,"abc@sparta.com","이제 막 입사한", false, "OFF"))
         totalContactList.add(Contact.Person(R.drawable.img_person_2.toString(),"정해인 사원","010-1212-1212",0,"abc@sparta.com","신입사원 담당", false, "OFF"))
         totalContactList.add(Contact.Person(R.drawable.img_person_3.toString(),"이정민 대리","010-1212-1212",0,"abc@sparta.com","근태관리", false, "OFF"))
@@ -75,5 +75,16 @@ object ContactStorage {
 
     fun checkStartAlphabet(str: String): Boolean {
         return str[0].isLetter()
+    }
+
+    fun changeLiked(position: Int) {
+        when (totalContactList[position]) {
+            is Contact.Person -> {
+                val curLike = (totalContactList[position] as Contact.Person).isLiked
+                (totalContactList[position] as Contact.Person).isLiked = !curLike
+            }
+            else -> Unit
+        }
+
     }
 }

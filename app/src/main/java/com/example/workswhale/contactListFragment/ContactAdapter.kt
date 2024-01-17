@@ -1,4 +1,4 @@
-package com.example.workswhale.contactListFragment
+package com.example.workswhale
 
 import android.view.LayoutInflater
 import android.view.View
@@ -93,6 +93,11 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 }
                 tvContactlistName.setText(item.name)
                 tvContactlistMemo.setText(item.memo)
+                if (item.isLiked) {
+                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
+                } else {
+                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
+                }
             }
         }
     }
