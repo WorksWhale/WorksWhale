@@ -2,11 +2,15 @@ package com.example.workswhale
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.example.workswhale.databinding.DialogAddContactBinding
@@ -15,7 +19,7 @@ import java.util.regex.Pattern
 class AddContactDialog: DialogFragment() {
 
     interface OkClick {
-        fun onClick()
+        fun onClick(name: String, second: Int)
     }
 
     var okClick: OkClick? = null
@@ -30,6 +34,24 @@ class AddContactDialog: DialogFragment() {
             binding.etAddContactMemo
         )
 
+    private val alarmLinearLayoutList: List<LinearLayout>
+        get() = listOf(
+            binding.linearLayoutAddContactAlarmBtn1,
+            binding.linearLayoutAddContactAlarmBtn2,
+            binding.linearLayoutAddContactAlarmBtn3,
+            binding.linearLayoutAddContactAlarmBtn4,
+            binding.linearLayoutAddContactAlarmBtn5
+        )
+
+    private val alarmTextViewList: List<TextView>
+        get() = listOf(
+            binding.tvAddContactAlarmBtn1,
+            binding.tvAddContactAlarmBtn2,
+            binding.tvAddContactAlarmBtn3,
+            binding.tvAddContactAlarmBtn4,
+            binding.tvAddContactAlarmBtn5
+        )
+
     private val departmentList: List<Int>
         get() = listOf(
             R.string.human_resources_department,
@@ -39,6 +61,18 @@ class AddContactDialog: DialogFragment() {
             R.string.accounting_department,
             R.string.sales_department
         )
+
+    private val alarmTimeList: List<Int>
+        get() = listOf(
+            R.string.alarm_time_off,
+            R.string.alarm_time_five_seconds,
+            R.string.alarm_time_five_minutes,
+            R.string.alarm_time_ten_minutes,
+            R.string.alarm_time_thirty_minutes
+        )
+
+    private var selectedTime = 0
+    private var timeString = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,10 +104,51 @@ class AddContactDialog: DialogFragment() {
                 email = binding.etAddContactEmail.text.toString(),
                 memo = binding.etAddContactMemo.text.toString(),
                 profileImage = R.drawable.person_1,
+<<<<<<< HEAD
                 isLiked = false
+=======
+                alarm = timeString
+>>>>>>> c6cf1f61b9a06926f51cc29adc8b0cf935856056
             ))
-            okClick?.onClick()
+            val time = calTime()
+            okClick?.onClick(binding.etAddContactName.text.toString(), time)
             dismiss()
+        }
+
+        alarmLinearLayoutList.forEachIndexed { idx, linearLayout ->
+            linearLayout.setOnClickListener {
+                linearLayout.setColor(idx)
+            }
+        }
+    }
+
+    private fun LinearLayout.setColor(position: Int) {
+        alarmLinearLayoutList.forEach {
+            if (it == this) {
+                it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                selectedTime = position
+            } else {
+                it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+        }
+        alarmTextViewList.forEachIndexed { index, textView ->
+            if (index == position) {
+                textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            } else {
+                textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            }
+        }
+    }
+
+    private fun calTime(): Int {
+        timeString = requireContext().getString(alarmTimeList[selectedTime])
+        return when (selectedTime) {
+            0 -> 0
+            1 -> 5
+            2 -> 300
+            3 -> 600
+            4 -> 1800
+            else -> 0
         }
     }
 
@@ -99,7 +174,7 @@ class AddContactDialog: DialogFragment() {
     }
 
     private fun setDepartmentSpinner() {
-        val adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, departmentList)
+        val adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, departmentList.map { getString(it) })
         binding.spinnerAddContact.adapter = adapter
     }
 

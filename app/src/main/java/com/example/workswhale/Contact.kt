@@ -12,6 +12,10 @@ sealed class Contact : Parcelable {
                       val department: Int,
                       val email: String,
                       val memo: String,
+<<<<<<< HEAD
                       var isLiked: Boolean) : Contact()
 
+=======
+                      val alarm: String) : Contact()
+>>>>>>> c6cf1f61b9a06926f51cc29adc8b0cf935856056
 }

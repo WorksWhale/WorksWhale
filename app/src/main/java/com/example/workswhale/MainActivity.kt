@@ -1,11 +1,18 @@
 package com.example.workswhale
 
+<<<<<<< HEAD
 import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+=======
+import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.core.view.WindowInsetsControllerCompat
+>>>>>>> c6cf1f61b9a06926f51cc29adc8b0cf935856056
 import androidx.viewpager2.widget.ViewPager2
 import com.example.workswhale.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,6 +29,12 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        window.apply {
+            // 상태바의 아이콘과 배경색 변경
+            statusBarColor = Color.WHITE
+            WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
+        }
 
         val adapter = ViewPagerAdapter(this)
         binding.viewPagerMain.adapter = adapter
