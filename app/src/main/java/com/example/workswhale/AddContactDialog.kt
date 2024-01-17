@@ -2,6 +2,7 @@ package com.example.workswhale
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +62,17 @@ class AddContactDialog: DialogFragment() {
             R.string.sales_department
         )
 
+    private val alarmTimeList: List<Int>
+        get() = listOf(
+            R.string.alarm_time_off,
+            R.string.alarm_time_five_seconds,
+            R.string.alarm_time_five_minutes,
+            R.string.alarm_time_ten_minutes,
+            R.string.alarm_time_thirty_minutes
+        )
+
     private var selectedTime = 0
+    private var timeString = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,9 +103,13 @@ class AddContactDialog: DialogFragment() {
                 department = department,
                 email = binding.etAddContactEmail.text.toString(),
                 memo = binding.etAddContactMemo.text.toString(),
-                profileImage = R.drawable.person_1
+                profileImage = R.drawable.person_1,
+                isLiked = false,
+                alarm = timeString
+
             ))
-            okClick?.onClick(binding.etAddContactName.text.toString(), calTime())
+            val time = calTime()
+            okClick?.onClick(binding.etAddContactName.text.toString(), time)
             dismiss()
         }
 
@@ -124,6 +139,7 @@ class AddContactDialog: DialogFragment() {
     }
 
     private fun calTime(): Int {
+        timeString = requireContext().getString(alarmTimeList[selectedTime])
         return when (selectedTime) {
             0 -> 0
             1 -> 5

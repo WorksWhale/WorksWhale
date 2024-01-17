@@ -1,5 +1,7 @@
 package com.example.workswhale
 
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context.ALARM_SERVICE
@@ -7,10 +9,10 @@ import android.content.Intent
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,17 +23,22 @@ import java.util.Calendar
 class ContactListFragment : Fragment() {
     private var _binding: FragmentContactListBinding? = null
     private val binding get() = _binding!!
+
+    interface FragmentDataListener {
+        fun onDataReceived(data: Contact.Person)
+    }
+    private var listener: FragmentDataListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
 
         with(binding) {
@@ -41,14 +48,22 @@ class ContactListFragment : Fragment() {
                 itemClick = object : ContactAdapter.ItemClick {
                     override fun onClick(view: View, position: Int) {
 
-
-
-
-
-
-
-
+                        val bundle = Bundle() // 번들을 통해 값 전달
+//                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
+                        val clickedItem = ContactStorage.totalContactList[position]
+                      when (val item = ContactStorage.totalContactList[position]){
+                            is Contact.Person ->  {
+                                listener?.onDataReceived(item)
+                                Log.d(TAG, "onClickItem: $item")
+                                bundle.putParcelable(
+                                    "Contact.Person",
+                                    clickedItem
+                                )
+                            }
+                            else -> Unit
+                        }
                         Log.d("Click", "ContactListFragment : $position")
+                        Log.d(TAG, "onClickBundle: $bundle")
                     }
                 }
                 itemLongClick =
@@ -104,6 +119,15 @@ class ContactListFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is FragmentDataListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement FragmentDataListener")
+        }
+    }
+
     private fun setAlarm(name: String, second: Int) {
         if (second == 0) return
 
@@ -117,7 +141,6 @@ class ContactListFragment : Fragment() {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         Toast.makeText(requireContext(), "${name}님에 대한 연락 알람이 설정되었습니다.", Toast.LENGTH_SHORT).show()
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

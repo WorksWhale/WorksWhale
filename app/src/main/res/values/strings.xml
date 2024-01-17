@@ -6,6 +6,7 @@
     <string name="empty_email_error">이메일을 입력하세요.</string>
     <string name="invalid_phone_number_error">전화번호는 010으로 시작해야합니다.</string>
     <string name="invalid_email_error">올바른 이메일 형식이 아닙니다.(xxxxx@xxx.xxx)</string>
+    <string name="invalid_phone_number_length_error">전화번호를 다시 확인해주세요</string>
 
     <string name="human_resources_department">인사부</string>
     <string name="public_relations_department">홍보부</string>
@@ -14,5 +15,11 @@
     <string name="accounting_department">회계부</string>
     <string name="sales_department">영업부</string>
 
+    <string name="department_count">(%d)</string>
 
+    <string name="alarm_time_off">OFF</string>
+    <string name="alarm_time_five_seconds">5초 뒤</string>
+    <string name="alarm_time_five_minutes">5분 뒤</string>
+    <string name="alarm_time_ten_minutes">10분 뒤</string>
+    <string name="alarm_time_thirty_minutes">30분 뒤</string>
 </resources>
