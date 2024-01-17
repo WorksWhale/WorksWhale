@@ -11,10 +11,8 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     companion object {
         private const val VIEW_TYPE_TITLE = 1
         private const val VIEW_TYPE_LIST = 2
-        private const val VIEW_TYPE_GRID = 3
 
     }
-
     interface ItemClick {
         fun onClick(view: View, position: Int)
     }
@@ -36,7 +34,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(val item = dataList[position]) { // 각 뷰에 맞는 객체 데이터 바인딩
+        when(dataList[position]) { // 각 뷰에 맞는 객체 데이터 바인딩
             is Contact.Title -> (holder as TitleViewHolder).bind(dataList[position] as Contact.Title)
             is Contact.Person -> (holder as PersonViewHolder).bind(dataList[position] as Contact.Person)
         }
@@ -59,9 +57,9 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         return position.toLong()
     }
     override fun getItemViewType(position: Int): Int {
-        return when (dataList[position]) { // 각 뷰타입 확인 및 번호 부여 (구분)
-            is Contact.Title -> VIEW_TYPE_TITLE
-            is Contact.Person -> VIEW_TYPE_LIST
+        return when(dataList[position]) {
+             is Contact.Title -> VIEW_TYPE_TITLE
+             is Contact.Person -> VIEW_TYPE_LIST
         }
     }
 

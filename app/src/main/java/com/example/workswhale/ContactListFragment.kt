@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.databinding.FragmentContactListBinding
 import java.util.Calendar
@@ -34,7 +35,7 @@ class ContactListFragment : Fragment() {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
 
         with(binding) {
-            rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             rvContactlistList.setHasFixedSize(true)
             val adapter = ContactAdapter(ContactStorage.totalContactList).apply {
                 itemClick = object : ContactAdapter.ItemClick {
@@ -53,22 +54,27 @@ class ContactListFragment : Fragment() {
                 itemLongClick =
                     object : ContactAdapter.ItemLongClick {
                         override fun onLongClick(view: View, position: Int) {
-                            val builder = AlertDialog.Builder(requireActivity())
+                            val builder = AlertDialog.Builder(requireActivity(),R.style.MyAlertDialogStyle)
                             builder.setTitle("목록 삭제")
                             builder.setMessage("정말로 삭제하시겠습니까?")
-                            builder.setIcon(R.drawable.ic_logo)
+                            builder.setIcon(R.drawable.ic_logo_white)
+                            builder.setCancelable(false)
                             val listener = object : DialogInterface.OnClickListener{
                                 override fun onClick(dialog: DialogInterface?, which: Int) {
                                     when(which) {
                                         DialogInterface.BUTTON_POSITIVE -> {
                                             ContactStorage.totalContactList.removeAt(position)
                                             notifyItemRemoved(position)
-                                            notifyDataSetChanged()}
-                                        DialogInterface.BUTTON_NEGATIVE -> dialog?.dismiss()
+                                            notifyDataSetChanged()
+                                        Toast.makeText(context,"삭제되었습니다",Toast.LENGTH_SHORT).show()}
+                                        DialogInterface.BUTTON_NEGATIVE -> {
+                                            dialog?.dismiss()
+                                            Toast.makeText(context,"취소하였습니다",Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                 }
                             }
-                            builder.setPositiveButton("확인", listener)
+                            builder.setPositiveButton("삭제", listener)
                             builder.setNegativeButton("취소", listener)
                             builder.show()
                         }
