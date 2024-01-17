@@ -27,4 +27,8 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
     fun getInfo(): List<String> {
         return myPageFragment.giveData()
     }
+
+    fun getImageInfo(): Drawable {
+        return myPageFragment.giveImageData()
+    }
 }

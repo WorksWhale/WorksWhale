@@ -34,4 +34,8 @@ class MyPageFragment(): Fragment() {
             binding.tvDetailEmail.text.toString()
         )
     }
+
+    fun giveImageData(): Drawable {
+        return binding.ivMyPageProfileImage.drawable
+    }
 }

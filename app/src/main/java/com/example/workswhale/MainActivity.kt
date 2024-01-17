@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
                 }
                 else -> {
                     val userInfo = adapter.getInfo()
-                    val editMyPageDialog = EditMyProfileDialog(userInfo)
+                    val userProfileImage = adapter.getImageInfo()
+                    val editMyPageDialog = EditMyProfileDialog(userInfo, userProfileImage)
                     editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
                         override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
                             adapter.editInfo(profileImage, name, phoneNumber, email)

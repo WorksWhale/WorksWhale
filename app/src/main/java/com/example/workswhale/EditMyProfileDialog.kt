@@ -28,7 +28,7 @@ import java.util.regex.Pattern
 //입력 받은 정보의 유효성 검사 진행하기
 //입력 받은 정보를 마이 페이지에 바로 업데이트하기
 
-class EditMyProfileDialog(private val userInfo: List<String>) : DialogFragment() {
+class EditMyProfileDialog(private val userInfo: List<String>, private val userProfileImage: Drawable) : DialogFragment() {
 
     interface OkClick {
         fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String)
@@ -63,6 +63,8 @@ class EditMyProfileDialog(private val userInfo: List<String>) : DialogFragment()
         super.onViewCreated(view, savedInstanceState)
         binding.btnCheck.isEnabled = false  // 버튼을 비활성화 시킴
 
+        binding.ivProfile.setImageDrawable(userProfileImage)
+        binding.ivProfile.scaleType = ImageView.ScaleType.CENTER_CROP
         binding.editTvName.setText(userInfo[0])
         binding.editTvPhoneNumber.setText(userInfo[1])
         binding.editTvEmail.setText(userInfo[2])
