@@ -1,20 +1,24 @@
 package com.example.workswhale
 
-import android.graphics.Color
+import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.commit
+import android.graphics.Color
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.workswhale.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener{
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
     private var menuIcon = R.drawable.ic_main_view_type_grid_btn
     private var menuType = 2
+    lateinit var detailFragment: ContactDetailFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,5 +77,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onDataReceived(data: Contact.Person) {
+        supportFragmentManager.commit {
+            detailFragment = ContactDetailFragment.newInstance(data)
+            replace(R.id.frameLayout, detailFragment)
+            setReorderingAllowed(true)
+            addToBackStack("")
+            Log.d(TAG, "onDataReceived: $data")
+        }
     }
 }

@@ -1,16 +1,14 @@
 package com.example.workswhale
 
+import android.content.ContentValues.TAG
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import com.example.workswhale.databinding.FragmentContactDetailBinding
 
@@ -19,14 +17,27 @@ class ContactDetailFragment : Fragment() {
 
     private var binding: FragmentContactDetailBinding? = null
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private var isLiked = false
 
-//    private val receivedItem: Contact?
-//        get() = intent.getParcelableExtra("Contact")
+    private val departmentList: List<Int>
+        get() = listOf(
+            R.string.human_resources_department,
+            R.string.public_relations_department,
+            R.string.research_development_department,
+            R.string.planning_department,
+            R.string.accounting_department,
+            R.string.sales_department
+        )
+
+    private var receivedItem: Contact.Person? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
+        Log.d(TAG, "arguments: $arguments")
 
+        arguments?.let {
+            receivedItem = it.getParcelable("contact")
+            Log.d(TAG, "onCreateReceivedItem: $receivedItem")
         }
     }
 
@@ -36,9 +47,40 @@ class ContactDetailFragment : Fragment() {
     ): View? {
         binding = FragmentContactDetailBinding.inflate(inflater, container, false)
 
-        val phoneNumber = binding!!.tvDetailPhoneNumber.text//phonNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
+        receivedItem?.let {
+            binding!!.ivProfile.setImageResource(it.profileImage)
+            binding!!.tvDetailName.text = it.name
+            binding!!.tvDetailPhoneNumber.text = it.phoneNumber
+            binding!!.tvDetailEmail.text = it.email
+            binding!!.tvDetailMemo.text = it.memo
+            isLiked = it.isLiked == true
+        }
+
+        binding!!.tvDetailDepartment.text =
+            requireContext().getString(departmentList[receivedItem!!.department])
+
+        binding!!.ivFavorite.setImageResource(
+            if (isLiked) {
+                R.drawable.ic_fill_favorite
+            } else {
+                R.drawable.ic_empty_favorite
+            }
+        )
+
+        binding!!.ivFavorite.setOnClickListener {
+            if (!isLiked) {
+                binding!!.ivFavorite.setImageResource(R.drawable.ic_fill_favorite)
+                isLiked = true
+            } else {
+                binding!!.ivFavorite.setImageResource(R.drawable.ic_empty_favorite)
+                isLiked = false
+            }
+        }
+        val phoneNumber =
+            binding!!.tvDetailPhoneNumber.text//phonNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
 
         with(binding) {
+
             this!!.tvMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
                 val intent = Intent(Intent.ACTION_SENDTO)
@@ -57,9 +99,11 @@ class ContactDetailFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(param1: String) =
+        fun newInstance(data: Contact.Person) =
             ContactDetailFragment().apply {
                 arguments = Bundle().apply {
+                    Log.d(TAG, "newInstance: $arguments")
+                    putParcelable("contact", data)
                 }
             }
     }
