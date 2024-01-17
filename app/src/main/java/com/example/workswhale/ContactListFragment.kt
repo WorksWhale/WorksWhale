@@ -115,7 +115,21 @@ class ContactListFragment : Fragment() {
                     requireActivity().supportFragmentManager, "AddContactDialog"
                 )
             }
-        return binding.root
+            // 목록 검색 기능
+            var searchViewTextListener: SearchView.OnQueryTextListener =
+                object : SearchView.OnQueryTextListener {
+                    //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                    override fun onQueryTextSubmit(s: String): Boolean {
+                        return false
+                    }
+
+                    //텍스트 입력/수정시에 호출
+                    override fun onQueryTextChange(s: String): Boolean {
+                        return false
+                    }
+                }
+            svContactlistSearch.setOnQueryTextListener(searchViewTextListener)
+            return binding.root
         }
     }
 

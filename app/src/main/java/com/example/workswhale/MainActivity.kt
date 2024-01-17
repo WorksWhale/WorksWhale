@@ -55,10 +55,12 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
                     binding.ivMainMenu.setImageResource(menuIcon)
                 }
                 else -> {
-                    val editMyPageDialog = EditMyProfileDialog()
+                    val userInfo = adapter.getInfo()
+                    val userProfileImage = adapter.getImageInfo()
+                    val editMyPageDialog = EditMyProfileDialog(userInfo, userProfileImage)
                     editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
-                        override fun onClick(name: String, phoneNumber: String, email: String) {
-                            adapter.editInfo(name, phoneNumber, email)
+                        override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
+                            adapter.editInfo(profileImage, name, phoneNumber, email)
                         }
                     }
                     editMyPageDialog.show(
@@ -83,21 +85,6 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
                 }
             }
         })
-        var searchViewTextListener: SearchView.OnQueryTextListener =
-            object : SearchView.OnQueryTextListener {
-                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
-                override fun onQueryTextSubmit(s: String): Boolean {
-                    return false
-                }
-
-                //텍스트 입력/수정시에 호출
-                override fun onQueryTextChange(s: String): Boolean {
-                    ContactAdapter.getFilter().filter(s)
-                    return false
-                }
-            }
-        //SerachView에 OnQueryTextListener를 부착
-        binding.svMainSearch.setOnQueryTextListener(searchViewTextListener)
     }
 
     override fun onDataReceived(data: Contact.Person) {
