@@ -14,7 +14,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/shape_contactlist_circle"
+        android:background="@drawable/shape_contact_list_circle"
         android:src="@drawable/img_default_profile"
         android:clipToOutline="true"
         app:layout_constraintEnd_toEndOf="parent"

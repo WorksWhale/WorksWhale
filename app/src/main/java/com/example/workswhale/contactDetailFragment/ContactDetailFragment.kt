@@ -69,18 +69,18 @@ class ContactDetailFragment : Fragment() {
 
         binding!!.ivFavorite.setImageResource(
             if (isLiked) {
-                R.drawable.ic_fill_favorite
+                R.drawable.ic_contact_detail_fill_favorite
             } else {
-                R.drawable.ic_empty_favorite
+                R.drawable.ic_contact_detail_empty_favorite
             }
         )
 
         binding!!.ivFavorite.setOnClickListener {
             if (!isLiked) {
-                binding!!.ivFavorite.setImageResource(R.drawable.ic_fill_favorite)
+                binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                 isLiked = true
             } else {
-                binding!!.ivFavorite.setImageResource(R.drawable.ic_empty_favorite)
+                binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                 isLiked = false
             }
         }
