@@ -1,18 +1,12 @@
 package com.example.workswhale
 
-<<<<<<< HEAD
 import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-=======
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.core.view.WindowInsetsControllerCompat
->>>>>>> c6cf1f61b9a06926f51cc29adc8b0cf935856056
 import androidx.viewpager2.widget.ViewPager2
 import com.example.workswhale.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator

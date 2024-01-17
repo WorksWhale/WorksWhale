@@ -49,17 +49,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<<<<<<< HEAD
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager_main"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/tab_layout_bottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_contactlist_title" />
-=======
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager_main"
         android:layout_width="match_parent"
@@ -70,7 +59,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraint_layout_contactlist_title" />
->>>>>>> c6cf1f61b9a06926f51cc29adc8b0cf935856056
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_bottom"
@@ -103,5 +91,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_contactlist_title"></FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_contactlist_title"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

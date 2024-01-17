@@ -104,11 +104,9 @@ class AddContactDialog: DialogFragment() {
                 email = binding.etAddContactEmail.text.toString(),
                 memo = binding.etAddContactMemo.text.toString(),
                 profileImage = R.drawable.person_1,
-<<<<<<< HEAD
-                isLiked = false
-=======
+                isLiked = false,
                 alarm = timeString
->>>>>>> c6cf1f61b9a06926f51cc29adc8b0cf935856056
+
             ))
             val time = calTime()
             okClick?.onClick(binding.etAddContactName.text.toString(), time)
