@@ -84,9 +84,14 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     inner class PersonViewHolder(private  val binding: ContactListPersonBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Person) {
             with(binding) {
-             ivContactlistProfile.setImageResource(item.profileImage)
+                ivContactlistProfile.setImageResource(item.profileImage)
                 tvContactlistName.setText(item.name)
                 tvContactlistMemo.setText(item.memo)
+                if (item.isLiked) {
+                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
+                } else {
+                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
+                }
             }
         }
     }

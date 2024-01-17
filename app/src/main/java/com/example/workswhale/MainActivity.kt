@@ -20,6 +20,10 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
     private var menuType = 2
     lateinit var detailFragment: ContactDetailFragment
 
+    interface onBackPressedListener {
+        fun onBackPressed()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -83,13 +87,25 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         })
     }
 
-    override fun onDataReceived(data: Contact.Person) {
+    override fun onDataReceived(data: Contact.Person, position: Int) {
         supportFragmentManager.commit {
-            detailFragment = ContactDetailFragment.newInstance(data)
+            detailFragment = ContactDetailFragment.newInstance(data, position)
             replace(R.id.frameLayout, detailFragment)
             setReorderingAllowed(true)
             addToBackStack("")
             Log.d(TAG, "onDataReceived: $data")
+        }
+    }
+
+    override fun onBackPressed(){
+        //아래와 같은 코드를 추가하도록 한다
+        //해당 엑티비티에서 띄운 프래그먼트에서 뒤로가기를 누르게 되면 프래그먼트에서 구현한 onBackPressed 함수가 실행되게 된다.
+        val fragmentList = supportFragmentManager.fragments
+        for (fragment in fragmentList) {
+            if (fragment is onBackPressedListener) {
+                (fragment as onBackPressedListener).onBackPressed()
+                return
+            }
         }
     }
 }
