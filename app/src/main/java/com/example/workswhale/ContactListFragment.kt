@@ -31,21 +31,22 @@ class ContactListFragment : Fragment() {
         with(binding) {
             rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rvContactlistList.setHasFixedSize(true)
-            rvContactlistList.adapter = ContactAdapter(ContactStorage.totalContactList).apply {
+            val adapter = ContactAdapter(ContactStorage.totalContactList).apply {
                 itemClick = object : ContactAdapter.ItemClick {
                     override fun onClick(view: View, position: Int) {
-//
-//                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
-//
-//                        requireActivity().supportFragmentManager.beginTransaction()
-//                            .replace(R.id.view_pager_main, fragment2)
-//                            .addToBackStack(null)
-//                            .commit()
+
+
+
+
+
+
+
 
                         Log.d("Click", "ContactListFragment : $position")
                     }
                 }
             }
+            rvContactlistList.adapter = adapter
             rvContactlistList.addItemDecoration( // Sticky Header 구현을 위한
                 HeaderItemDecoration(recyclerView = binding.rvContactlistList, isHeader = { position: Int ->
                     ContactStorage.totalContactList[position] is Contact.Title
@@ -57,7 +58,7 @@ class ContactListFragment : Fragment() {
                 dialog.okClick = object: AddContactDialog.OkClick {
                     override fun onClick() {
                         // 리사이클러뷰 아이템 업데이트하기
-                        // adapter.notifyDataSetChanged()
+                        adapter.notifyDataSetChanged()
                         Toast.makeText(requireContext(), "연락처가 추가되었습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
