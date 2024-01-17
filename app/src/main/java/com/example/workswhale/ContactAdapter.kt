@@ -3,6 +3,7 @@ package com.example.workswhale
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
@@ -82,7 +83,11 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     inner class PersonViewHolder(private  val binding: ContactListPersonBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Person) {
             with(binding) {
-             ivContactlistProfile.setImageResource(item.profileImage)
+                if (ContactStorage.checkStartAlphabet(item.profileImage)) {
+                    binding.ivContactlistProfile.setImageURI(item.profileImage.toUri())
+                } else {
+                    binding.ivContactlistProfile.setImageResource(item.profileImage.toInt())
+                }
                 tvContactlistName.setText(item.name)
                 tvContactlistMemo.setText(item.memo)
             }
