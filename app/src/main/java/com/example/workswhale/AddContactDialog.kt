@@ -69,7 +69,8 @@ class AddContactDialog: DialogFragment() {
                 department = department,
                 email = binding.etAddContactEmail.text.toString(),
                 memo = binding.etAddContactMemo.text.toString(),
-                profileImage = R.drawable.person_1
+                profileImage = R.drawable.person_1,
+                isLiked = false
             ))
             okClick?.onClick()
             dismiss()
