@@ -3,7 +3,11 @@ package com.example.workswhale
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.example.workswhale.Contact
+import com.example.workswhale.ContactStorage
+import com.example.workswhale.R
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
 
@@ -11,10 +15,8 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     companion object {
         private const val VIEW_TYPE_TITLE = 1
         private const val VIEW_TYPE_LIST = 2
-        private const val VIEW_TYPE_GRID = 3
 
     }
-
     interface ItemClick {
         fun onClick(view: View, position: Int)
     }
@@ -36,7 +38,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(val item = dataList[position]) { // 각 뷰에 맞는 객체 데이터 바인딩
+        when(dataList[position]) { // 각 뷰에 맞는 객체 데이터 바인딩
             is Contact.Title -> (holder as TitleViewHolder).bind(dataList[position] as Contact.Title)
             is Contact.Person -> (holder as PersonViewHolder).bind(dataList[position] as Contact.Person)
         }
@@ -59,9 +61,9 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         return position.toLong()
     }
     override fun getItemViewType(position: Int): Int {
-        return when (dataList[position]) { // 각 뷰타입 확인 및 번호 부여 (구분)
-            is Contact.Title -> VIEW_TYPE_TITLE
-            is Contact.Person -> VIEW_TYPE_LIST
+        return when(dataList[position]) {
+             is Contact.Title -> VIEW_TYPE_TITLE
+             is Contact.Person -> VIEW_TYPE_LIST
         }
     }
 
@@ -84,7 +86,11 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     inner class PersonViewHolder(private  val binding: ContactListPersonBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Person) {
             with(binding) {
-                ivContactlistProfile.setImageResource(item.profileImage)
+                if (ContactStorage.checkStartAlphabet(item.profileImage)) {
+                    binding.ivContactlistProfile.setImageURI(item.profileImage.toUri())
+                } else {
+                    binding.ivContactlistProfile.setImageResource(item.profileImage.toInt())
+                }
                 tvContactlistName.setText(item.name)
                 tvContactlistMemo.setText(item.memo)
                 if (item.isLiked) {

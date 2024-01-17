@@ -1,18 +1,22 @@
-package com.example.workswhale
+package com.example.workswhale.contactDetailFragment
 
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import com.example.workswhale.Contact
+import com.example.workswhale.ContactAdapter
+import com.example.workswhale.ContactStorage
+import com.example.workswhale.R
 import com.example.workswhale.databinding.FragmentContactDetailBinding
+import com.example.workswhale.mainActivity.MainActivity
 
 
 class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
@@ -52,7 +56,11 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
         binding = FragmentContactDetailBinding.inflate(inflater, container, false)
 
         receivedItem?.let {
-            binding!!.ivProfile.setImageResource(it.profileImage)
+            if (ContactStorage.checkStartAlphabet(it.profileImage)) {
+                binding!!.ivProfile.setImageURI(it.profileImage.toUri())
+            } else {
+                binding!!.ivProfile.setImageResource(it.profileImage.toInt())
+            }
             binding!!.tvDetailName.text = it.name
             binding!!.tvDetailPhoneNumber.text = it.phoneNumber
             binding!!.tvDetailEmail.text = it.email
@@ -65,22 +73,22 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
 
         binding!!.ivFavorite.setImageResource(
             if (isLiked) {
-                R.drawable.ic_fill_favorite
+                R.drawable.ic_contact_detail_fill_favorite
             } else {
-                R.drawable.ic_empty_favorite
+                R.drawable.ic_contact_detail_empty_favorite
             }
         )
 
         binding!!.ivFavorite.setOnClickListener {
             if (!isLiked) {
-                binding!!.ivFavorite.setImageResource(R.drawable.ic_fill_favorite)
+                binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                 isLiked = true
                 ContactStorage.changeLiked(position)
                 Log.d(TAG, "ivFavoriteClicked: $isLiked")
                 Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
 
             } else {
-                binding!!.ivFavorite.setImageResource(R.drawable.ic_empty_favorite)
+                binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                 isLiked = false
                 ContactStorage.changeLiked(position)
                 Log.d(TAG, "ivFavoriteClicked: $isLiked")
@@ -135,11 +143,8 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
         val adapter = ContactAdapter(ContactStorage.totalContactList)
         adapter.notifyItemChanged(position)
         adapter.notifyDataSetChanged()
-        val listFragment = ContactListFragment.newInstance()
 
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.frameLayout, listFragment)
-
-//        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
-//        requireActivity().supportFragmentManager.popBackStack()
+        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+        requireActivity().supportFragmentManager.popBackStack()
     }
 }

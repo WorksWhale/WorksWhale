@@ -1,4 +1,4 @@
-package com.example.workswhale
+package com.example.workswhale.contactListFragment
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -12,6 +12,8 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.example.workswhale.R
+import com.example.workswhale.mainActivity.MainActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 

@@ -1,18 +1,24 @@
-package com.example.workswhale
+package com.example.workswhale.addContactDialog
 
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import com.example.workswhale.Contact
+import com.example.workswhale.ContactStorage
+import com.example.workswhale.R
 import com.example.workswhale.databinding.DialogAddContactBinding
 import java.util.regex.Pattern
 
@@ -25,6 +31,15 @@ class AddContactDialog: DialogFragment() {
     var okClick: OkClick? = null
     private var _binding: DialogAddContactBinding? = null
     private val binding get() = _binding!!
+
+    private var imageUri: Uri? = null
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            binding.ivAddContactDefaultImage.setImageURI(uri)
+            binding.ivAddContactDefaultImage.scaleType = ImageView.ScaleType.CENTER_CROP
+            imageUri = uri
+        }
+    }
 
     private val editTextList: List<EditText>
         get() = listOf(
@@ -97,20 +112,26 @@ class AddContactDialog: DialogFragment() {
             var department = 0
             departmentList.map { getString(it) }.forEachIndexed { idx, item ->
                 if (binding.spinnerAddContact.selectedItem.toString() == item) department = idx}
-            ContactStorage.addContact(Contact.Person(
-                name = binding.etAddContactName.text.toString(),
-                phoneNumber = binding.etAddContactPhoneNumber.text.toString(),
-                department = department,
-                email = binding.etAddContactEmail.text.toString(),
-                memo = binding.etAddContactMemo.text.toString(),
-                profileImage = R.drawable.person_1,
-                isLiked = false,
-                alarm = timeString
+            ContactStorage.addContact(
+                Contact.Person(
+                    name = binding.etAddContactName.text.toString(),
+                    phoneNumber = binding.etAddContactPhoneNumber.text.toString(),
+                    department = department,
+                    email = binding.etAddContactEmail.text.toString(),
+                    memo = binding.etAddContactMemo.text.toString(),
+                    profileImage = imageUri.toString(),
+                    isLiked = false,
+                    alarm = timeString
 
-            ))
+                )
+            )
             val time = calTime()
             okClick?.onClick(binding.etAddContactName.text.toString(), time)
             dismiss()
+        }
+
+        binding.ivAddContactDefaultImage.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
         alarmLinearLayoutList.forEachIndexed { idx, linearLayout ->
@@ -207,6 +228,7 @@ class AddContactDialog: DialogFragment() {
         val phoneNumber = binding.etAddContactPhoneNumber.text.toString()
         return when {
             phoneNumber.isBlank() -> AddContactErrorMessage.EMPTY_PHONE_NUMBER
+            phoneNumber.length < 13 -> AddContactErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
             phoneNumber.startZeroOneZero().not() -> AddContactErrorMessage.INVALID_PHONE_NUMBER
             else -> null
         }?.message?.let { getString(it) }

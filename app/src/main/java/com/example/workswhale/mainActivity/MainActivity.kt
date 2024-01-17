@@ -1,4 +1,4 @@
-package com.example.workswhale
+package com.example.workswhale.mainActivity
 
 import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
@@ -6,12 +6,18 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.commit
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.example.workswhale.Contact
+import com.example.workswhale.contactDetailFragment.ContactDetailFragment
+import com.example.workswhale.contactListFragment.ContactListFragment
+import com.example.workswhale.R
 import com.example.workswhale.databinding.ActivityMainBinding
+import com.example.workswhale.editMyProfileDialog.EditMyProfileDialog
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener{
+class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -46,21 +52,23 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
 
         binding.ivMainMenu.setOnClickListener {
             when (menuType) {
-                0 -> {
+                0 -> { // 그리드 교체
                     menuIcon = R.drawable.ic_main_view_type_list_btn
                     menuType = 1
                     binding.ivMainMenu.setImageResource(menuIcon)
                 }
-                1 -> {
+                1 -> { // 리스트 교체
                     menuIcon = R.drawable.ic_main_view_type_grid_btn
                     menuType = 0
                     binding.ivMainMenu.setImageResource(menuIcon)
                 }
                 else -> {
-                    val editMyPageDialog = EditMyProfileDialog()
+                    val userInfo = adapter.getInfo()
+                    val userProfileImage = adapter.getImageInfo()
+                    val editMyPageDialog = EditMyProfileDialog(userInfo, userProfileImage)
                     editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
-                        override fun onClick(name: String, phoneNumber: String, email: String) {
-                            adapter.editInfo(name, phoneNumber, email)
+                        override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
+                            adapter.editInfo(profileImage, name, phoneNumber, email)
                         }
                     }
                     editMyPageDialog.show(

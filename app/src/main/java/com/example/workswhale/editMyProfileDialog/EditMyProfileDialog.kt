@@ -1,25 +1,18 @@
-package com.example.workswhale
+package com.example.workswhale.editMyProfileDialog
 
-import android.graphics.ColorSpace.match
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.text.TextUtils.replace
-import android.text.TextUtils.substring
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.ImageView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import com.example.workswhale.databinding.DialogAddContactBinding
 import com.example.workswhale.databinding.DialogEditMyProfileBinding
 import java.util.regex.Pattern
 
@@ -33,25 +26,33 @@ import java.util.regex.Pattern
 //입력 받은 정보의 유효성 검사 진행하기
 //입력 받은 정보를 마이 페이지에 바로 업데이트하기
 
-class EditMyProfileDialog : DialogFragment() {
+class EditMyProfileDialog(private val userInfo: List<String>, private val userProfileImage: Drawable) : DialogFragment() {
 
     interface OkClick {
-        fun onClick(name: String, phoneNumber: String, email: String)
+        fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String)
     }
 
     var okClick: OkClick? = null
 
+    private var selectedProfile: Uri? = null
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            binding.ivProfile.setImageURI(uri)
+            binding.ivProfile.scaleType = ImageView.ScaleType.CENTER_CROP
+            selectedProfile = uri
+        }
+    }
+
     private var _binding: DialogEditMyProfileBinding? = null
     private val binding get() = _binding!!
     private val editTexts get() = listOf(binding.editTvEmail, binding.editTvName, binding.editTvPhoneNumber)
-    private val phoneNumberList = listOf("010", "053", "02")
 
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = DialogEditMyProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -59,6 +60,14 @@ class EditMyProfileDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnCheck.isEnabled = false  // 버튼을 비활성화 시킴
+
+        binding.ivProfile.setImageDrawable(userProfileImage)
+        binding.ivProfile.scaleType = ImageView.ScaleType.CENTER_CROP
+        binding.editTvName.setText(userInfo[0])
+        binding.editTvPhoneNumber.setText(userInfo[1])
+        binding.editTvEmail.setText(userInfo[2])
+        setAddButtonEnable()
+
         setTextChangeLisener()
         setFocusChangedLisener()
 
@@ -66,9 +75,14 @@ class EditMyProfileDialog : DialogFragment() {
             dismiss()
         }
 
+        binding.ivProfile.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
         binding.btnCheck.setOnClickListener {
             // 마이페이지프래그먼트로 데이터 넘기기
             okClick?.onClick(
+                binding.ivProfile.drawable,
                 binding.editTvName.text.toString(),
                 binding.editTvPhoneNumber.text.toString(),
                 binding.editTvEmail.text.toString())
@@ -84,7 +98,7 @@ class EditMyProfileDialog : DialogFragment() {
                 setAddButtonEnable()
             }
         }
-        binding.editTvName.addTextChangedListener()
+        binding.editTvPhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     private fun setFocusChangedLisener() {
@@ -111,7 +125,7 @@ class EditMyProfileDialog : DialogFragment() {
     private fun getMessageValidName() : String? {
         val name = binding.editTvName.text.toString()
         return when{
-            name.isBlank() -> AddContactErrorMessage.EMPTY_NAME //이름 부분이 공백이면 AddContactErrorMessage에 EMPTY_NAME을 불러와 메세지를 띄운다.
+            name.isBlank() -> EditMyProfileErrorMessage.EMPTY_NAME //이름 부분이 공백이면 AddContactErrorMessage에 EMPTY_NAME을 불러와 메세지를 띄운다.
             else -> null
         }?.message?.let{ getString(it) }
     }
@@ -122,9 +136,9 @@ class EditMyProfileDialog : DialogFragment() {
     private fun getMessageValidPhoneNumber() : String?{
         val number = binding.editTvPhoneNumber.text.toString()
         return when{
-            number.isBlank() -> AddContactErrorMessage.EMPTY_PHONE_NUMBER  //전화번호칸이 공백일 때 실행
-            number.length < 9 || number.length > 11 -> AddContactErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
-            number.substring(0 until 3) != "010" -> AddContactErrorMessage.INVALID_PHONE_NUMBER  //전화번호가 010으로 시작하지 않을 때 실행
+            number.isBlank() -> EditMyProfileErrorMessage.EMPTY_PHONE_NUMBER  //전화번호칸이 공백일 때 실행
+            number.length < 13 -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
+            number.substring(0 until 3) != "010" -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER  //전화번호가 010으로 시작하지 않을 때 실행
             else -> null
         }?.message?.let{getString(it)}
     }
@@ -133,8 +147,8 @@ class EditMyProfileDialog : DialogFragment() {
     private fun getMessageValidEmail() : String?{
         val email = binding.editTvEmail.text.toString()
         return when{
-            email.isBlank() -> AddContactErrorMessage.EMPTY_EMAIL //이메일칸이 공백일 때 실행
-            email.emailValidCheck() == false -> AddContactErrorMessage.INVALID_EMAIL //이메일 형식이 맞이 않을 때 실행
+            email.isBlank() -> EditMyProfileErrorMessage.EMPTY_EMAIL //이메일칸이 공백일 때 실행
+            !email.emailValidCheck() -> EditMyProfileErrorMessage.INVALID_EMAIL //이메일 형식이 맞이 않을 때 실행
             else -> null
         }?.message?.let{getString(it)}
     }
