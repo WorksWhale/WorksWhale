@@ -10,41 +10,42 @@
         android:id="@+id/constraint_layout_contactlist_title"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_main_logo"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_logo"
             android:layout_marginStart="15dp"
+            android:src="@drawable/ic_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WorksWhale"
-            android:textStyle="bold"
-            android:textSize="15sp"
             android:layout_marginStart="5dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="WorksWhale"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_main_logo"/>
+            app:layout_constraintStart_toEndOf="@+id/iv_main_logo"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_main_menu"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_main_view_type_grid_btn"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="10dp"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -52,6 +53,7 @@
         android:id="@+id/view_pager_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/tab_layout_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -62,13 +64,13 @@
         android:id="@+id/tab_layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:tabGravity="fill"
-        app:tabBackground="@color/blue"
-        app:tabTextColor="@color/white"
-        app:tabTextAppearance="@style/tab_text"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabBackground="@color/blue"
+        app:tabGravity="fill"
+        app:tabTextAppearance="@style/tab_text"
+        app:tabTextColor="@color/white">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="0dp"
@@ -78,7 +80,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="마이페이지"/>
+            android:text="마이페이지" />
 
     </com.google.android.material.tabs.TabLayout>
 
