@@ -1,5 +1,9 @@
 package com.example.workswhale
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.databinding.FragmentContactListBinding
+import java.util.Calendar
 
 class ContactListFragment : Fragment() {
     private var _binding: FragmentContactListBinding? = null
@@ -79,10 +84,9 @@ class ContactListFragment : Fragment() {
             ftbtnContactlist.setOnClickListener {
                 val dialog = AddContactDialog()
                 dialog.okClick = object: AddContactDialog.OkClick {
-                    override fun onClick() {
-                        // 리사이클러뷰 아이템 업데이트하기
+                    override fun onClick(name: String, second: Int) {
                         adapter.notifyDataSetChanged()
-                        Toast.makeText(requireContext(), "연락처가 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                        setAlarm(name, second)
                     }
                 }
                 dialog.show(
@@ -94,11 +98,26 @@ class ContactListFragment : Fragment() {
         }
     }
 
+    private fun setAlarm(name: String, second: Int) {
+        if (second == 0) return
+
+        val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
+            putExtra("name", name)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.SECOND, second)
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+        Toast.makeText(requireContext(), "${name}님에 대한 연락 알람이 설정되었습니다.", Toast.LENGTH_SHORT).show()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
     companion object {
         fun newInstance() =
             ContactListFragment().apply {
