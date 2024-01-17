@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.fragment.app.commit
 import android.graphics.Color
 import android.widget.SearchView
+import android.graphics.drawable.Drawable
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.workswhale.databinding.ActivityMainBinding

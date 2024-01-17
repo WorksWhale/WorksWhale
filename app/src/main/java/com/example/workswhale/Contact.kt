@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 sealed class Contact : Parcelable {
     data class Title(val department: Int) : Contact()
-    data class Person(val profileImage: Int,
+    data class Person(val profileImage: String,
                       val name: String,
                       val phoneNumber: String,
                       val department: Int,
