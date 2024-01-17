@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.example.workswhale.databinding.DialogAddContactBinding
@@ -15,7 +18,7 @@ import java.util.regex.Pattern
 class AddContactDialog: DialogFragment() {
 
     interface OkClick {
-        fun onClick()
+        fun onClick(name: String, second: Int)
     }
 
     var okClick: OkClick? = null
@@ -30,6 +33,24 @@ class AddContactDialog: DialogFragment() {
             binding.etAddContactMemo
         )
 
+    private val alarmLinearLayoutList: List<LinearLayout>
+        get() = listOf(
+            binding.linearLayoutAddContactAlarmBtn1,
+            binding.linearLayoutAddContactAlarmBtn2,
+            binding.linearLayoutAddContactAlarmBtn3,
+            binding.linearLayoutAddContactAlarmBtn4,
+            binding.linearLayoutAddContactAlarmBtn5
+        )
+
+    private val alarmTextViewList: List<TextView>
+        get() = listOf(
+            binding.tvAddContactAlarmBtn1,
+            binding.tvAddContactAlarmBtn2,
+            binding.tvAddContactAlarmBtn3,
+            binding.tvAddContactAlarmBtn4,
+            binding.tvAddContactAlarmBtn5
+        )
+
     private val departmentList: List<Int>
         get() = listOf(
             R.string.human_resources_department,
@@ -39,6 +60,8 @@ class AddContactDialog: DialogFragment() {
             R.string.accounting_department,
             R.string.sales_department
         )
+
+    private var selectedTime = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,8 +94,43 @@ class AddContactDialog: DialogFragment() {
                 memo = binding.etAddContactMemo.text.toString(),
                 profileImage = R.drawable.person_1
             ))
-            okClick?.onClick()
+            okClick?.onClick(binding.etAddContactName.text.toString(), calTime())
             dismiss()
+        }
+
+        alarmLinearLayoutList.forEachIndexed { idx, linearLayout ->
+            linearLayout.setOnClickListener {
+                linearLayout.setColor(idx)
+            }
+        }
+    }
+
+    private fun LinearLayout.setColor(position: Int) {
+        alarmLinearLayoutList.forEach {
+            if (it == this) {
+                it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                selectedTime = position
+            } else {
+                it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+        }
+        alarmTextViewList.forEachIndexed { index, textView ->
+            if (index == position) {
+                textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            } else {
+                textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            }
+        }
+    }
+
+    private fun calTime(): Int {
+        return when (selectedTime) {
+            0 -> 0
+            1 -> 5
+            2 -> 300
+            3 -> 600
+            4 -> 1800
+            else -> 0
         }
     }
 
