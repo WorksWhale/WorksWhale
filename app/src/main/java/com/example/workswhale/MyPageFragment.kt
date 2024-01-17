@@ -1,5 +1,6 @@
 package com.example.workswhale
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,9 +20,22 @@ class MyPageFragment(): Fragment() {
         return binding.root
     }
 
-    fun updateData(name: String, phoneNumber: String, email: String) {
+    fun updateData(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
+        binding.ivMyPageProfileImage.setImageDrawable(profileImage)
         binding.tvMyPageName.text = name
         binding.tvDetailPhoneNumber.text = phoneNumber
         binding.tvDetailEmail.text = email
+    }
+
+    fun giveData(): List<String> {
+        return listOf(
+            binding.tvMyPageName.text.toString(),
+            binding.tvDetailPhoneNumber.text.toString(),
+            binding.tvDetailEmail.text.toString()
+        )
+    }
+
+    fun giveImageData(): Drawable {
+        return binding.ivMyPageProfileImage.drawable
     }
 }
