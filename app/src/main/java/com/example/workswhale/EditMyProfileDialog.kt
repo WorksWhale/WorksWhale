@@ -1,6 +1,7 @@
 package com.example.workswhale
 
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,7 +71,7 @@ class EditMyProfileDialog : DialogFragment() {
                 setAddButtonEnable()
             }
         }
-        binding.editTvName.addTextChangedListener()
+        binding.editTvPhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     private fun setFocusChangedLisener() {
@@ -109,7 +110,7 @@ class EditMyProfileDialog : DialogFragment() {
         val number = binding.editTvPhoneNumber.text.toString()
         return when{
             number.isBlank() -> AddContactErrorMessage.EMPTY_PHONE_NUMBER  //전화번호칸이 공백일 때 실행
-            number.length < 9 || number.length > 11 -> AddContactErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
+            number.length < 13 -> AddContactErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
             number.substring(0 until 3) != "010" -> AddContactErrorMessage.INVALID_PHONE_NUMBER  //전화번호가 010으로 시작하지 않을 때 실행
             else -> null
         }?.message?.let{getString(it)}

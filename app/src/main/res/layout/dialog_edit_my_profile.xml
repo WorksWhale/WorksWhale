@@ -46,7 +46,8 @@
         android:backgroundTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTv_name" />
+        app:layout_constraintTop_toBottomOf="@id/editTv_name"
+        android:maxLength="13"/>
 
     <EditText
         android:id="@+id/editTv_email"
