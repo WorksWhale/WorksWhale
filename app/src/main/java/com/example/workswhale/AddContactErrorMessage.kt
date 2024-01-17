@@ -10,5 +10,6 @@ enum class AddContactErrorMessage(
     EMPTY_EMAIL(R.string.empty_email_error),
 
     INVALID_PHONE_NUMBER(R.string.invalid_phone_number_error),
+    INVALID_PHONE_NUMBER_LENGTH(R.string.invalid_phone_number_length_error),
     INVALID_EMAIL(R.string.invalid_email_error),
 }
