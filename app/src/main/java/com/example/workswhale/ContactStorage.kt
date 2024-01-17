@@ -32,7 +32,31 @@ object ContactStorage {
     }
 
     fun addContact(contact: Contact) {
-        totalContactList.add(contact)
+        when (contact) {
+            is Contact.Person -> {
+                when (contact.department) {
+                    0 -> {
+                        totalContactList.add(totalContactList.indexOf(Contact.Title(1)), contact)
+                    }
+                    1 -> {
+                        totalContactList.add(totalContactList.indexOf(Contact.Title(2)), contact)
+                    }
+                    2 -> {
+                        totalContactList.add(totalContactList.indexOf(Contact.Title(3)), contact)
+                    }
+                    3 -> {
+                        totalContactList.add(totalContactList.indexOf(Contact.Title(4)), contact)
+                    }
+                    4 -> {
+                        totalContactList.add(totalContactList.indexOf(Contact.Title(5)), contact)
+                    }
+                    5 -> {
+                        totalContactList.add(contact)
+                    }
+                }
+            }
+            else -> Unit
+        }
     }
 
     fun countDepartment(num: Int): Int {
