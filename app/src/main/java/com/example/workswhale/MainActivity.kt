@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.commit
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.workswhale.databinding.ActivityMainBinding
@@ -53,10 +54,11 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
                     binding.ivMainMenu.setImageResource(menuIcon)
                 }
                 else -> {
-                    val editMyPageDialog = EditMyProfileDialog()
+                    val userInfo = adapter.getInfo()
+                    val editMyPageDialog = EditMyProfileDialog(userInfo)
                     editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
-                        override fun onClick(name: String, phoneNumber: String, email: String) {
-                            adapter.editInfo(name, phoneNumber, email)
+                        override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
+                            adapter.editInfo(profileImage, name, phoneNumber, email)
                         }
                     }
                     editMyPageDialog.show(

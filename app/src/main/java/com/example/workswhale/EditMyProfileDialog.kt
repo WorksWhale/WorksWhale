@@ -1,6 +1,8 @@
 package com.example.workswhale
 
 import android.graphics.ColorSpace.match
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.TextUtils.replace
@@ -14,7 +16,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -33,13 +38,22 @@ import java.util.regex.Pattern
 //입력 받은 정보의 유효성 검사 진행하기
 //입력 받은 정보를 마이 페이지에 바로 업데이트하기
 
-class EditMyProfileDialog : DialogFragment() {
+class EditMyProfileDialog(private val userInfo: List<String>) : DialogFragment() {
 
     interface OkClick {
-        fun onClick(name: String, phoneNumber: String, email: String)
+        fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String)
     }
 
     var okClick: OkClick? = null
+
+    private var selectedProfile: Uri? = null
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            binding.ivProfile.setImageURI(uri)
+            binding.ivProfile.scaleType = ImageView.ScaleType.CENTER_CROP
+            selectedProfile = uri
+        }
+    }
 
     private var _binding: DialogEditMyProfileBinding? = null
     private val binding get() = _binding!!
@@ -59,6 +73,12 @@ class EditMyProfileDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnCheck.isEnabled = false  // 버튼을 비활성화 시킴
+
+        binding.editTvName.setText(userInfo[0])
+        binding.editTvPhoneNumber.setText(userInfo[1])
+        binding.editTvEmail.setText(userInfo[2])
+        setAddButtonEnable()
+
         setTextChangeLisener()
         setFocusChangedLisener()
 
@@ -66,9 +86,14 @@ class EditMyProfileDialog : DialogFragment() {
             dismiss()
         }
 
+        binding.ivProfile.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
         binding.btnCheck.setOnClickListener {
             // 마이페이지프래그먼트로 데이터 넘기기
             okClick?.onClick(
+                binding.ivProfile.drawable,
                 binding.editTvName.text.toString(),
                 binding.editTvPhoneNumber.text.toString(),
                 binding.editTvEmail.text.toString())

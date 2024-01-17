@@ -26,7 +26,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_my_page_category_name"
+                android:id="@+id/tv_my_page_name_tab"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@drawable/shape_my_page_gradient_background"
@@ -47,7 +47,7 @@
                 android:paddingHorizontal="15dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_category_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_name_tab"
                 tools:text="민지" />
 
             <TextView
