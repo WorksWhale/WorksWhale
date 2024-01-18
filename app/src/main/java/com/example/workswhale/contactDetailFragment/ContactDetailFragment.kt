@@ -62,9 +62,9 @@ class ContactDetailFragment : Fragment() {
         with(binding) {
             receivedItem?.let {
                 if (ContactStorage.checkStartAlphabet(it.profileImage)) {
-                    ivProfile.setImageURI(it.profileImage.toUri())
+                    ivDetailProfile.setImageURI(it.profileImage.toUri())
                 } else {
-                    ivProfile.setImageResource(it.profileImage.toInt())
+                    ivDetailProfile.setImageResource(it.profileImage.toInt())
                 }
                 tvDetailName.text = it.name
                 tvDetailPhoneNumber.text = it.phoneNumber
@@ -76,7 +76,7 @@ class ContactDetailFragment : Fragment() {
             tvDetailDepartment.text =
                 requireContext().getString(departmentList[receivedItem!!.department])
 
-            ivFavorite.setImageResource(
+            ivDetailFavorite.setImageResource(
                 if (isLiked == true) {
                     R.drawable.ic_contact_detail_fill_favorite
                 } else {
@@ -84,17 +84,17 @@ class ContactDetailFragment : Fragment() {
                 }
             )
 
-            ivFavorite.setOnClickListener {
+            ivDetailFavorite.setOnClickListener {
                 val position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
                 if (!isLiked!!) {
-                    ivFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
+                    ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                     isLiked = true
                     changeLike()
                     Log.d(TAG, "ivFavoriteClicked: $isLiked")
                     Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
 
                 } else {
-                    ivFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
+                    ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                     isLiked = false
                     changeLike()
                     Log.d(TAG, "ivFavoriteClicked: $isLiked")
@@ -106,7 +106,7 @@ class ContactDetailFragment : Fragment() {
 
 
 
-            tvMessage.setOnClickListener {
+            tvDetailMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
                 val intent = Intent(Intent.ACTION_SENDTO)
                 intent.setData(smsUri)
@@ -114,7 +114,7 @@ class ContactDetailFragment : Fragment() {
                 startActivity(intent)
             }
 
-            tvCall.setOnClickListener {
+            tvDetailCall.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
                 startActivity(intent)
             }
@@ -159,9 +159,5 @@ class ContactDetailFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-    override fun onDetach() {
-        Log.d("FragmentLifeCycle", "Detail_onDetach()")
-        super.onDetach()
     }
 }

@@ -37,15 +37,15 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
     private var selectedProfile: Uri? = null
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
-            binding.ivProfile.setImageURI(uri)
-            binding.ivProfile.scaleType = ImageView.ScaleType.CENTER_CROP
+            binding.ivEditProfileProfile.setImageURI(uri)
+            binding.ivEditProfileProfile.scaleType = ImageView.ScaleType.CENTER_CROP
             selectedProfile = uri
         }
     }
 
     private var _binding: DialogEditMyProfileBinding? = null
     private val binding get() = _binding!!
-    private val editTexts get() = listOf(binding.editTvEmail, binding.editTvName, binding.editTvPhoneNumber)
+    private val editTexts get() = listOf(binding.etEditProfileEmail, binding.etEditProfileName, binding.etEditProfilePhoneNumber)
 
 
     override fun onCreateView(
@@ -59,33 +59,33 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnCheck.isEnabled = false  // 버튼을 비활성화 시킴
+        binding.btnEditProfileCheck.isEnabled = false  // 버튼을 비활성화 시킴
 
-        binding.ivProfile.setImageDrawable(userProfileImage)
-        binding.ivProfile.scaleType = ImageView.ScaleType.CENTER_CROP
-        binding.editTvName.setText(userInfo[0])
-        binding.editTvPhoneNumber.setText(userInfo[1])
-        binding.editTvEmail.setText(userInfo[2])
+        binding.ivEditProfileProfile.setImageDrawable(userProfileImage)
+        binding.ivEditProfileProfile.scaleType = ImageView.ScaleType.CENTER_CROP
+        binding.etEditProfileName.setText(userInfo[0])
+        binding.etEditProfilePhoneNumber.setText(userInfo[1])
+        binding.etEditProfileEmail.setText(userInfo[2])
         setAddButtonEnable()
 
         setTextChangeLisener()
         setFocusChangedLisener()
 
-        binding.btnCancel.setOnClickListener {
+        binding.btnEditProfileCancel.setOnClickListener {
             dismiss()
         }
 
-        binding.ivProfile.setOnClickListener {
+        binding.ivEditProfileProfile.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
-        binding.btnCheck.setOnClickListener {
+        binding.btnEditProfileCheck.setOnClickListener {
             // 마이페이지프래그먼트로 데이터 넘기기
             okClick?.onClick(
-                binding.ivProfile.drawable,
-                binding.editTvName.text.toString(),
-                binding.editTvPhoneNumber.text.toString(),
-                binding.editTvEmail.text.toString())
+                binding.ivEditProfileProfile.drawable,
+                binding.etEditProfileName.text.toString(),
+                binding.etEditProfilePhoneNumber.text.toString(),
+                binding.etEditProfileEmail.text.toString())
             dismiss()
         }
     }
@@ -98,7 +98,7 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
                 setAddButtonEnable()
             }
         }
-        binding.editTvPhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        binding.etEditProfilePhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     private fun setFocusChangedLisener() {
@@ -115,15 +115,15 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
     // 만약에 입력받은 코드에 error가 날 경우 각각 에러메세지가 있는 함수를 실행
     private fun EditText.setErrorMessage(){
         when(this) {
-            binding.editTvName -> error = getMessageValidName()
-            binding.editTvPhoneNumber -> error = getMessageValidPhoneNumber()
-            binding.editTvEmail -> error = getMessageValidEmail()
+            binding.etEditProfileName -> error = getMessageValidName()
+            binding.etEditProfilePhoneNumber -> error = getMessageValidPhoneNumber()
+            binding.etEditProfileEmail -> error = getMessageValidEmail()
         }
     }
 
     // 이름부분에 에러메세지 출력하는 함수
     private fun getMessageValidName() : String? {
-        val name = binding.editTvName.text.toString()
+        val name = binding.etEditProfileName.text.toString()
         return when{
             name.isBlank() -> EditMyProfileErrorMessage.EMPTY_NAME //이름 부분이 공백이면 AddContactErrorMessage에 EMPTY_NAME을 불러와 메세지를 띄운다.
             else -> null
@@ -134,7 +134,7 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
     // 전화번호의 길이와 전화번호 시작이 010인지 체크하는 함수의 자리가 바뀌면 오류가 생김
     // -> 010인지 체크하는 함수는 문자열을 잘라서 하기 때문에 처음 문자를 입력받을 때는 그 길이를 충족하지 않아 오류가 생김
     private fun getMessageValidPhoneNumber() : String?{
-        val number = binding.editTvPhoneNumber.text.toString()
+        val number = binding.etEditProfilePhoneNumber.text.toString()
         return when{
             number.isBlank() -> EditMyProfileErrorMessage.EMPTY_PHONE_NUMBER  //전화번호칸이 공백일 때 실행
             number.length < 13 -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
@@ -145,7 +145,7 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
 
     //이메일에 에러메시지를 출력하는 함수
     private fun getMessageValidEmail() : String?{
-        val email = binding.editTvEmail.text.toString()
+        val email = binding.etEditProfileEmail.text.toString()
         return when{
             email.isBlank() -> EditMyProfileErrorMessage.EMPTY_EMAIL //이메일칸이 공백일 때 실행
             !email.emailValidCheck() -> EditMyProfileErrorMessage.INVALID_EMAIL //이메일 형식이 맞이 않을 때 실행
@@ -161,7 +161,7 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
 
     //버튼을 활성화하는 함수
     private fun setAddButtonEnable() {
-        binding.btnCheck.isEnabled = getMessageValidName() == null
+        binding.btnEditProfileCheck.isEnabled = getMessageValidName() == null
                 && getMessageValidEmail() == null
                 && getMessageValidPhoneNumber() == null
     }
