@@ -1,9 +1,10 @@
-package com.example.workswhale
+package com.example.workswhale.contactListFragment
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
@@ -101,6 +102,5 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
             }
         }
     }
-
 
 }
