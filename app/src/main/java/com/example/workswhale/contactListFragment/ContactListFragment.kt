@@ -146,21 +146,21 @@ class ContactListFragment : Fragment() {
                         return false
                     }
                 }
-            svContactlistSearch.setOnQueryTextListener(searchViewTextListener)
+            svContactListSearch.setOnQueryTextListener(searchViewTextListener)
 
             // 리사이클러뷰에 스와이프, 드래그 기능 달기
             val swipeHelperCallback = SwipeHelperCallback(adapter).apply {
                 // 스와이프한 뒤 고정시킬 위치 지정
                 setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)    // 1080 / 4 = 270
             }
-            ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(binding.rvContactlistList)
+            ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(binding.rvContactList)
 
 //            // 구분선 추가
 //            binding.rvContactlistList.addItemDecoration(DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL))
 
             // 다른 곳 터치 시 기존 선택했던 뷰 닫기
-            binding.rvContactlistList.setOnTouchListener { _, _ ->
-                swipeHelperCallback.removePreviousClamp(binding.rvContactlistList)
+            binding.rvContactList.setOnTouchListener { _, _ ->
+                swipeHelperCallback.removePreviousClamp(binding.rvContactList)
                 false
             }
 
