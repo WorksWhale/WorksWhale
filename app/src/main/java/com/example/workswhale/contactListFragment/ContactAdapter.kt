@@ -84,7 +84,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     inner class TitleViewHolder(private val binding: ContactListTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Title) {
             binding.tvContactListDepartmentTitle.setText(departmentList[item.department])
-            binding.tvContactListDepartmentCount.setText("(${ContactStorage.countDepartment(item.department)})")
+            binding.tvContactListDepartmentCount.text = "(${ContactStorage.countDepartment(item.department)})"
         }
     }
 
@@ -96,8 +96,8 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 } else {
                     binding.ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
                 }
-                tvContactListPersonName.setText(item.name)
-                tvContactListPersonMemo.setText(item.memo)
+                tvContactListPersonName.text = item.name
+                tvContactListPersonMemo.text = item.memo
                 if (item.isLiked) {
                     ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
                 } else {

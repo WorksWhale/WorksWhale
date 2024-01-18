@@ -165,7 +165,6 @@ class ContactListFragment : Fragment() {
             }
 
             return binding.root
-
         }
     }
 
