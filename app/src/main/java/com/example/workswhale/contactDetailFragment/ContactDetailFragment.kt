@@ -33,6 +33,7 @@ class ContactDetailFragment : Fragment() {
 
     private lateinit var callback: OnBackPressedCallback
 
+
     private val departmentList: List<Int>
         get() = listOf(
             R.string.human_resources_department,
@@ -50,6 +51,7 @@ class ContactDetailFragment : Fragment() {
         arguments?.let {
             receivedItem = it.getParcelable("contact")
             Log.d(TAG, "onCreateReceivedItem: $receivedItem")
+
         }
     }
 
@@ -70,6 +72,7 @@ class ContactDetailFragment : Fragment() {
                 tvDetailPhoneNumber.text = it.phoneNumber
                 tvDetailEmail.text = it.email
                 tvDetailMemo.text = it.memo
+                tvDetailAlarm.text = it.alarm
                 isLiked = it.isLiked
             }
 
@@ -85,26 +88,26 @@ class ContactDetailFragment : Fragment() {
             )
 
             ivDetailFavorite.setOnClickListener {
-                val position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
-                if (!isLiked!!) {
+                position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
+                Log.d(TAG, "position: $position")
+                if (isLiked == false) {
                     ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                     isLiked = true
-                    changeLike()
+                    Log.d(TAG, "receivedItem: $receivedItem")
+                    changeLike(position, receivedItem!!)
                     Log.d(TAG, "ivFavoriteClicked: $isLiked")
                     Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
 
                 } else {
                     ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                     isLiked = false
-                    changeLike()
+                    changeLike(position, receivedItem!!)
                     Log.d(TAG, "ivFavoriteClicked: $isLiked")
                     Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
                 }
             }
             val phoneNumber =
                 tvDetailPhoneNumber.text//phonNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
-
-
 
             tvDetailMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
@@ -139,8 +142,8 @@ class ContactDetailFragment : Fragment() {
     }
 
 
-    fun changeLike() {
-        ContactStorage.changeLiked(position)
+    private fun changeLike(position: Int, receivedItem: Contact.Person) {
+        ContactStorage.changeLiked(position, receivedItem)
     }
     override fun onAttach(context: Context) {
         Log.d("FragmentLifeCycle", "Detail_onAttach()")
@@ -153,7 +156,8 @@ class ContactDetailFragment : Fragment() {
 
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                arguments?.getInt("position")?.let { updateLike?.update(it) }
+//                arguments?.getParcelable("Contact.Person", Contact.Person::class.java)?.let { updateLike?.update(ContactStorage.totalContactList.indexOf(receivedItem as Contact)) }
+                arguments?.getInt("position", position)?.let { updateLike?.update((it)) }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
                 requireActivity().supportFragmentManager.popBackStack()
             }

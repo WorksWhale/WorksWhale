@@ -65,10 +65,10 @@ class ContactListFragment : Fragment() {
                                 Log.d(TAG, "position: $data")
                                 listener?.onDataReceived(item)
                                 Log.d(TAG, "onClickItem: $item")
-                                bundle.putParcelable(
-                                    "Contact.Person",
-                                    clickedItem
-                                )
+//                                bundle.putParcelable(
+//                                    "Contact.Person",
+//                                    clickedItem
+//                                )
                             }
                             else -> Unit
                         }
@@ -144,7 +144,7 @@ class ContactListFragment : Fragment() {
                         return false
                     }
                 }
-            svContactlistSearch.setOnQueryTextListener(searchViewTextListener)
+            svContactListSearch.setOnQueryTextListener(searchViewTextListener)
             return binding.root
         }
     }
