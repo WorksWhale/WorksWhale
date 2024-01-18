@@ -16,19 +16,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import com.example.workswhale.ConstValues
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
 import com.example.workswhale.databinding.DialogAddContactBinding
 import java.util.regex.Pattern
 
+interface AddContactDialogOkClick {
+    fun onClick(name: String, second: Int)
+}
+
 class AddContactDialog: DialogFragment() {
 
-    interface OkClick {
-        fun onClick(name: String, second: Int)
-    }
+    var okClick: AddContactDialogOkClick? = null
 
-    var okClick: OkClick? = null
     private var _binding: DialogAddContactBinding? = null
     private val binding get() = _binding!!
 
@@ -102,41 +104,40 @@ class AddContactDialog: DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setTextChangedListener()
         setOnFocusChangedListener()
+        setLinearLayoutOnClickListener()
         setDepartmentSpinner()
 
-        binding.btnAddContactCancel.setOnClickListener {
-            dismiss()
-        }
+        with(binding) {
+            btnAddContactCancel.setOnClickListener {
+                dismiss()
+            }
 
-        binding.btnAddContactAdd.setOnClickListener {
-            var department = 0
-            departmentList.map { getString(it) }.forEachIndexed { idx, item ->
-                if (binding.spinnerAddContact.selectedItem.toString() == item) department = idx}
-            ContactStorage.addContact(
-                Contact.Person(
-                    name = binding.etAddContactName.text.toString(),
-                    phoneNumber = binding.etAddContactPhoneNumber.text.toString(),
-                    department = department,
-                    email = binding.etAddContactEmail.text.toString(),
-                    memo = binding.etAddContactMemo.text.toString(),
-                    profileImage = imageUri.toString(),
-                    isLiked = false,
-                    alarm = timeString
+            btnAddContactAdd.setOnClickListener {
+                var department = 0
+                departmentList.map { getString(it) }.forEachIndexed { idx, item ->
+                    if (spinnerAddContact.selectedItem.toString() == item) department = idx
+                }
 
+                ContactStorage.addContact(
+                    Contact.Person(
+                        name = etAddContactName.text.toString(),
+                        phoneNumber = etAddContactPhoneNumber.text.toString(),
+                        department = department,
+                        email = etAddContactEmail.text.toString(),
+                        memo = etAddContactMemo.text.toString(),
+                        profileImage = imageUri.toString(),
+                        isLiked = false,
+                        alarm = timeString
+                    )
                 )
-            )
-            val time = calTime()
-            okClick?.onClick(binding.etAddContactName.text.toString(), time)
-            dismiss()
-        }
 
-        binding.ivAddContactDefaultImage.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
+                val time = calTime()
+                okClick?.onClick(etAddContactName.text.toString(), time)
+                dismiss()
+            }
 
-        alarmLinearLayoutList.forEachIndexed { idx, linearLayout ->
-            linearLayout.setOnClickListener {
-                linearLayout.setColor(idx)
+            ivAddContactDefaultImage.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
     }
@@ -150,6 +151,7 @@ class AddContactDialog: DialogFragment() {
                 it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
         }
+
         alarmTextViewList.forEachIndexed { index, textView ->
             if (index == position) {
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -168,6 +170,14 @@ class AddContactDialog: DialogFragment() {
             3 -> 600
             4 -> 1800
             else -> 0
+        }
+    }
+
+    private fun setLinearLayoutOnClickListener() {
+        alarmLinearLayoutList.forEachIndexed { idx, linearLayout ->
+            linearLayout.setOnClickListener {
+                linearLayout.setColor(idx)
+            }
         }
     }
 
@@ -197,23 +207,6 @@ class AddContactDialog: DialogFragment() {
         binding.spinnerAddContact.adapter = adapter
     }
 
-    // EditText에서 에러 메세지를 출력하기 위해 만든 확장함수
-    private fun EditText.setErrorMessage() {
-        when (this) {
-            binding.etAddContactName -> error = getMessageValidName()
-            binding.etAddContactPhoneNumber -> error = getMessageValidPhoneNumber()
-            binding.etAddContactEmail -> error = getMessageValidEmail()
-            else -> Unit
-        }
-    }
-
-    private fun String.startZeroOneZero() = this.length > 3 && this.substring(0..2) == "010"
-
-    private fun String.checkEmailFormat(): Boolean {
-        val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-        return Pattern.matches(emailValidation, this)
-    }
-
     // 이름에 대한 에러 메세지 반환하는 함수
     private fun getMessageValidName(): String? {
         val name = binding.etAddContactName.text.toString()
@@ -228,8 +221,8 @@ class AddContactDialog: DialogFragment() {
         val phoneNumber = binding.etAddContactPhoneNumber.text.toString()
         return when {
             phoneNumber.isBlank() -> AddContactErrorMessage.EMPTY_PHONE_NUMBER
-            phoneNumber.length < 13 -> AddContactErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
             phoneNumber.startZeroOneZero().not() -> AddContactErrorMessage.INVALID_PHONE_NUMBER
+            phoneNumber.length < 13 -> AddContactErrorMessage.INVALID_PHONE_NUMBER_LENGTH
             else -> null
         }?.message?.let { getString(it) }
     }
@@ -248,6 +241,22 @@ class AddContactDialog: DialogFragment() {
         binding.btnAddContactAdd.isEnabled = getMessageValidName() == null
                 && getMessageValidEmail() == null
                 && getMessageValidPhoneNumber() == null
+    }
+
+    // EditText에서 에러 메세지를 출력하기 위해 만든 확장함수
+    private fun EditText.setErrorMessage() {
+        when (this) {
+            binding.etAddContactName -> error = getMessageValidName()
+            binding.etAddContactPhoneNumber -> error = getMessageValidPhoneNumber()
+            binding.etAddContactEmail -> error = getMessageValidEmail()
+            else -> Unit
+        }
+    }
+
+    private fun String.startZeroOneZero() = this.length > 3 && this.substring(0..2) == "010"
+
+    private fun String.checkEmailFormat(): Boolean {
+        return Pattern.matches(ConstValues.EMAIL_VALID_CHECK, this)
     }
 
     override fun onDestroyView() {

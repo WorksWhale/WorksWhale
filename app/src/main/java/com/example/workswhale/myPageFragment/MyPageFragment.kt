@@ -11,10 +11,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.toBitmap
+import com.example.workswhale.IntentKeys
 import com.example.workswhale.databinding.FragmentMyPageBinding
 import java.io.ByteArrayOutputStream
 
 class MyPageFragment: Fragment() {
+
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
 
@@ -36,10 +38,12 @@ class MyPageFragment: Fragment() {
     }
 
     fun updateData(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
-        binding.ivMyPageProfileImage.setImageDrawable(profileImage)
-        binding.tvMyPageName.text = name
-        binding.tvMyPagePhoneNumber.text = phoneNumber
-        binding.tvMyPageEmail.text = email
+        with(binding) {
+            ivMyPageProfileImage.setImageDrawable(profileImage)
+            tvMyPageName.text = name
+            tvMyPagePhoneNumber.text = phoneNumber
+            tvMyPageEmail.text = email
+        }
 
         saveUserProfile(profileImage, name, phoneNumber, email)
     }
@@ -61,22 +65,24 @@ class MyPageFragment: Fragment() {
         profileImage.toBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream) // Drawable을 Bitmap으로 변환
         val byteArray = stream.toByteArray()
         val editor = sharedPreferences.edit()
-        editor.putString("storeProfileImage", Base64.encodeToString(byteArray, Base64.DEFAULT)) // Bitmap을 Base64 문자열로 인코딩
-        editor.putString("storeName", name)
-        editor.putString("storePhoneNumber", phoneNumber)
-        editor.putString("storeEmail", email)
+        editor.putString(IntentKeys.EXTRA_STORE_PROFILE_IMAGE, Base64.encodeToString(byteArray, Base64.DEFAULT)) // Bitmap을 Base64 문자열로 인코딩
+        editor.putString(IntentKeys.EXTRA_STORE_NAME, name)
+        editor.putString(IntentKeys.EXTRA_STORE_PHONE_NUMBER, phoneNumber)
+        editor.putString(IntentKeys.EXTRA_STORE_EMAIL, email)
         editor.apply()
     }
 
     private fun loadUserProfile() {
-        val storedProfileImage = sharedPreferences.getString("storeProfileImage", "")
+        val storedProfileImage = sharedPreferences.getString(IntentKeys.EXTRA_STORE_PROFILE_IMAGE, "")
         if (storedProfileImage != "") {
             val byteArray = Base64.decode(storedProfileImage, Base64.DEFAULT) // Base64 문자열을 Bitmap으로 디코딩
             val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            binding.ivMyPageProfileImage.setImageBitmap(bitmap) // Bitmap을 이용해 이미지 띄우기
-            binding.tvMyPageName.text = sharedPreferences.getString("storeName", "")
-            binding.tvMyPagePhoneNumber.text = sharedPreferences.getString("storePhoneNumber", "")
-            binding.tvMyPageEmail.text = sharedPreferences.getString("storeEmail", "")
+            with(binding) {
+                ivMyPageProfileImage.setImageBitmap(bitmap) // Bitmap을 이용해 이미지 띄우기
+                tvMyPageName.text = sharedPreferences.getString(IntentKeys.EXTRA_STORE_NAME, "")
+                tvMyPagePhoneNumber.text = sharedPreferences.getString(IntentKeys.EXTRA_STORE_PHONE_NUMBER, "")
+                tvMyPageEmail.text = sharedPreferences.getString(IntentKeys.EXTRA_STORE_EMAIL, "")
+            }
         }
     }
 }
