@@ -1,56 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:background="@color/white">
+    android:id="@+id/item_list">
 
-    <ImageView
-        android:id="@+id/iv_contactlist_profile"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="15dp"
-        android:background="@drawable/shape_contact_list_circle"
-        android:clipToOutline="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tool:src="@drawable/img_default_profile" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        tool:ignore="MissingConstraints">
 
-    <TextView
-        android:id="@+id/tv_contactlist_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:text="이름"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_contactlist_profile"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
-    <TextView
-        android:id="@+id/tv_contactlist_memo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="3dp"
-        android:text="어제 빌려간 돈 안주는 사람"
-        android:textColor="#8A8A8A"
-        android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_contactlist_profile"
-        app:layout_constraintTop_toBottomOf="@+id/tv_contactlist_name" />
+            <TextView
+                android:id="@+id/swipe_delete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:text="삭제"
+                android:gravity="center"
+                android:background="@color/red"/>
 
-    <ImageView
-        android:id="@+id/iv_contactlist_favorite"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_main_empty_favorite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/white"
+                tool:ignore="MissingConstraints"
+                android:id="@+id/item">
+
+                <ImageView
+                    android:id="@+id/iv_contactlist_profile"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/shape_contact_list_circle"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tool:src="@drawable/img_default_profile" />
+
+                <TextView
+                    android:id="@+id/tv_contactlist_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="이름"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_contactlist_profile"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_contactlist_memo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="3dp"
+                    android:text="어제 빌려간 돈 안주는 사람"
+                    android:textColor="#8A8A8A"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_contactlist_profile"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_contactlist_name" />
+
+                <ImageView
+                    android:id="@+id/iv_contactlist_favorite"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_main_empty_favorite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
