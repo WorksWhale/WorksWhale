@@ -12,12 +12,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.Contact
-import com.example.workswhale.ContactAdapter
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
 import com.example.workswhale.addContactDialog.AddContactDialog
@@ -29,10 +29,10 @@ class ContactListFragment : Fragment() {
     private val binding get() = _binding!!
     private var receivedItem: Contact.Person? = null
 
-    private var itemPosition = 0
+    val adapter = ContactAdapter(ContactStorage.totalContactList)
 
     interface FragmentDataListener {
-        fun onDataReceived(data: Contact.Person, position: Int)
+        fun onDataReceived(data: Contact.Person)
     }
     private var listener: FragmentDataListener? = null
 
@@ -54,29 +54,29 @@ class ContactListFragment : Fragment() {
         with(binding) {
             rvContactList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             rvContactList.setHasFixedSize(true)
-            val adapter = ContactAdapter(ContactStorage.totalContactList)
-            adapter.apply {
+//            val adapter = ContactAdapter(ContactStorage.totalContactList)
+                adapter.apply {
                 itemClick = object : ContactAdapter.ItemClick {
-                    override fun onClick(view: View, position: Int) {
-
-
+                    override fun onClick(view: View?, data: Contact) {
 //                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
-                        val clickedItem = ContactStorage.totalContactList[position]
-                        when (val item = ContactStorage.totalContactList[position]){
+                        val clickedItem = data
+                        when (val item = data){
                             is Contact.Person ->  {
-                                Log.d(TAG, "position: $position")
-                                listener?.onDataReceived(item, position)
+                                Log.d(TAG, "position: $data")
+                                listener?.onDataReceived(item)
                                 Log.d(TAG, "onClickItem: $item")
                                 bundle.putParcelable(
                                     "Contact.Person",
                                     clickedItem
                                 )
-                                itemPosition = position
                             }
                             else -> Unit
                         }
-                        Log.d("Click", "ContactListFragment : $position")
+                        Log.d("Click", "ContactListFragment : $data")
                         Log.d(TAG, "onClickBundle: $bundle")
+                        requireActivity().supportFragmentManager.beginTransaction().remove(ContactListFragment()).commit()
+                        Log.i(TAG, "onClick: ContactListFragment")
+                        onPause()
                     }
                 }
                 itemLongClick =
@@ -131,13 +131,27 @@ class ContactListFragment : Fragment() {
                     requireActivity().supportFragmentManager, "AddContactDialog"
                 )
             }
-
-        return binding.root
+            // 목록 검색 기능
+            var searchViewTextListener: SearchView.OnQueryTextListener =
+                object : SearchView.OnQueryTextListener, androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                    //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                    override fun onQueryTextSubmit(s: String): Boolean {
+                        return false
+                    }
+                    //텍스트 입력/수정시에 호출
+                    override fun onQueryTextChange(s: String): Boolean {
+                        adapter.filter.filter(s)
+                        return false
+                    }
+                }
+            svContactlistSearch.setOnQueryTextListener(searchViewTextListener)
+            return binding.root
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        Log.d("FragmentLifeCycle", "List_onAttach()")
         if (context is FragmentDataListener) {
             listener = context
         } else {
@@ -159,8 +173,8 @@ class ContactListFragment : Fragment() {
         Toast.makeText(requireContext(), "${name}님에 대한 연락 알람이 설정되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
@@ -169,9 +183,11 @@ class ContactListFragment : Fragment() {
             ContactListFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable("contact", data)
-                    putInt("position", itemPosition)
-                    Log.d(TAG, "itemPosition: $itemPosition")
                 }
             }
+    }
+
+    fun updateLike(position: Int) {
+        adapter.notifyItemChanged(position)
     }
 }

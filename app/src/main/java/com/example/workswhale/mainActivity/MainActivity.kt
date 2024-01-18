@@ -19,11 +19,12 @@ import com.example.workswhale.Contact
 import com.example.workswhale.contactDetailFragment.ContactDetailFragment
 import com.example.workswhale.contactListFragment.ContactListFragment
 import com.example.workswhale.R
+import com.example.workswhale.contactDetailFragment.UpdateLike
 import com.example.workswhale.databinding.ActivityMainBinding
 import com.example.workswhale.editMyProfileDialog.EditMyProfileDialog
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener {
+class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener, UpdateLike {
     // 하단의 뒤로가기 버튼을 눌렀을 때 종료 확인 다이얼로그가 뜨는 콜백 함수
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
     }
 
     lateinit var detailFragment: ContactDetailFragment
+    val adapter = ViewPagerAdapter(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
             statusBarColor = Color.WHITE
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
         }
-        val adapter = ViewPagerAdapter(this)
+
         binding.viewPagerMain.adapter = adapter
 
         TabLayoutMediator(binding.tabLayoutMainBottom, binding.viewPagerMain) { tab, position ->
@@ -104,9 +106,9 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         })
     }
 
-    override fun onDataReceived(data: Contact.Person, position: Int) {
+    override fun onDataReceived(data: Contact.Person) {
         supportFragmentManager.commit {
-            detailFragment = ContactDetailFragment.newInstance(data, position)
+            detailFragment = ContactDetailFragment.newInstance(data)
             replace(R.id.frame_layout_main, detailFragment)
             setReorderingAllowed(true)
             addToBackStack("")
@@ -114,4 +116,7 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         }
     }
 
+    override fun update(position: Int) {
+        adapter.updateLike(position)
+    }
 }

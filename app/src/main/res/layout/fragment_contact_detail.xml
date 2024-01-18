@@ -161,7 +161,7 @@
             <ImageView
                 android:id="@+id/iv_detail_profile"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="350dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_default_profile"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -34,4 +34,8 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
     fun getImageInfo(): Drawable {
         return myPageFragment.giveImageData()
     }
+
+    fun updateLike(position: Int) {
+        contactListFragment.updateLike(position)
+    }
 }
