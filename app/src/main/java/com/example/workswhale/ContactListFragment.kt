@@ -24,7 +24,7 @@ import java.util.Calendar
 class ContactListFragment : Fragment() {
     private var _binding: FragmentContactListBinding? = null
     private val binding get() = _binding!!
-
+    private val adapter by lazy { ContactAdapter(ContactStorage.totalContactList) }
     interface FragmentDataListener {
         fun onDataReceived(data: Contact.Person)
     }
@@ -45,7 +45,7 @@ class ContactListFragment : Fragment() {
         with(binding) {
             rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             rvContactlistList.setHasFixedSize(true)
-            val adapter = ContactAdapter(ContactStorage.totalContactList).apply {
+            adapter.apply {
                 itemClick = object : ContactAdapter.ItemClick {
                     override fun onClick(view: View, position: Int) {
 
@@ -117,7 +117,7 @@ class ContactListFragment : Fragment() {
             }
             // 목록 검색 기능
             var searchViewTextListener: SearchView.OnQueryTextListener =
-                object : SearchView.OnQueryTextListener {
+                object : SearchView.OnQueryTextListener, androidx.appcompat.widget.SearchView.OnQueryTextListener {
                     //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
                     override fun onQueryTextSubmit(s: String): Boolean {
                         return false
@@ -125,6 +125,7 @@ class ContactListFragment : Fragment() {
 
                     //텍스트 입력/수정시에 호출
                     override fun onQueryTextChange(s: String): Boolean {
+                        adapter.filter.filter(s)
                         return false
                     }
                 }
