@@ -29,6 +29,7 @@
         android:layout_marginTop="10dp"
         android:hint="이름"
         android:textSize="18sp"
+        android:inputType="text"
         android:backgroundTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
