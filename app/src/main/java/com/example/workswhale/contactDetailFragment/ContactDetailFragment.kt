@@ -1,6 +1,7 @@
 package com.example.workswhale.contactDetailFragment
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,24 +9,32 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.workswhale.Contact
-import com.example.workswhale.ContactAdapter
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
+import com.example.workswhale.contactListFragment.ContactAdapter
+import com.example.workswhale.contactListFragment.ContactListFragment
 import com.example.workswhale.databinding.FragmentContactDetailBinding
 import com.example.workswhale.mainActivity.MainActivity
 
+interface UpdateLike {
+    fun update(position: Int)
+}
 
-class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
+class ContactDetailFragment : Fragment() {
 
     private var binding: FragmentContactDetailBinding? = null
-    lateinit var resultLauncher: ActivityResultLauncher<Intent>
-    private var isLiked = false
+    private var isLiked: Boolean? = null
     private var receivedItem: Contact.Person? = null
     private var position = 0
+
+    private var updateLike: UpdateLike? = null
+
+    private lateinit var callback: OnBackPressedCallback
 
     private val departmentList: List<Int>
         get() = listOf(
@@ -43,9 +52,7 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
 
         arguments?.let {
             receivedItem = it.getParcelable("contact")
-            position = it.getInt("position")
             Log.d(TAG, "onCreateReceivedItem: $receivedItem")
-            Log.d(TAG, "position: $position")
         }
     }
 
@@ -65,14 +72,16 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
             binding!!.tvDetailPhoneNumber.text = it.phoneNumber
             binding!!.tvDetailEmail.text = it.email
             binding!!.tvDetailMemo.text = it.memo
-            isLiked = it.isLiked == true
+            isLiked = it.isLiked
+            Log.d(TAG, "isLiked: $isLiked")
+            Log.d(TAG, "it.isLiked: ${it.isLiked}")
         }
 
         binding!!.tvDetailDepartment.text =
             requireContext().getString(departmentList[receivedItem!!.department])
 
         binding!!.ivFavorite.setImageResource(
-            if (isLiked) {
+            if (isLiked == true) {
                 R.drawable.ic_contact_detail_fill_favorite
             } else {
                 R.drawable.ic_contact_detail_empty_favorite
@@ -80,19 +89,18 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
         )
 
         binding!!.ivFavorite.setOnClickListener {
-            if (!isLiked) {
+            if (!isLiked!!) {
+                val position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
                 binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                 isLiked = true
-                ContactStorage.changeLiked(position)
+                changeLike()
                 Log.d(TAG, "ivFavoriteClicked: $isLiked")
                 Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
-
             } else {
                 binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                 isLiked = false
-                ContactStorage.changeLiked(position)
+                changeLike()
                 Log.d(TAG, "ivFavoriteClicked: $isLiked")
-                Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
             }
         }
         val phoneNumber =
@@ -122,29 +130,36 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
             ContactDetailFragment().apply {
                 arguments = Bundle().apply {
                     Log.d(TAG, "newInstance: $arguments")
-                    data.isLiked = isLiked
+//                    data.isLiked = isLiked
                     putParcelable("contact", data)
                     putInt("position", position)
                 }
             }
     }
 
-    override fun onBackPressed() {
-//        val bundle = Bundle() // 번들을 통해 값 전달
-//        val clickedItem = receivedItem
-//        clickedItem!!.isLiked = isLiked
-//        Log.d(TAG, "onBackPressed: $clickedItem")
-//        Log.d(TAG, "onBackPressed: $isLiked")
-//        bundle.putBoolean("isLiked", isLiked)
-//        bundle.putParcelable(
-//            "Contact.Person",
-//            clickedItem
-//        )
-        val adapter = ContactAdapter(ContactStorage.totalContactList)
-        adapter.notifyItemChanged(position)
-        adapter.notifyDataSetChanged()
+    fun changeLike() {
+        ContactStorage.changeLiked(position)
+    }
+    override fun onAttach(context: Context) {
+        Log.d("FragmentLifeCycle", "Detail_onAttach()")
+        super.onAttach(context)
+        if (context is UpdateLike) {
+            updateLike = context
+        } else {
+            throw RuntimeException("$context must implement FragmentDataListener")
+        }
 
-        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
-        requireActivity().supportFragmentManager.popBackStack()
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                arguments?.getInt("position")?.let { updateLike?.update(it) }
+                requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+    override fun onDetach() {
+        Log.d("FragmentLifeCycle", "Detail_onDetach()")
+        super.onDetach()
     }
 }

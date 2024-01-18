@@ -13,11 +13,12 @@ import com.example.workswhale.Contact
 import com.example.workswhale.contactDetailFragment.ContactDetailFragment
 import com.example.workswhale.contactListFragment.ContactListFragment
 import com.example.workswhale.R
+import com.example.workswhale.contactDetailFragment.UpdateLike
 import com.example.workswhale.databinding.ActivityMainBinding
 import com.example.workswhale.editMyProfileDialog.EditMyProfileDialog
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener {
+class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener, UpdateLike {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
     private var menuIcon = R.drawable.ic_main_view_type_grid_btn
     private var menuType = 2
     lateinit var detailFragment: ContactDetailFragment
+    val adapter = ViewPagerAdapter(this)
 
     interface onBackPressedListener {
         fun onBackPressed()
@@ -40,7 +42,6 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
         }
 
-        val adapter = ViewPagerAdapter(this)
         binding.viewPagerMain.adapter = adapter
 
         TabLayoutMediator(binding.tabLayoutBottom, binding.viewPagerMain) { tab, position ->
@@ -105,15 +106,50 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         }
     }
 
-    override fun onBackPressed(){
-        //아래와 같은 코드를 추가하도록 한다
-        //해당 엑티비티에서 띄운 프래그먼트에서 뒤로가기를 누르게 되면 프래그먼트에서 구현한 onBackPressed 함수가 실행되게 된다.
-        val fragmentList = supportFragmentManager.fragments
-        for (fragment in fragmentList) {
-            if (fragment is onBackPressedListener) {
-                (fragment as onBackPressedListener).onBackPressed()
-                return
-            }
-        }
+    override fun update(position: Int) {
+        adapter.updateLike(position)
+    }
+
+//    override fun onBackPressed(){
+//        //아래와 같은 코드를 추가하도록 한다
+//        //해당 엑티비티에서 띄운 프래그먼트에서 뒤로가기를 누르게 되면 프래그먼트에서 구현한 onBackPressed 함수가 실행되게 된다.
+//        val fragmentList = supportFragmentManager.fragments
+//        for (fragment in fragmentList) {
+//            if (fragment is onBackPressedListener) {
+//                (fragment as onBackPressedListener).onBackPressed()
+//                return
+//            }
+//        }
+//    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.e("life", "a3_detail_onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("life", "a3_detail_onResume")
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("life", "a3_detail_onPause")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.e("life", "a3_detail_onRestart")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("life", "a3_detail_onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("life", "a3_detail_onDestroy")
     }
 }
