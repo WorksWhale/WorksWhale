@@ -114,7 +114,7 @@ class ContactListFragment : Fragment() {
             }
             rvContactList.adapter = adapter
             rvContactList.addItemDecoration( // Sticky Header 구현을 위한
-                HeaderItemDecoration(recyclerView = binding.rvContactList, isHeader = { position: Int ->
+                HeaderItemDecoration(recyclerView = rvContactList, isHeader = { position: Int ->
                     ContactStorage.totalContactList[position] is Contact.Title
                 })
             )
@@ -153,13 +153,13 @@ class ContactListFragment : Fragment() {
                 // 스와이프한 뒤 고정시킬 위치 지정
                 setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)    // 1080 / 4 = 270
             }
-            ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(binding.rvContactList)
+            ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(rvContactList)
 
 //            // 구분선 추가
 //            binding.rvContactlistList.addItemDecoration(DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL))
 
             // 다른 곳 터치 시 기존 선택했던 뷰 닫기
-            binding.rvContactList.setOnTouchListener { _, _ ->
+            rvContactList.setOnTouchListener { _, _ ->
                 swipeHelperCallback.removePreviousClamp(binding.rvContactList)
                 false
             }

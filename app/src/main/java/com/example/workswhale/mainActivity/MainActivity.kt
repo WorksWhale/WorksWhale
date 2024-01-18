@@ -67,43 +67,45 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
             statusBarColor = Color.WHITE
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
         }
+        with(binding){
+            viewPagerMain.adapter = adapter
 
-        binding.viewPagerMain.adapter = adapter
-
-        TabLayoutMediator(binding.tabLayoutMainBottom, binding.viewPagerMain) { tab, position ->
-            when (position) {
-                0 -> tab.text = "연락처"
-                1 -> tab.text = "마이 페이지"
-            }
-        }.attach()
-
-        binding.ivMainMenu.setOnClickListener {
-            val userInfo = adapter.getInfo()
-            val userProfileImage = adapter.getImageInfo()
-            val editMyPageDialog = EditMyProfileDialog(userInfo, userProfileImage)
-            editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
-                override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
-                    adapter.editInfo(profileImage, name, phoneNumber, email)
+            TabLayoutMediator(tabLayoutMainBottom, viewPagerMain) { tab, position ->
+                when (position) {
+                    0 -> tab.text = "연락처"
+                    1 -> tab.text = "마이 페이지"
                 }
+            }.attach()
+
+            ivMainMenu.setOnClickListener {
+                val userInfo = adapter.getInfo()
+                val userProfileImage = adapter.getImageInfo()
+                val editMyPageDialog = EditMyProfileDialog(userInfo, userProfileImage)
+                editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
+                    override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
+                        adapter.editInfo(profileImage, name, phoneNumber, email)
+                    }
+                }
+                editMyPageDialog.show(
+                    supportFragmentManager, "EditMyProfileDialog"
+                )
             }
-            editMyPageDialog.show(
-                supportFragmentManager, "EditMyProfileDialog"
-            )
+
+            viewPagerMain.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    when (position) {
+                        0 -> {
+                            ivMainMenu.isVisible = false
+                        }
+                        else -> {
+                            ivMainMenu.isVisible = true
+                        }
+                    }
+                }
+            })
         }
 
-        binding.viewPagerMain.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                when (position) {
-                    0 -> {
-                        binding.ivMainMenu.isVisible = false
-                    }
-                    else -> {
-                        binding.ivMainMenu.isVisible = true
-                    }
-                }
-            }
-        })
     }
 
     override fun onDataReceived(data: Contact.Person) {

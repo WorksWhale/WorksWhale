@@ -36,20 +36,25 @@ class MyPageFragment: Fragment() {
     }
 
     fun updateData(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
-        binding.ivMyPageProfileImage.setImageDrawable(profileImage)
-        binding.tvMyPageName.text = name
-        binding.tvMyPagePhoneNumber.text = phoneNumber
-        binding.tvMyPageEmail.text = email
+        with(binding){
+            ivMyPageProfileImage.setImageDrawable(profileImage)
+            tvMyPageName.text = name
+            tvMyPagePhoneNumber.text = phoneNumber
+            tvMyPageEmail.text = email
 
-        saveUserProfile(profileImage, name, phoneNumber, email)
+            saveUserProfile(profileImage, name, phoneNumber, email)
+        }
+
     }
 
     fun giveData(): List<String> {
-        return listOf(
-            binding.tvMyPageName.text.toString(),
-            binding.tvMyPagePhoneNumber.text.toString(),
-            binding.tvMyPageEmail.text.toString()
-        )
+        with(binding){
+            return listOf(
+            tvMyPageName.text.toString(),
+            tvMyPagePhoneNumber.text.toString(),
+            tvMyPageEmail.text.toString()
+        )}
+
     }
 
     fun giveImageData(): Drawable {

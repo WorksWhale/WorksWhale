@@ -92,9 +92,9 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         fun bind(item : Contact.Person) {
             with(binding) {
                 if (ContactStorage.checkStartAlphabet(item.profileImage)) {
-                    binding.ivContactListPersonProfile.setImageURI(item.profileImage.toUri())
+                    ivContactListPersonProfile.setImageURI(item.profileImage.toUri())
                 } else {
-                    binding.ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
+                    ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
                 }
                 tvContactListPersonName.setText(item.name)
                 tvContactListPersonMemo.setText(item.memo)

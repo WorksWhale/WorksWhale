@@ -59,35 +59,37 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnEditProfileCheck.isEnabled = false  // 버튼을 비활성화 시킴
+        with(binding){
+            btnEditProfileCheck.isEnabled = false  // 버튼을 비활성화 시킴
 
-        binding.ivEditProfileProfile.setImageDrawable(userProfileImage)
-        binding.ivEditProfileProfile.scaleType = ImageView.ScaleType.CENTER_CROP
-        binding.etEditProfileName.setText(userInfo[0])
-        binding.etEditProfilePhoneNumber.setText(userInfo[1])
-        binding.etEditProfileEmail.setText(userInfo[2])
-        setAddButtonEnable()
+            ivEditProfileProfile.setImageDrawable(userProfileImage)
+            ivEditProfileProfile.scaleType = ImageView.ScaleType.CENTER_CROP
+            etEditProfileName.setText(userInfo[0])
+            etEditProfilePhoneNumber.setText(userInfo[1])
+            etEditProfileEmail.setText(userInfo[2])
+            setAddButtonEnable()
 
-        setTextChangeLisener()
-        setFocusChangedLisener()
+            setTextChangeLisener()
+            setFocusChangedLisener()
 
-        binding.btnEditProfileCancel.setOnClickListener {
-            dismiss()
-        }
+            btnEditProfileCancel.setOnClickListener {
+                dismiss()
+            }
 
-        binding.ivEditProfileProfile.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
+            ivEditProfileProfile.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
 
-        binding.btnEditProfileCheck.setOnClickListener {
-            // 마이페이지프래그먼트로 데이터 넘기기
-            okClick?.onClick(
-                binding.ivEditProfileProfile.drawable,
-                binding.etEditProfileName.text.toString(),
-                binding.etEditProfilePhoneNumber.text.toString(),
-                binding.etEditProfileEmail.text.toString())
-            dismiss()
-        }
+            btnEditProfileCheck.setOnClickListener {
+                // 마이페이지프래그먼트로 데이터 넘기기
+                okClick?.onClick(
+                    binding.ivEditProfileProfile.drawable,
+                    binding.etEditProfileName.text.toString(),
+                    binding.etEditProfilePhoneNumber.text.toString(),
+                    binding.etEditProfileEmail.text.toString())
+                dismiss()
+            }}
+
     }
 
     // 전체적으로 에러가 있는지 여부를 판단해 에러가 있는 경우(또는 아무것도 없는 경우) 버튼을 비활성화 시키는 함수
