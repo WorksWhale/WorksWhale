@@ -29,6 +29,7 @@ class AddContactDialog: DialogFragment() {
     }
 
     var okClick: OkClick? = null
+
     private var _binding: DialogAddContactBinding? = null
     private val binding get() = _binding!!
 
@@ -122,7 +123,6 @@ class AddContactDialog: DialogFragment() {
                     profileImage = imageUri.toString(),
                     isLiked = false,
                     alarm = timeString
-
                 )
             )
             val time = calTime()
@@ -150,6 +150,7 @@ class AddContactDialog: DialogFragment() {
                 it.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
         }
+
         alarmTextViewList.forEachIndexed { index, textView ->
             if (index == position) {
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -197,23 +198,6 @@ class AddContactDialog: DialogFragment() {
         binding.spinnerAddContact.adapter = adapter
     }
 
-    // EditText에서 에러 메세지를 출력하기 위해 만든 확장함수
-    private fun EditText.setErrorMessage() {
-        when (this) {
-            binding.etAddContactName -> error = getMessageValidName()
-            binding.etAddContactPhoneNumber -> error = getMessageValidPhoneNumber()
-            binding.etAddContactEmail -> error = getMessageValidEmail()
-            else -> Unit
-        }
-    }
-
-    private fun String.startZeroOneZero() = this.length > 3 && this.substring(0..2) == "010"
-
-    private fun String.checkEmailFormat(): Boolean {
-        val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-        return Pattern.matches(emailValidation, this)
-    }
-
     // 이름에 대한 에러 메세지 반환하는 함수
     private fun getMessageValidName(): String? {
         val name = binding.etAddContactName.text.toString()
@@ -248,6 +232,23 @@ class AddContactDialog: DialogFragment() {
         binding.btnAddContactAdd.isEnabled = getMessageValidName() == null
                 && getMessageValidEmail() == null
                 && getMessageValidPhoneNumber() == null
+    }
+
+    // EditText에서 에러 메세지를 출력하기 위해 만든 확장함수
+    private fun EditText.setErrorMessage() {
+        when (this) {
+            binding.etAddContactName -> error = getMessageValidName()
+            binding.etAddContactPhoneNumber -> error = getMessageValidPhoneNumber()
+            binding.etAddContactEmail -> error = getMessageValidEmail()
+            else -> Unit
+        }
+    }
+
+    private fun String.startZeroOneZero() = this.length > 3 && this.substring(0..2) == "010"
+
+    private fun String.checkEmailFormat(): Boolean {
+        val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+        return Pattern.matches(emailValidation, this)
     }
 
     override fun onDestroyView() {

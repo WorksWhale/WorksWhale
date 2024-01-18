@@ -16,16 +16,6 @@ import androidx.fragment.app.DialogFragment
 import com.example.workswhale.databinding.DialogEditMyProfileBinding
 import java.util.regex.Pattern
 
-
-//1. 이름 유효성검사 ( 공란인지의 여부만 판단하기 )
-//2. 전화번호 유효성검사 ( 010은 기본으로 설정하고 뒤에 오는수가 8자리가 맞는지 확인 )
-//3. 이메일 유효성검사
-
-//다이얼로그 영역
-//이름, 전화번호, 이메일을 입력 받기
-//입력 받은 정보의 유효성 검사 진행하기
-//입력 받은 정보를 마이 페이지에 바로 업데이트하기
-
 class EditMyProfileDialog(private val userInfo: List<String>, private val userProfileImage: Drawable) : DialogFragment() {
 
     interface OkClick {
@@ -33,6 +23,9 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
     }
 
     var okClick: OkClick? = null
+
+    private var _binding: DialogEditMyProfileBinding? = null
+    private val binding get() = _binding!!
 
     private var selectedProfile: Uri? = null
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -43,9 +36,12 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
         }
     }
 
-    private var _binding: DialogEditMyProfileBinding? = null
-    private val binding get() = _binding!!
-    private val editTexts get() = listOf(binding.etEditProfileEmail, binding.etEditProfileName, binding.etEditProfilePhoneNumber)
+    private val editTexts
+        get() = listOf(
+            binding.etEditProfileEmail,
+            binding.etEditProfileName,
+            binding.etEditProfilePhoneNumber
+        )
 
 
     override fun onCreateView(
@@ -66,8 +62,8 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
         binding.etEditProfileName.setText(userInfo[0])
         binding.etEditProfilePhoneNumber.setText(userInfo[1])
         binding.etEditProfileEmail.setText(userInfo[2])
-        setAddButtonEnable()
 
+        setAddButtonEnable()
         setTextChangeLisener()
         setFocusChangedLisener()
 

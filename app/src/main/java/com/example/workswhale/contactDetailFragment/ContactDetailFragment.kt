@@ -23,15 +23,16 @@ interface UpdateLike {
 
 class ContactDetailFragment : Fragment() {
 
+    private var updateLike: UpdateLike? = null
+
     private var _binding: FragmentContactDetailBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var callback: OnBackPressedCallback
+
     private var isLiked: Boolean? = null
     private var receivedItem: Contact.Person? = null
     private var position = 0
-
-    private var updateLike: UpdateLike? = null
-
-    private lateinit var callback: OnBackPressedCallback
 
     private val departmentList: List<Int>
         get() = listOf(
@@ -43,20 +44,36 @@ class ContactDetailFragment : Fragment() {
             R.string.sales_department
         )
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is UpdateLike) {
+            updateLike = context
+        } else {
+            throw RuntimeException("$context must implement FragmentDataListener")
+        }
+
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                arguments?.getInt("position")?.let { updateLike?.update(it) }
+                requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "arguments: $arguments")
 
         arguments?.let {
             receivedItem = it.getParcelable("contact")
-            Log.d(TAG, "onCreateReceivedItem: $receivedItem")
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
 
         with(binding) {
@@ -85,27 +102,20 @@ class ContactDetailFragment : Fragment() {
             )
 
             ivDetailFavorite.setOnClickListener {
-                val position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
+                position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
                 if (!isLiked!!) {
                     ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                     isLiked = true
                     changeLike()
-                    Log.d(TAG, "ivFavoriteClicked: $isLiked")
-                    Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
-
                 } else {
                     ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                     isLiked = false
                     changeLike()
-                    Log.d(TAG, "ivFavoriteClicked: $isLiked")
-                    Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
                 }
             }
+
             val phoneNumber =
                 tvDetailPhoneNumber.text//phonNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
-
-
-
             tvDetailMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
                 val intent = Intent(Intent.ACTION_SENDTO)
@@ -119,38 +129,12 @@ class ContactDetailFragment : Fragment() {
                 startActivity(intent)
             }
         }
+
         return binding.root
     }
 
-    companion object {
-        fun newInstance(data: Contact.Person) =
-            ContactDetailFragment().apply {
-                arguments = Bundle().apply {
-                    Log.d(TAG, "newInstance: $arguments")
-//                    data.isLiked = isLiked
-                    putParcelable("contact", data)
-                }
-            }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
-    fun changeLike() {
-        ContactStorage.changeLiked(position)
-    }
-    override fun onAttach(context: Context) {
-        Log.d("FragmentLifeCycle", "Detail_onAttach()")
-        super.onAttach(context)
-        if (context is UpdateLike) {
-            updateLike = context
-        } else {
-            throw RuntimeException("$context must implement FragmentDataListener")
-        }
-
+    override fun onResume() {
+        super.onResume()
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 arguments?.getInt("position")?.let { updateLike?.update(it) }
@@ -159,5 +143,23 @@ class ContactDetailFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun changeLike() {
+        ContactStorage.changeLiked(position)
+    }
+
+    companion object {
+        fun newInstance(data: Contact.Person) =
+            ContactDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable("contact", data)
+                }
+            }
     }
 }

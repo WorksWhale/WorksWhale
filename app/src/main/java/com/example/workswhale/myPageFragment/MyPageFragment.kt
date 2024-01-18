@@ -15,6 +15,7 @@ import com.example.workswhale.databinding.FragmentMyPageBinding
 import java.io.ByteArrayOutputStream
 
 class MyPageFragment: Fragment() {
+
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
 

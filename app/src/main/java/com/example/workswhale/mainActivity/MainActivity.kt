@@ -1,11 +1,9 @@
 package com.example.workswhale.mainActivity
 
 import android.Manifest
-import android.content.ContentValues.TAG
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.commit
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -59,7 +57,7 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         this.onBackPressedDispatcher.addCallback(this, callback)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.CALL_PHONE), 0)
         }
 
         window.apply {
@@ -106,17 +104,16 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         })
     }
 
+    override fun update(position: Int) {
+        adapter.updateLike(position)
+    }
+
     override fun onDataReceived(data: Contact.Person) {
         supportFragmentManager.commit {
             detailFragment = ContactDetailFragment.newInstance(data)
             replace(R.id.frame_layout_main, detailFragment)
             setReorderingAllowed(true)
             addToBackStack("")
-            Log.d(TAG, "onDataReceived: $data")
         }
-    }
-
-    override fun update(position: Int) {
-        adapter.updateLike(position)
     }
 }
