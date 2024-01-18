@@ -53,7 +53,7 @@ class ContactDetailFragment : Fragment() {
 
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                arguments?.getInt(IntentKeys.EXTRA_POSITION)?.let { updateLike?.update(it) }
+                arguments?.getInt(IntentKeys.EXTRA_POSITION, position)?.let { updateLike?.update(it) }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
                 requireActivity().supportFragmentManager.popBackStack()
             }
@@ -141,7 +141,7 @@ class ContactDetailFragment : Fragment() {
         super.onResume()
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                arguments?.getInt(IntentKeys.EXTRA_POSITION)?.let { updateLike?.update(it) }
+                arguments?.getInt(IntentKeys.EXTRA_POSITION, position)?.let { updateLike?.update(it) }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
                 requireActivity().supportFragmentManager.popBackStack()
             }
