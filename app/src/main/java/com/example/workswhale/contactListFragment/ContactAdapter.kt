@@ -8,6 +8,9 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.example.workswhale.Contact
+import com.example.workswhale.ContactStorage
+import com.example.workswhale.R
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
 
@@ -93,6 +96,11 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 ivContactlistProfile.clipToOutline = true
                 tvContactlistName.setText(item.name)
                 tvContactlistMemo.setText(item.memo)
+                if (item.isLiked) {
+                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
+                } else {
+                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
+                }
             }
         }
     }

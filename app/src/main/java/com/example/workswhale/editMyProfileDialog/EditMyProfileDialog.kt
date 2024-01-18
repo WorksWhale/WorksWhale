@@ -1,6 +1,5 @@
-package com.example.workswhale
+package com.example.workswhale.editMyProfileDialog
 
-import android.graphics.ColorSpace.match
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
@@ -54,7 +52,7 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = DialogEditMyProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -127,7 +125,7 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
     private fun getMessageValidName() : String? {
         val name = binding.editTvName.text.toString()
         return when{
-            name.isBlank() -> AddContactErrorMessage.EMPTY_NAME //이름 부분이 공백이면 AddContactErrorMessage에 EMPTY_NAME을 불러와 메세지를 띄운다.
+            name.isBlank() -> EditMyProfileErrorMessage.EMPTY_NAME //이름 부분이 공백이면 AddContactErrorMessage에 EMPTY_NAME을 불러와 메세지를 띄운다.
             else -> null
         }?.message?.let{ getString(it) }
     }
@@ -138,9 +136,9 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
     private fun getMessageValidPhoneNumber() : String?{
         val number = binding.editTvPhoneNumber.text.toString()
         return when{
-            number.isBlank() -> AddContactErrorMessage.EMPTY_PHONE_NUMBER  //전화번호칸이 공백일 때 실행
-            number.length < 13 -> AddContactErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
-            number.substring(0 until 3) != "010" -> AddContactErrorMessage.INVALID_PHONE_NUMBER  //전화번호가 010으로 시작하지 않을 때 실행
+            number.isBlank() -> EditMyProfileErrorMessage.EMPTY_PHONE_NUMBER  //전화번호칸이 공백일 때 실행
+            number.length < 13 -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
+            number.substring(0 until 3) != "010" -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER  //전화번호가 010으로 시작하지 않을 때 실행
             else -> null
         }?.message?.let{getString(it)}
     }
@@ -149,8 +147,8 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
     private fun getMessageValidEmail() : String?{
         val email = binding.editTvEmail.text.toString()
         return when{
-            email.isBlank() -> AddContactErrorMessage.EMPTY_EMAIL //이메일칸이 공백일 때 실행
-            email.emailValidCheck() == false -> AddContactErrorMessage.INVALID_EMAIL //이메일 형식이 맞이 않을 때 실행
+            email.isBlank() -> EditMyProfileErrorMessage.EMPTY_EMAIL //이메일칸이 공백일 때 실행
+            !email.emailValidCheck() -> EditMyProfileErrorMessage.INVALID_EMAIL //이메일 형식이 맞이 않을 때 실행
             else -> null
         }?.message?.let{getString(it)}
     }
