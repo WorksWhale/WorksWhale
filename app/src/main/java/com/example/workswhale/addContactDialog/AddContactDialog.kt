@@ -118,6 +118,8 @@ class AddContactDialog: DialogFragment() {
                     if (spinnerAddContact.selectedItem.toString() == item) department = idx
                 }
 
+                val time = calTime()
+
                 ContactStorage.addContact(
                     Contact.Person(
                         name = etAddContactName.text.toString(),
@@ -131,7 +133,6 @@ class AddContactDialog: DialogFragment() {
                     )
                 )
 
-                val time = calTime()
                 okClick?.onClick(etAddContactName.text.toString(), time)
                 dismiss()
             }

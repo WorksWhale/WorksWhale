@@ -1,8 +1,5 @@
 package com.example.workswhale
 
-import android.content.ContentValues.TAG
-import android.util.Log
-
 object ContactStorage {
     var totalContactList: ArrayList<Contact> = ArrayList()
 
