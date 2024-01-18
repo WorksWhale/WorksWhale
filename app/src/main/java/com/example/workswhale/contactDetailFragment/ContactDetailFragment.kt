@@ -10,16 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResultLauncher
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
-import com.example.workswhale.contactListFragment.ContactAdapter
-import com.example.workswhale.contactListFragment.ContactListFragment
 import com.example.workswhale.databinding.FragmentContactDetailBinding
-import com.example.workswhale.mainActivity.MainActivity
 
 interface UpdateLike {
     fun update(position: Int)
