@@ -6,16 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".contactListFragment.ContactListFragment">
 
+    <SearchView
+        android:id="@+id/sv_contactlist_search"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:queryBackground="@drawable/shape_search_background"
+        android:queryHint="이름 또는 번호로 검색해주세요"
+        app:iconifiedByDefault="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_contactlist_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="5dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/sv_contactlist_search" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ftbtn_contactlist"
