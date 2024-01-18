@@ -144,7 +144,7 @@ class ContactListFragment : Fragment() {
                         return false
                     }
                 }
-            svContactlistSearch.setOnQueryTextListener(searchViewTextListener)
+            svContactListSearch.setOnQueryTextListener(searchViewTextListener)
             return binding.root
         }
     }
