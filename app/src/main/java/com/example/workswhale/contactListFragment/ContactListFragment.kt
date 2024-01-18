@@ -16,10 +16,12 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
+import com.example.workswhale.SwipeHelperCallback
 import com.example.workswhale.addContactDialog.AddContactDialog
 import com.example.workswhale.databinding.FragmentContactListBinding
 import java.util.Calendar
@@ -65,10 +67,10 @@ class ContactListFragment : Fragment() {
                                 Log.d(TAG, "position: $data")
                                 listener?.onDataReceived(item)
                                 Log.d(TAG, "onClickItem: $item")
-//                                bundle.putParcelable(
-//                                    "Contact.Person",
-//                                    clickedItem
-//                                )
+                                bundle.putParcelable(
+                                    "Contact.Person",
+                                    clickedItem
+                                )
                             }
                             else -> Unit
                         }
@@ -145,6 +147,23 @@ class ContactListFragment : Fragment() {
                     }
                 }
             svContactListSearch.setOnQueryTextListener(searchViewTextListener)
+
+            // 리사이클러뷰에 스와이프, 드래그 기능 달기
+            val swipeHelperCallback = SwipeHelperCallback(adapter).apply {
+                // 스와이프한 뒤 고정시킬 위치 지정
+                setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)    // 1080 / 4 = 270
+            }
+            ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(binding.rvContactList)
+
+//            // 구분선 추가
+//            binding.rvContactlistList.addItemDecoration(DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL))
+
+            // 다른 곳 터치 시 기존 선택했던 뷰 닫기
+            binding.rvContactList.setOnTouchListener { _, _ ->
+                swipeHelperCallback.removePreviousClamp(binding.rvContactList)
+                false
+            }
+
             return binding.root
         }
     }

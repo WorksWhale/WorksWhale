@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workswhale.Contact
@@ -13,11 +14,13 @@ import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
+import java.util.Collections
 
 class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable{
     companion object {
-        private const val VIEW_TYPE_TITLE = 1
-        private const val VIEW_TYPE_LIST = 2
+        const val VIEW_TYPE_TITLE = 1
+        const val VIEW_TYPE_LIST = 2
+
     }
     interface ItemClick {
         fun onClick(view: View?, data: Contact)
@@ -131,4 +134,15 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         }
     }
 
+    // position 위치의 데이터를 삭제 후 어댑터 갱신
+    fun removeData(position: Int, view : View){
+        dataList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    // 현재 선택된 데이터와 드래그한 위치에 있는 데이터를 교환
+    fun swapData(fromPos: Int, toPos: Int) {
+        Collections.swap(dataList, fromPos, toPos)
+        notifyItemMoved(fromPos, toPos)
+    }
 }
