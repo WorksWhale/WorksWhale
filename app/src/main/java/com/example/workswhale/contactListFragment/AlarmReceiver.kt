@@ -65,7 +65,7 @@ class AlarmReceiver : BroadcastReceiver() {
             setWhen(System.currentTimeMillis())
             setContentTitle("연락 알림")
             setContentText("${name}님한테 연락할 시간입니다.")
-            addAction(R.mipmap.ic_launcher, "Action", pendingIntent)
+            addAction(R.mipmap.ic_launcher, "앱으로 이동", pendingIntent)
             setAutoCancel(true)
         }
 

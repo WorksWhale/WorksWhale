@@ -54,8 +54,8 @@ class ContactListFragment : Fragment() {
         val bundle = Bundle() // 번들을 통해 값 전달
         Log.d(TAG, "onCreateView: $bundle")
         with(binding) {
-            rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-            rvContactlistList.setHasFixedSize(true)
+            rvContactList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+            rvContactList.setHasFixedSize(true)
 //            val adapter = ContactAdapter(ContactStorage.totalContactList)
                 adapter.apply {
                 itemClick = object : ContactAdapter.ItemClick {
@@ -112,16 +112,16 @@ class ContactListFragment : Fragment() {
                         }
                     }
             }
-            rvContactlistList.adapter = adapter
-            rvContactlistList.addItemDecoration( // Sticky Header 구현을 위한
-                HeaderItemDecoration(recyclerView = binding.rvContactlistList, isHeader = { position: Int ->
+            rvContactList.adapter = adapter
+            rvContactList.addItemDecoration( // Sticky Header 구현을 위한
+                HeaderItemDecoration(recyclerView = binding.rvContactList, isHeader = { position: Int ->
                     ContactStorage.totalContactList[position] is Contact.Title
                 })
             )
             adapter.notifyDataSetChanged()
 
             // 플로팅 버튼 클릭시, 새로운 사람 추가 기능 구현
-            ftbtnContactlist.setOnClickListener {
+            fabContactList.setOnClickListener {
                 val dialog = AddContactDialog()
                 dialog.okClick = object: AddContactDialog.OkClick {
                     override fun onClick(name: String, second: Int) {
@@ -203,40 +203,11 @@ class ContactListFragment : Fragment() {
             ContactListFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable("contact", data)
-
-
                 }
             }
     }
 
     fun updateLike(position: Int) {
         adapter.notifyItemChanged(position)
-    }
-
-    override fun onStart() {
-        adapter.notifyDataSetChanged()
-        super.onStart()
-        Log.d("FragmentLifeCycle", "List_onStart()")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("FragmentLifeCycle", "List_onStop()")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        adapter.notifyDataSetChanged()
-        Log.d("FragmentLifeCycle", "List_onPause()")
-    }
-
-    override fun onResume() {
-        adapter.notifyDataSetChanged()
-        super.onResume()
-        Log.d("FragmentLifeCycle", "List_onResume()")
-    }
-    override fun onDetach() {
-        Log.d("FragmentLifeCycle", "List_onDetach()")
-        super.onDetach()
     }
 }
