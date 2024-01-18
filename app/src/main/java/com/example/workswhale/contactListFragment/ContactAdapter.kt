@@ -1,10 +1,12 @@
 package com.example.workswhale.contactListFragment
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.core.net.toUri
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
@@ -12,14 +14,13 @@ import com.example.workswhale.R
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
 
-class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable{
     companion object {
         private const val VIEW_TYPE_TITLE = 1
         private const val VIEW_TYPE_LIST = 2
-
     }
     interface ItemClick {
-        fun onClick(view: View, position: Int)
+        fun onClick(view: View?, data: Contact)
     }
     interface ItemLongClick {
         fun onLongClick(view : View, position : Int)
@@ -39,13 +40,13 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(dataList[position]) { // 각 뷰에 맞는 객체 데이터 바인딩
-            is Contact.Title -> (holder as TitleViewHolder).bind(dataList[position] as Contact.Title)
-            is Contact.Person -> (holder as PersonViewHolder).bind(dataList[position] as Contact.Person)
+        when(filteredList[position]) { // 각 뷰에 맞는 객체 데이터 바인딩
+            is Contact.Title -> (holder as TitleViewHolder).bind(filteredList[position] as Contact.Title)
+            is Contact.Person -> (holder as PersonViewHolder).bind(filteredList[position] as Contact.Person)
         }
 
         holder.itemView.setOnClickListener {
-            itemClick?.onClick(it, position)
+            itemClick?.onClick(it, filteredList[position])
         }
 
         holder.itemView.setOnLongClickListener{
@@ -55,14 +56,14 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return filteredList.size
     }
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
     override fun getItemViewType(position: Int): Int {
-        return when(dataList[position]) {
+        return when(filteredList[position]) {
              is Contact.Title -> VIEW_TYPE_TITLE
              is Contact.Person -> VIEW_TYPE_LIST
         }
@@ -79,8 +80,8 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         )
     inner class TitleViewHolder(private val binding: ContactListTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Title) {
-            binding.tvListtitle.setText(departmentList[item.department])
-            binding.tvDepartmentCount.setText("(${ContactStorage.countDepartment(item.department)})")
+            binding.tvContactListDepartmentTitle.setText(departmentList[item.department])
+            binding.tvContactListDepartmentCount.setText("(${ContactStorage.countDepartment(item.department)})")
         }
     }
 
@@ -88,17 +89,44 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         fun bind(item : Contact.Person) {
             with(binding) {
                 if (ContactStorage.checkStartAlphabet(item.profileImage)) {
-                    binding.ivContactlistProfile.setImageURI(item.profileImage.toUri())
+                    binding.ivContactListPersonProfile.setImageURI(item.profileImage.toUri())
                 } else {
-                    binding.ivContactlistProfile.setImageResource(item.profileImage.toInt())
+                    binding.ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
                 }
-                tvContactlistName.setText(item.name)
-                tvContactlistMemo.setText(item.memo)
+                tvContactListPersonName.setText(item.name)
+                tvContactListPersonMemo.setText(item.memo)
                 if (item.isLiked) {
-                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
+                    ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
                 } else {
-                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
+                    ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
                 }
+            }
+        }
+    }
+    // 리사이클러뷰 검색 기능 (필터)
+    private var filteredList: ArrayList<Contact> = dataList
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charString = constraint.toString()
+                filteredList = if(charString.isBlank()) {
+                    dataList
+                } else {
+                    val filteredList = dataList.filter {
+                        it is Contact.Person && (it.name.contains(charString, true)
+                                || it.phoneNumber.contains(charString, true))
+                    }
+                    filteredList as ArrayList<Contact>
+                }
+                val filterResults = FilterResults()
+                filterResults.values = filteredList
+                return filterResults
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                filteredList = results?.values as ArrayList<Contact>
+                notifyDataSetChanged()
             }
         }
     }
