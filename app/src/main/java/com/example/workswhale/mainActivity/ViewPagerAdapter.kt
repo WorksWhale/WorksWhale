@@ -9,6 +9,7 @@ import com.example.workswhale.contactListFragment.ContactListFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity) {
     private val myPageFragment = MyPageFragment()
+    private val contactListFragment = ContactListFragment()
 
     override fun getItemCount(): Int {
         return 2
@@ -16,7 +17,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> ContactListFragment()
+            0 -> contactListFragment
             else -> myPageFragment
         }
     }
@@ -32,5 +33,9 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
 
     fun getImageInfo(): Drawable {
         return myPageFragment.giveImageData()
+    }
+
+    fun updateLike(position: Int) {
+        contactListFragment.updateLike(position)
     }
 }

@@ -18,7 +18,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.Contact
-import com.example.workswhale.ContactAdapter
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
 import com.example.workswhale.addContactDialog.AddContactDialog
@@ -29,6 +28,9 @@ class ContactListFragment : Fragment() {
     private var _binding: FragmentContactListBinding? = null
     private val binding get() = _binding!!
     private var receivedItem: Contact.Person? = null
+
+    val adapter = ContactAdapter(ContactStorage.totalContactList)
+
     interface FragmentDataListener {
         fun onDataReceived(data: Contact.Person)
     }
@@ -52,8 +54,8 @@ class ContactListFragment : Fragment() {
         with(binding) {
             rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             rvContactlistList.setHasFixedSize(true)
-            val adapter = ContactAdapter(ContactStorage.totalContactList)
-            adapter.apply {
+//            val adapter = ContactAdapter(ContactStorage.totalContactList)
+                adapter.apply {
                 itemClick = object : ContactAdapter.ItemClick {
                     override fun onClick(view: View?, data: Contact) {
 //                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
@@ -72,6 +74,9 @@ class ContactListFragment : Fragment() {
                         }
                         Log.d("Click", "ContactListFragment : $data")
                         Log.d(TAG, "onClickBundle: $bundle")
+                        requireActivity().supportFragmentManager.beginTransaction().remove(ContactListFragment()).commit()
+                        Log.i(TAG, "onClick: ContactListFragment")
+                        onPause()
                     }
                 }
                 itemLongClick =
@@ -146,6 +151,7 @@ class ContactListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        Log.d("FragmentLifeCycle", "List_onAttach()")
         if (context is FragmentDataListener) {
             listener = context
         } else {
@@ -181,5 +187,36 @@ class ContactListFragment : Fragment() {
 
                 }
             }
+    }
+
+    fun updateLike(position: Int) {
+        adapter.notifyItemChanged(position)
+    }
+
+    override fun onStart() {
+        adapter.notifyDataSetChanged()
+        super.onStart()
+        Log.d("FragmentLifeCycle", "List_onStart()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("FragmentLifeCycle", "List_onStop()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        adapter.notifyDataSetChanged()
+        Log.d("FragmentLifeCycle", "List_onPause()")
+    }
+
+    override fun onResume() {
+        adapter.notifyDataSetChanged()
+        super.onResume()
+        Log.d("FragmentLifeCycle", "List_onResume()")
+    }
+    override fun onDetach() {
+        Log.d("FragmentLifeCycle", "List_onDetach()")
+        super.onDetach()
     }
 }
