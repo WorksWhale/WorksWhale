@@ -29,12 +29,8 @@ class ContactListFragment : Fragment() {
     private var _binding: FragmentContactListBinding? = null
     private val binding get() = _binding!!
     private var receivedItem: Contact.Person? = null
-
-    private var itemPosition = 0
-
-    private val adapter by lazy { ContactAdapter(ContactStorage.totalContactList) }
     interface FragmentDataListener {
-        fun onDataReceived(data: Contact.Person, position: Int)
+        fun onDataReceived(data: Contact.Person)
     }
     private var listener: FragmentDataListener? = null
 
@@ -56,27 +52,25 @@ class ContactListFragment : Fragment() {
         with(binding) {
             rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             rvContactlistList.setHasFixedSize(true)
+            val adapter = ContactAdapter(ContactStorage.totalContactList)
             adapter.apply {
                 itemClick = object : ContactAdapter.ItemClick {
-                    override fun onClick(view: View, position: Int) {
-
-
+                    override fun onClick(view: View?, data: Contact) {
 //                        val fragment2 = ContactDetailFragment.newInstance("${ContactStorage.totalContactList}")
-                        val clickedItem = ContactStorage.totalContactList[position]
-                        when (val item = ContactStorage.totalContactList[position]){
+                        val clickedItem = data
+                        when (val item = data){
                             is Contact.Person ->  {
-                                Log.d(TAG, "position: $position")
-                                listener?.onDataReceived(item, position)
+                                Log.d(TAG, "position: $data")
+                                listener?.onDataReceived(item)
                                 Log.d(TAG, "onClickItem: $item")
                                 bundle.putParcelable(
                                     "Contact.Person",
                                     clickedItem
                                 )
-                                itemPosition = position
                             }
                             else -> Unit
                         }
-                        Log.d("Click", "ContactListFragment : $position")
+                        Log.d("Click", "ContactListFragment : $data")
                         Log.d(TAG, "onClickBundle: $bundle")
                     }
                 }
@@ -173,8 +167,8 @@ class ContactListFragment : Fragment() {
         Toast.makeText(requireContext(), "${name}님에 대한 연락 알람이 설정되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
@@ -183,8 +177,8 @@ class ContactListFragment : Fragment() {
             ContactListFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable("contact", data)
-                    putInt("position", itemPosition)
-                    Log.d(TAG, "itemPosition: $itemPosition")
+
+
                 }
             }
     }

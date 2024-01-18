@@ -21,11 +21,11 @@ import com.example.workswhale.mainActivity.MainActivity
 
 class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
 
-    private var binding: FragmentContactDetailBinding? = null
+    private var _binding: FragmentContactDetailBinding? = null
+    private val binding get() = _binding!!
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
     private var isLiked = false
     private var receivedItem: Contact.Person? = null
-    private var position = 0
 
     private val departmentList: List<Int>
         get() = listOf(
@@ -43,9 +43,7 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
 
         arguments?.let {
             receivedItem = it.getParcelable("contact")
-            position = it.getInt("position")
-            Log.d(TAG, "onCreateReceivedItem: $receivedItem")
-            Log.d(TAG, "position: $position")
+
         }
     }
 
@@ -53,54 +51,56 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentContactDetailBinding.inflate(inflater, container, false)
-
-        receivedItem?.let {
-            if (ContactStorage.checkStartAlphabet(it.profileImage)) {
-                binding!!.ivProfile.setImageURI(it.profileImage.toUri())
-            } else {
-                binding!!.ivProfile.setImageResource(it.profileImage.toInt())
-            }
-            binding!!.tvDetailName.text = it.name
-            binding!!.tvDetailPhoneNumber.text = it.phoneNumber
-            binding!!.tvDetailEmail.text = it.email
-            binding!!.tvDetailMemo.text = it.memo
-            isLiked = it.isLiked == true
-        }
-
-        binding!!.tvDetailDepartment.text =
-            requireContext().getString(departmentList[receivedItem!!.department])
-
-        binding!!.ivFavorite.setImageResource(
-            if (isLiked) {
-                R.drawable.ic_contact_detail_fill_favorite
-            } else {
-                R.drawable.ic_contact_detail_empty_favorite
-            }
-        )
-
-        binding!!.ivFavorite.setOnClickListener {
-            if (!isLiked) {
-                binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
-                isLiked = true
-                ContactStorage.changeLiked(position)
-                Log.d(TAG, "ivFavoriteClicked: $isLiked")
-                Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
-
-            } else {
-                binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
-                isLiked = false
-                ContactStorage.changeLiked(position)
-                Log.d(TAG, "ivFavoriteClicked: $isLiked")
-                Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
-            }
-        }
-        val phoneNumber =
-            binding!!.tvDetailPhoneNumber.text//phonNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
+        _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
 
         with(binding) {
+            receivedItem?.let {
+                if (ContactStorage.checkStartAlphabet(it.profileImage)) {
+                    ivProfile.setImageURI(it.profileImage.toUri())
+                } else {
+                    ivProfile.setImageResource(it.profileImage.toInt())
+                }
+                tvDetailName.text = it.name
+                tvDetailPhoneNumber.text = it.phoneNumber
+                tvDetailEmail.text = it.email
+                tvDetailMemo.text = it.memo
+                isLiked = it.isLiked == true
+            }
 
-            this!!.tvMessage.setOnClickListener {
+            tvDetailDepartment.text =
+                requireContext().getString(departmentList[receivedItem!!.department])
+
+            ivFavorite.setImageResource(
+                if (isLiked) {
+                    R.drawable.ic_contact_detail_fill_favorite
+                } else {
+                    R.drawable.ic_contact_detail_empty_favorite
+                }
+            )
+
+            ivFavorite.setOnClickListener {
+                val position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
+                if (!isLiked) {
+                    ivFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
+                    isLiked = true
+                    ContactStorage.changeLiked(position)
+                    Log.d(TAG, "ivFavoriteClicked: $isLiked")
+                    Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
+
+                } else {
+                    ivFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
+                    isLiked = false
+                    ContactStorage.changeLiked(position)
+                    Log.d(TAG, "ivFavoriteClicked: $isLiked")
+                    Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
+                }
+            }
+            val phoneNumber =
+                tvDetailPhoneNumber.text//phonNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
+
+
+
+            tvMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
                 val intent = Intent(Intent.ACTION_SENDTO)
                 intent.setData(smsUri)
@@ -108,26 +108,30 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
                 startActivity(intent)
             }
 
-            this.tvCall.setOnClickListener {
+            tvCall.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
                 startActivity(intent)
             }
         }
-
-        return binding?.root
+        return binding.root
     }
 
     companion object {
-        fun newInstance(data: Contact.Person, position: Int) =
+        fun newInstance(data: Contact.Person) =
             ContactDetailFragment().apply {
                 arguments = Bundle().apply {
                     Log.d(TAG, "newInstance: $arguments")
                     data.isLiked = isLiked
                     putParcelable("contact", data)
-                    putInt("position", position)
                 }
             }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
     override fun onBackPressed() {
 //        val bundle = Bundle() // 번들을 통해 값 전달
@@ -140,10 +144,6 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
 //            "Contact.Person",
 //            clickedItem
 //        )
-        val adapter = ContactAdapter(ContactStorage.totalContactList)
-        adapter.notifyItemChanged(position)
-        adapter.notifyDataSetChanged()
-
         requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
         requireActivity().supportFragmentManager.popBackStack()
     }

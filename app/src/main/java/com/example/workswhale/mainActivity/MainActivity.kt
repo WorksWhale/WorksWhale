@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.commit
 import android.graphics.Color
-import android.widget.SearchView
 import android.graphics.drawable.Drawable
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -96,9 +95,9 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         })
     }
 
-    override fun onDataReceived(data: Contact.Person, position: Int) {
+    override fun onDataReceived(data: Contact.Person) {
         supportFragmentManager.commit {
-            detailFragment = ContactDetailFragment.newInstance(data, position)
+            detailFragment = ContactDetailFragment.newInstance(data)
             replace(R.id.frameLayout, detailFragment)
             setReorderingAllowed(true)
             addToBackStack("")

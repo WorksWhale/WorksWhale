@@ -8,9 +8,6 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.example.workswhale.Contact
-import com.example.workswhale.ContactStorage
-import com.example.workswhale.R
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
 
@@ -20,7 +17,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         private const val VIEW_TYPE_LIST = 2
     }
     interface ItemClick {
-        fun onClick(view: View, position: Int)
+        fun onClick(view: View?, data: Contact)
     }
     interface ItemLongClick {
         fun onLongClick(view : View, position : Int)
@@ -46,7 +43,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         }
 
         holder.itemView.setOnClickListener {
-            itemClick?.onClick(it, position)
+            itemClick?.onClick(it, filteredList[position])
         }
 
         holder.itemView.setOnLongClickListener{
