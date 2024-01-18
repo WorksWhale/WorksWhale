@@ -1,6 +1,5 @@
 package com.example.workswhale.contactListFragment
 
-
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.view.View

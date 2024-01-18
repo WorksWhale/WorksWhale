@@ -1,4 +1,4 @@
-package com.example.workswhale
+package com.example.workswhale.contactListFragment
 
 import android.graphics.*
 import android.util.Log
@@ -6,9 +6,9 @@ import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.workswhale.contactListFragment.ContactAdapter
+import com.example.workswhale.ConstValues
+import com.example.workswhale.R
 import kotlin.math.max
-import kotlin.math.min
 
 // 롱터치 후 드래그, 스와이프 동작 제어
 class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : ItemTouchHelper.Callback() {
@@ -54,7 +54,7 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         currentDx = 0f                                      // 현재 x 위치 초기화
         previousPosition = viewHolder.adapterPosition       // 드래그 또는 스와이프 동작이 끝난 view의 position 기억하기
-        if(viewHolder.itemViewType == ContactAdapter.VIEW_TYPE_TITLE) return
+        if(viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
         getDefaultUIUtil().clearView(getView(viewHolder))
     }
 
@@ -62,7 +62,7 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         viewHolder?.let {
             currentPosition = viewHolder.adapterPosition    // 현재 드래그 또는 스와이프 중인 view 의 position 기억하기
-            if(viewHolder.itemViewType == ContactAdapter.VIEW_TYPE_LIST) {
+            if(viewHolder.itemViewType == ConstValues.VIEW_TYPE_LIST) {
                 getDefaultUIUtil().onSelected(getView(it))
             }
         }
@@ -79,7 +79,7 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
         isCurrentlyActive: Boolean
     ) {
         if (actionState == ACTION_STATE_SWIPE) {
-            if(viewHolder.itemViewType == ContactAdapter.VIEW_TYPE_TITLE) return
+            if(viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
             val view = getView(viewHolder)
             val isClamped = getTag(viewHolder)      // 고정할지 말지 결정, true : 고정함 false : 고정 안 함
             Log.d("swipe", "isClamped = $isClamped")
@@ -117,7 +117,9 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
     }
 
     // swipe_view 반환 -> swipe_view만 이동할 수 있게 해줌
-    private fun getView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(R.id.item)
+    private fun getView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(
+        R.id.item
+    )
 
     // swipe_view 를 swipe 했을 때 <삭제> 화면이 보이도록 고정
     private fun clampViewPositionHorizontal(
@@ -163,7 +165,7 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
         // 이전에 선택한 위치의 view 고정 해제
         previousPosition?.let {
             val viewHolder = recyclerView.findViewHolderForAdapterPosition(it) ?: return
-            if(viewHolder.itemViewType == ContactAdapter.VIEW_TYPE_TITLE) return
+            if(viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
             getView(viewHolder).animate().x(0f).setDuration(100L).start()
             setTag(viewHolder, false)
             previousPosition = null

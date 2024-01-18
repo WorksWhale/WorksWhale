@@ -8,6 +8,7 @@ import com.example.workswhale.myPageFragment.MyPageFragment
 import com.example.workswhale.contactListFragment.ContactListFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity) {
+
     private val myPageFragment = MyPageFragment()
     private val contactListFragment = ContactListFragment()
 

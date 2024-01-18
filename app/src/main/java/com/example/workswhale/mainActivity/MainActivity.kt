@@ -1,11 +1,9 @@
 package com.example.workswhale.mainActivity
 
 import android.Manifest
-import android.content.ContentValues.TAG
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.commit
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -17,29 +15,30 @@ import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.example.workswhale.Contact
 import com.example.workswhale.contactDetailFragment.ContactDetailFragment
-import com.example.workswhale.contactListFragment.ContactListFragment
 import com.example.workswhale.R
 import com.example.workswhale.contactDetailFragment.UpdateLike
+import com.example.workswhale.contactListFragment.FragmentDataListener
 import com.example.workswhale.databinding.ActivityMainBinding
 import com.example.workswhale.editMyProfileDialog.EditMyProfileDialog
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener, UpdateLike {
+class MainActivity : AppCompatActivity(), FragmentDataListener, UpdateLike {
+
     // 하단의 뒤로가기 버튼을 눌렀을 때 종료 확인 다이얼로그가 뜨는 콜백 함수
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             val builder = AlertDialog.Builder(this@MainActivity,
                 R.style.MyAlertDialogStyle
             )
-            builder.setTitle("WorksWhale")
-            builder.setMessage("앱을 종료하시겠습니까?")
+            builder.setTitle(getString(R.string.app_name))
+            builder.setMessage(getString(R.string.quit_app_dialog_message))
             builder.setIcon(R.drawable.ic_logo_white)
             builder.setCancelable(false)
             val listener = DialogInterface.OnClickListener { dialog, which ->
                 finish()
             }
-            builder.setPositiveButton("종료", listener)
-            builder.setNegativeButton("취소", null)
+            builder.setPositiveButton(getString(R.string.quit_app_dialog_positive_btn), listener)
+            builder.setNegativeButton(getString(R.string.quit_app_dialog_negative_btn), null)
             builder.show()
         }
     }
@@ -48,9 +47,9 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    lateinit var detailFragment: ContactDetailFragment
-    val adapter = ViewPagerAdapter(this)
+    private lateinit var detailFragment: ContactDetailFragment
 
+    val adapter = ViewPagerAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +58,7 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         this.onBackPressedDispatcher.addCallback(this, callback)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.CALL_PHONE), 0)
         }
 
         window.apply {
@@ -67,13 +66,14 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
             statusBarColor = Color.WHITE
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
         }
-        with(binding){
+
+        with(binding) {
             viewPagerMain.adapter = adapter
 
             TabLayoutMediator(tabLayoutMainBottom, viewPagerMain) { tab, position ->
                 when (position) {
-                    0 -> tab.text = "연락처"
-                    1 -> tab.text = "마이 페이지"
+                    0 -> tab.text = getString(R.string.contact_list_tab)
+                    1 -> tab.text = getString(R.string.my_page_tab)
                 }
             }.attach()
 
@@ -105,7 +105,10 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
                 }
             })
         }
+    }
 
+    override fun update(position: Int) {
+        adapter.updateLike(position)
     }
 
     override fun onDataReceived(data: Contact.Person) {
@@ -114,11 +117,6 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
             replace(R.id.frame_layout_main, detailFragment)
             setReorderingAllowed(true)
             addToBackStack("")
-            Log.d(TAG, "onDataReceived: $data")
         }
-    }
-
-    override fun update(position: Int) {
-        adapter.updateLike(position)
     }
 }

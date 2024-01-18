@@ -12,13 +12,15 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.example.workswhale.ConstValues
+import com.example.workswhale.IntentKeys
 import com.example.workswhale.R
 import com.example.workswhale.mainActivity.MainActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val name = intent.getStringExtra("name")
+        val name = intent.getStringExtra(IntentKeys.EXTRA_NAME)
         createNotification(context, name ?: "")
     }
 
@@ -28,15 +30,15 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder: NotificationCompat.Builder
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // 26 버전 이상
-            val channelId="alarm"
-            val channelName="Alarm Channel"
+            val channelId= context.getString(R.string.notification_channel_id)
+            val channelName= context.getString(R.string.notification_channel_name)
             val channel = NotificationChannel(
                 channelId,
                 channelName,
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
                 // 채널에 다양한 정보 설정
-                description = "연락할 시간을 알려주는 Notification"
+                description = context.getString(R.string.notification_channel_description)
                 setShowBadge(true)
                 val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val audioAttributes = AudioAttributes.Builder()
@@ -63,12 +65,13 @@ class AlarmReceiver : BroadcastReceiver() {
         builder.run {
             setSmallIcon(R.mipmap.ic_launcher)
             setWhen(System.currentTimeMillis())
-            setContentTitle("연락 알림")
-            setContentText("${name}님한테 연락할 시간입니다.")
-            addAction(R.mipmap.ic_launcher, "앱으로 이동", pendingIntent)
+            setContentTitle(context.getString(R.string.alarm_notification_title))
+            setContentText(context.getString(R.string.alarm_notification_content, name))
+            addAction(R.mipmap.ic_launcher,
+                context.getString(R.string.notification_action_text), pendingIntent)
             setAutoCancel(true)
         }
 
-        manager.notify(11, builder.build())
+        manager.notify(ConstValues.NOTIFICATION_ID, builder.build())
     }
 }

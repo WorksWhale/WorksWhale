@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/item_list"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:id="@+id/item_list">
+    android:background="@color/white">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -23,19 +23,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:text="삭제"
+                android:background="@color/red"
                 android:gravity="center"
-                android:background="@color/red"/>
-
+                android:text="삭제" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
-            </LinearLayout>
-
-
+                android:layout_weight="1"></LinearLayout>
 
 
         </LinearLayout>
@@ -45,58 +41,58 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/item"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:background="@color/white"
-                tool:ignore="MissingConstraints"
-                android:id="@+id/item">
+                tool:ignore="MissingConstraints">
 
-    <ImageView
-        android:id="@+id/iv_contact_list_person_profile"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="15dp"
-        android:background="@drawable/shape_contact_list_circle"
-        android:clipToOutline="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tool:src="@drawable/img_default_profile" />
+                <ImageView
+                    android:id="@+id/iv_contact_list_person_profile"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/shape_contact_list_circle"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tool:src="@drawable/img_default_profile" />
 
-    <TextView
-        android:id="@+id/tv_contact_list_person_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:text="이름"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_contact_list_person_profile"
-        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/tv_contact_list_person_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="이름"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_contact_list_person_profile"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_contact_list_person_memo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="3dp"
-        android:text="어제 빌려간 돈 안주는 사람"
-        android:textColor="#8A8A8A"
-        android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_contact_list_person_profile"
-        app:layout_constraintTop_toBottomOf="@+id/tv_contact_list_person_name" />
+                <TextView
+                    android:id="@+id/tv_contact_list_person_memo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="3dp"
+                    android:text="어제 빌려간 돈 안주는 사람"
+                    android:textColor="#8A8A8A"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_contact_list_person_profile"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_contact_list_person_name" />
 
-    <ImageView
-        android:id="@+id/iv_contact_list_person_favorite"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_main_empty_favorite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/iv_contact_list_person_favorite"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_main_empty_favorite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

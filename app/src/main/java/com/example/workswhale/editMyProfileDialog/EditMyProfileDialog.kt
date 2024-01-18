@@ -13,18 +13,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import com.example.workswhale.ConstValues
 import com.example.workswhale.databinding.DialogEditMyProfileBinding
 import java.util.regex.Pattern
-
-
-//1. 이름 유효성검사 ( 공란인지의 여부만 판단하기 )
-//2. 전화번호 유효성검사 ( 010은 기본으로 설정하고 뒤에 오는수가 8자리가 맞는지 확인 )
-//3. 이메일 유효성검사
-
-//다이얼로그 영역
-//이름, 전화번호, 이메일을 입력 받기
-//입력 받은 정보의 유효성 검사 진행하기
-//입력 받은 정보를 마이 페이지에 바로 업데이트하기
 
 class EditMyProfileDialog(private val userInfo: List<String>, private val userProfileImage: Drawable) : DialogFragment() {
 
@@ -33,6 +24,9 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
     }
 
     var okClick: OkClick? = null
+
+    private var _binding: DialogEditMyProfileBinding? = null
+    private val binding get() = _binding!!
 
     private var selectedProfile: Uri? = null
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -43,10 +37,12 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
         }
     }
 
-    private var _binding: DialogEditMyProfileBinding? = null
-    private val binding get() = _binding!!
-    private val editTexts get() = listOf(binding.etEditProfileEmail, binding.etEditProfileName, binding.etEditProfilePhoneNumber)
-
+    private val editTexts
+        get() = listOf(
+            binding.etEditProfileEmail,
+            binding.etEditProfileName,
+            binding.etEditProfilePhoneNumber
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,7 +55,7 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding){
+        with(binding) {
             btnEditProfileCheck.isEnabled = false  // 버튼을 비활성화 시킴
 
             ivEditProfileProfile.setImageDrawable(userProfileImage)
@@ -67,8 +63,8 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
             etEditProfileName.setText(userInfo[0])
             etEditProfilePhoneNumber.setText(userInfo[1])
             etEditProfileEmail.setText(userInfo[2])
-            setAddButtonEnable()
 
+            setAddButtonEnable()
             setTextChangeLisener()
             setFocusChangedLisener()
 
@@ -83,13 +79,13 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
             btnEditProfileCheck.setOnClickListener {
                 // 마이페이지프래그먼트로 데이터 넘기기
                 okClick?.onClick(
-                    binding.ivEditProfileProfile.drawable,
-                    binding.etEditProfileName.text.toString(),
-                    binding.etEditProfilePhoneNumber.text.toString(),
-                    binding.etEditProfileEmail.text.toString())
+                    ivEditProfileProfile.drawable,
+                    etEditProfileName.text.toString(),
+                    etEditProfilePhoneNumber.text.toString(),
+                    etEditProfileEmail.text.toString())
                 dismiss()
-            }}
-
+            }
+        }
     }
 
     // 전체적으로 에러가 있는지 여부를 판단해 에러가 있는 경우(또는 아무것도 없는 경우) 버튼을 비활성화 시키는 함수
@@ -139,8 +135,8 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
         val number = binding.etEditProfilePhoneNumber.text.toString()
         return when{
             number.isBlank() -> EditMyProfileErrorMessage.EMPTY_PHONE_NUMBER  //전화번호칸이 공백일 때 실행
-            number.length < 13 -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
             number.substring(0 until 3) != "010" -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER  //전화번호가 010으로 시작하지 않을 때 실행
+            number.length < 13 -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
             else -> null
         }?.message?.let{getString(it)}
     }
@@ -157,8 +153,7 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
 
     //이메일의 형식이 알맞는지 체크하는 함수
     private fun String.emailValidCheck() : Boolean{
-        val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-        return Pattern.matches(emailValidation, this)
+        return Pattern.matches(ConstValues.EMAIL_VALID_CHECK, this)
     }
 
     //버튼을 활성화하는 함수
