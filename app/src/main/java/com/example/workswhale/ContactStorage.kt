@@ -1,5 +1,8 @@
 package com.example.workswhale
 
+import android.content.ContentValues.TAG
+import android.util.Log
+
 object ContactStorage {
     var totalContactList: ArrayList<Contact> = ArrayList()
 
@@ -74,11 +77,11 @@ object ContactStorage {
         return str[0].isLetter()
     }
 
-    fun changeLiked(position: Int) {
+    fun changeLiked(position: Int, item: Contact.Person) {
         when (totalContactList[position]) {
             is Contact.Person -> {
-                val curLike = (totalContactList[position] as Contact.Person).isLiked
-                (totalContactList[position] as Contact.Person).isLiked = !curLike
+                val curLike = item.isLiked
+                item.isLiked = !curLike
             }
             else -> Unit
         }

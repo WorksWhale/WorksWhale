@@ -1,11 +1,9 @@
 package com.example.workswhale.contactDetailFragment
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +12,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
+import com.example.workswhale.IntentKeys
 import com.example.workswhale.R
 import com.example.workswhale.databinding.FragmentContactDetailBinding
 
@@ -54,7 +53,7 @@ class ContactDetailFragment : Fragment() {
 
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                arguments?.getInt("position")?.let { updateLike?.update(it) }
+                arguments?.getInt(IntentKeys.EXTRA_POSITION)?.let { updateLike?.update(it) }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
                 requireActivity().supportFragmentManager.popBackStack()
             }
@@ -66,7 +65,7 @@ class ContactDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            receivedItem = it.getParcelable("contact")
+            receivedItem = it.getParcelable(IntentKeys.EXTRA_CONTACT)
         }
     }
 
@@ -87,6 +86,7 @@ class ContactDetailFragment : Fragment() {
                 tvDetailPhoneNumber.text = it.phoneNumber
                 tvDetailEmail.text = it.email
                 tvDetailMemo.text = it.memo
+                tvDetailAlarm.text = it.alarm
                 isLiked = it.isLiked
             }
 
@@ -103,24 +103,28 @@ class ContactDetailFragment : Fragment() {
 
             ivDetailFavorite.setOnClickListener {
                 position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
-                if (!isLiked!!) {
+                if (isLiked == false) {
                     ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                     isLiked = true
-                    changeLike()
+
+                    changeLike(position, receivedItem!!)
+
                 } else {
                     ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                     isLiked = false
-                    changeLike()
+                    changeLike(position, receivedItem!!)
                 }
             }
 
+            //phoneNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
             val phoneNumber =
-                tvDetailPhoneNumber.text//phonNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
+                tvDetailPhoneNumber.text
+
             tvDetailMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
                 val intent = Intent(Intent.ACTION_SENDTO)
                 intent.setData(smsUri)
-                intent.putExtra("sms_body", "") //해당 값에 전달하고자 하는 문자메시지 전달
+                intent.putExtra(IntentKeys.EXTRA_SMS_BODY, "") //해당 값에 전달하고자 하는 문자메시지 전달
                 startActivity(intent)
             }
 
@@ -137,7 +141,7 @@ class ContactDetailFragment : Fragment() {
         super.onResume()
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                arguments?.getInt("position")?.let { updateLike?.update(it) }
+                arguments?.getInt(IntentKeys.EXTRA_POSITION)?.let { updateLike?.update(it) }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
                 requireActivity().supportFragmentManager.popBackStack()
             }
@@ -150,16 +154,16 @@ class ContactDetailFragment : Fragment() {
         _binding = null
     }
 
-    private fun changeLike() {
-        ContactStorage.changeLiked(position)
-    }
-
     companion object {
         fun newInstance(data: Contact.Person) =
             ContactDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable("contact", data)
+                    putParcelable(IntentKeys.EXTRA_CONTACT, data)
                 }
             }
+    }
+
+    private fun changeLike(position: Int, receivedItem: Contact.Person) {
+        ContactStorage.changeLiked(position, receivedItem)
     }
 }

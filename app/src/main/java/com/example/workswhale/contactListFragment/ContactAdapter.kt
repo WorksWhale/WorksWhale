@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.example.workswhale.ConstValues
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
@@ -16,18 +16,13 @@ import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
 import java.util.Collections
 
+interface ContactItemClick {
+    fun onClick(view: View?, data: Contact)
+}
+
 class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable{
 
-    companion object {
-        const val VIEW_TYPE_TITLE = 1
-        const val VIEW_TYPE_LIST = 2
-    }
-
-    interface ItemClick {
-        fun onClick(view: View?, data: Contact)
-    }
-
-    var itemClick: ItemClick? = null
+    var itemClick: ContactItemClick? = null
 
     private val departmentList: List<Int>
         get() = listOf(
@@ -40,8 +35,9 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when(viewType){ // 위치에 해당하는 뷰타입 번호에 맞춰 뷰 생성(레이아웃)
-            VIEW_TYPE_TITLE -> {
+        // 위치에 해당하는 뷰타입 번호에 맞춰 뷰 생성(레이아웃)
+        return when(viewType){
+            ConstValues.VIEW_TYPE_TITLE -> {
                 TitleViewHolder(ContactListTitleBinding.inflate(LayoutInflater.from(parent.context),parent,false))
             }
             else -> {
@@ -51,7 +47,8 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(filteredList[position]) { // 각 뷰에 맞는 객체 데이터 바인딩
+        // 각 뷰에 맞는 객체 데이터 바인딩
+        when(filteredList[position]) {
             is Contact.Title -> (holder as TitleViewHolder).bind(filteredList[position] as Contact.Title)
             is Contact.Person -> (holder as PersonViewHolder).bind(filteredList[position] as Contact.Person)
         }
@@ -70,15 +67,15 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
     override fun getItemViewType(position: Int): Int {
         return when(filteredList[position]) {
-             is Contact.Title -> VIEW_TYPE_TITLE
-             is Contact.Person -> VIEW_TYPE_LIST
+             is Contact.Title -> ConstValues.VIEW_TYPE_TITLE
+             is Contact.Person -> ConstValues.VIEW_TYPE_LIST
         }
     }
 
     inner class TitleViewHolder(private val binding: ContactListTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Title) {
             binding.tvContactListDepartmentTitle.setText(departmentList[item.department])
-            binding.tvContactListDepartmentCount.setText("(${ContactStorage.countDepartment(item.department)})")
+            binding.tvContactListDepartmentCount.text = "(${ContactStorage.countDepartment(item.department)})"
         }
     }
 
@@ -90,8 +87,8 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 } else {
                     ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
                 }
-                tvContactListPersonName.setText(item.name)
-                tvContactListPersonMemo.setText(item.memo)
+                tvContactListPersonName.text = item.name
+                tvContactListPersonMemo.text = item.memo
                 if (item.isLiked) {
                     ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
                 } else {

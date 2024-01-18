@@ -16,16 +16,18 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
-import com.example.workswhale.SwipeHelperCallback
+import com.example.workswhale.IntentKeys
+import com.example.workswhale.R
 import com.example.workswhale.addContactDialog.AddContactDialog
+import com.example.workswhale.addContactDialog.AddContactDialogOkClick
 import com.example.workswhale.databinding.FragmentContactListBinding
 import java.util.Calendar
 
-class ContactListFragment : Fragment() {
+interface FragmentDataListener {
+    fun onDataReceived(data: Contact.Person)
+}
 
-    interface FragmentDataListener {
-        fun onDataReceived(data: Contact.Person)
-    }
+class ContactListFragment : Fragment() {
 
     private var listener: FragmentDataListener? = null
 
@@ -55,14 +57,14 @@ class ContactListFragment : Fragment() {
             rvContactList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             rvContactList.setHasFixedSize(true)
                 adapter.apply {
-                itemClick = object : ContactAdapter.ItemClick {
+                itemClick = object : ContactItemClick {
                     override fun onClick(view: View?, data: Contact) {
                         val clickedItem = data
                         when (val item = data){
                             is Contact.Person ->  {
                                 listener?.onDataReceived(item)
                                 bundle.putParcelable(
-                                    "Contact.Person",
+                                    IntentKeys.EXTRA_CONTACT_PERSON,
                                     clickedItem
                                 )
                             }
@@ -83,7 +85,7 @@ class ContactListFragment : Fragment() {
             // 플로팅 버튼 클릭시, 새로운 사람 추가 기능 구현
             fabContactList.setOnClickListener {
                 val dialog = AddContactDialog()
-                dialog.okClick = object: AddContactDialog.OkClick {
+                dialog.okClick = object: AddContactDialogOkClick {
                     override fun onClick(name: String, second: Int) {
                         adapter.notifyDataSetChanged()
                         setAlarm(name, second)
@@ -114,19 +116,18 @@ class ContactListFragment : Fragment() {
                 // 스와이프한 뒤 고정시킬 위치 지정
                 setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)    // 1080 / 4 = 270
             }
-            ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(binding.rvContactList)
+            ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(rvContactList)
 
 //            // 구분선 추가
 //            binding.rvContactlistList.addItemDecoration(DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL))
 
             // 다른 곳 터치 시 기존 선택했던 뷰 닫기
-            binding.rvContactList.setOnTouchListener { _, _ ->
-                swipeHelperCallback.removePreviousClamp(binding.rvContactList)
+            rvContactList.setOnTouchListener { _, _ ->
+                swipeHelperCallback.removePreviousClamp(rvContactList)
                 false
             }
 
             return binding.root
-
         }
     }
 
@@ -135,13 +136,14 @@ class ContactListFragment : Fragment() {
 
         val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
-            putExtra("name", name)
+            putExtra(IntentKeys.EXTRA_NAME, name)
         }
         val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.SECOND, second)
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-        Toast.makeText(requireContext(), "${name}님에 대한 연락 알람이 설정되었습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),
+            getString(R.string.toast_message_make_notification, name), Toast.LENGTH_SHORT).show()
     }
 
     fun updateLike(position: Int) {

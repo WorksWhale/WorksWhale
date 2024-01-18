@@ -22,4 +22,21 @@
     <string name="alarm_time_five_minutes">5분 뒤</string>
     <string name="alarm_time_ten_minutes">10분 뒤</string>
     <string name="alarm_time_thirty_minutes">30분 뒤</string>
+
+    <string name="alarm_notification_title">연락 알림</string>
+    <string name="alarm_notification_content">%s님한테 연락할 시간입니다.</string>
+
+    <string name="notification_channel_id">alarm</string>
+    <string name="notification_channel_name">Alarm Channel</string>
+    <string name="notification_channel_description">연락할 시간을 알려주는 Notification</string>
+    <string name="notification_action_text">앱으로 이동</string>
+
+    <string name="toast_message_make_notification">%1$s님에 대한 연락 알람이 설정되었습니다.</string>
+
+    <string name="quit_app_dialog_message">앱을 종료하시겠습니까?</string>
+    <string name="quit_app_dialog_positive_btn">종료</string>
+    <string name="quit_app_dialog_negative_btn">취소</string>
+
+    <string name="contact_list_tab">연락처</string>
+    <string name="my_page_tab">마이 페이지</string>
 </resources>
