@@ -14,11 +14,11 @@ import androidx.core.graphics.drawable.toBitmap
 import com.example.workswhale.databinding.FragmentMyPageBinding
 import java.io.ByteArrayOutputStream
 
-class MyPageFragment(): Fragment() {
+class MyPageFragment: Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
 
-    private val sp by lazy {
+    private val sharedPreferences by lazy {
         requireContext().getSharedPreferences("sp", MODE_PRIVATE)
     }
 
@@ -38,8 +38,8 @@ class MyPageFragment(): Fragment() {
     fun updateData(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
         binding.ivMyPageProfileImage.setImageDrawable(profileImage)
         binding.tvMyPageName.text = name
-        binding.tvDetailPhoneNumber.text = phoneNumber
-        binding.tvDetailEmail.text = email
+        binding.tvMyPagePhoneNumber.text = phoneNumber
+        binding.tvMyPageEmail.text = email
 
         saveUserProfile(profileImage, name, phoneNumber, email)
     }
@@ -47,8 +47,8 @@ class MyPageFragment(): Fragment() {
     fun giveData(): List<String> {
         return listOf(
             binding.tvMyPageName.text.toString(),
-            binding.tvDetailPhoneNumber.text.toString(),
-            binding.tvDetailEmail.text.toString()
+            binding.tvMyPagePhoneNumber.text.toString(),
+            binding.tvMyPageEmail.text.toString()
         )
     }
 
@@ -60,7 +60,7 @@ class MyPageFragment(): Fragment() {
         val stream = ByteArrayOutputStream()
         profileImage.toBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream) // Drawable을 Bitmap으로 변환
         val byteArray = stream.toByteArray()
-        val editor = sp.edit()
+        val editor = sharedPreferences.edit()
         editor.putString("storeProfileImage", Base64.encodeToString(byteArray, Base64.DEFAULT)) // Bitmap을 Base64 문자열로 인코딩
         editor.putString("storeName", name)
         editor.putString("storePhoneNumber", phoneNumber)
@@ -69,14 +69,14 @@ class MyPageFragment(): Fragment() {
     }
 
     private fun loadUserProfile() {
-        val storedProfileImage = sp.getString("storeProfileImage", "")
+        val storedProfileImage = sharedPreferences.getString("storeProfileImage", "")
         if (storedProfileImage != "") {
             val byteArray = Base64.decode(storedProfileImage, Base64.DEFAULT) // Base64 문자열을 Bitmap으로 디코딩
             val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
             binding.ivMyPageProfileImage.setImageBitmap(bitmap) // Bitmap을 이용해 이미지 띄우기
-            binding.tvMyPageName.text = sp.getString("storeName", "")
-            binding.tvDetailPhoneNumber.text = sp.getString("storePhoneNumber", "")
-            binding.tvDetailEmail.text = sp.getString("storeEmail", "")
+            binding.tvMyPageName.text = sharedPreferences.getString("storeName", "")
+            binding.tvMyPagePhoneNumber.text = sharedPreferences.getString("storePhoneNumber", "")
+            binding.tvMyPageEmail.text = sharedPreferences.getString("storeEmail", "")
         }
     }
 }

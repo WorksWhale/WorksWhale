@@ -52,10 +52,10 @@ class ContactListFragment : Fragment() {
         val bundle = Bundle() // 번들을 통해 값 전달
         Log.d(TAG, "onCreateView: $bundle")
         with(binding) {
-            rvContactlistList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-            rvContactlistList.setHasFixedSize(true)
+            rvContactList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+            rvContactList.setHasFixedSize(true)
             val adapter = ContactAdapter(ContactStorage.totalContactList)
-                adapter.apply {
+            adapter.apply {
                 itemClick = object : ContactAdapter.ItemClick {
                     override fun onClick(view: View, position: Int) {
 
@@ -110,16 +110,16 @@ class ContactListFragment : Fragment() {
                         }
                     }
             }
-            rvContactlistList.adapter = adapter
-            rvContactlistList.addItemDecoration( // Sticky Header 구현을 위한
-                HeaderItemDecoration(recyclerView = binding.rvContactlistList, isHeader = { position: Int ->
+            rvContactList.adapter = adapter
+            rvContactList.addItemDecoration( // Sticky Header 구현을 위한
+                HeaderItemDecoration(recyclerView = binding.rvContactList, isHeader = { position: Int ->
                     ContactStorage.totalContactList[position] is Contact.Title
                 })
             )
             adapter.notifyDataSetChanged()
 
             // 플로팅 버튼 클릭시, 새로운 사람 추가 기능 구현
-            ftbtnContactlist.setOnClickListener {
+            fabContactList.setOnClickListener {
                 val dialog = AddContactDialog()
                 dialog.okClick = object: AddContactDialog.OkClick {
                     override fun onClick(name: String, second: Int) {

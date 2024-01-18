@@ -143,7 +143,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_message" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_message" />
 
             <TextView
                 android:id="@+id/tv_detail_name"
@@ -159,7 +159,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_name_tab" />
 
             <ImageView
-                android:id="@+id/iv_profile"
+                android:id="@+id/iv_detail_profile"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
@@ -169,64 +169,64 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_favorite"
+                android:id="@+id/tv_detail_favorite"
                 android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/ic_contact_detail_btn_edge"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_detail_profile" />
 
             <ImageView
-                android:id="@+id/iv_favorite"
+                android:id="@+id/iv_detail_favorite"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_contact_detail_empty_favorite"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_favorite"
-                app:layout_constraintEnd_toEndOf="@+id/tv_favorite"
-                app:layout_constraintStart_toStartOf="@+id/tv_favorite"
-                app:layout_constraintTop_toTopOf="@+id/tv_favorite" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_detail_favorite"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_favorite"
+                app:layout_constraintStart_toStartOf="@+id/tv_detail_favorite"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_favorite" />
 
             <TextView
-                android:id="@+id/tv_message"
+                android:id="@+id/tv_detail_message"
                 android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/ic_contact_detail_btn_edge"
-                app:layout_constraintEnd_toStartOf="@+id/tv_call"
-                app:layout_constraintStart_toEndOf="@+id/tv_favorite"
-                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+                app:layout_constraintEnd_toStartOf="@+id/tv_detail_call"
+                app:layout_constraintStart_toEndOf="@+id/tv_detail_favorite"
+                app:layout_constraintTop_toBottomOf="@+id/iv_detail_profile" />
 
             <ImageView
-                android:id="@+id/iv_message"
+                android:id="@+id/iv_detail_message"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_message"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_message"
-                app:layout_constraintEnd_toEndOf="@+id/tv_message"
-                app:layout_constraintStart_toStartOf="@+id/tv_message"
-                app:layout_constraintTop_toTopOf="@+id/tv_message" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_detail_message"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_message"
+                app:layout_constraintStart_toStartOf="@+id/tv_detail_message"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_message" />
 
             <TextView
-                android:id="@+id/tv_call"
+                android:id="@+id/tv_detail_call"
                 android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="25dp"
                 android:background="@drawable/ic_contact_detail_btn_edge"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_detail_profile" />
 
             <ImageView
-                android:id="@+id/iv_call"
+                android:id="@+id/iv_detail_call"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_call"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_call"
-                app:layout_constraintEnd_toEndOf="@+id/tv_call"
-                app:layout_constraintStart_toStartOf="@+id/tv_call"
-                app:layout_constraintTop_toTopOf="@+id/tv_call" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_detail_call"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_call"
+                app:layout_constraintStart_toStartOf="@+id/tv_detail_call"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_call" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

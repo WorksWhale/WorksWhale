@@ -8,7 +8,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_contactlist_list"
+        android:id="@+id/rv_contact_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/ftbtn_contactlist"
+        android:id="@+id/fab_contact_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"

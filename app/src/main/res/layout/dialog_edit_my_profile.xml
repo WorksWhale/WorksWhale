@@ -10,7 +10,7 @@
     android:paddingBottom="25dp">
 
     <ImageView
-        android:id="@+id/iv_profile"
+        android:id="@+id/iv_edit_profile_profile"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="10dp"
@@ -23,7 +23,7 @@
         android:scaleType="centerCrop"/>
 
     <EditText
-        android:id="@+id/editTv_name"
+        android:id="@+id/et_edit_profile_name"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -32,11 +32,11 @@
         android:backgroundTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+        app:layout_constraintTop_toBottomOf="@id/iv_edit_profile_profile" />
 
 
     <EditText
-        android:id="@+id/editTv_phoneNumber"
+        android:id="@+id/et_edit_profile_phone_number"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -46,11 +46,11 @@
         android:backgroundTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTv_name"
+        app:layout_constraintTop_toBottomOf="@id/et_edit_profile_name"
         android:maxLength="13"/>
 
     <EditText
-        android:id="@+id/editTv_email"
+        android:id="@+id/et_edit_profile_email"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -59,19 +59,19 @@
         android:backgroundTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTv_phoneNumber" />
+        app:layout_constraintTop_toBottomOf="@id/et_edit_profile_phone_number" />
 
     <ImageView
-        android:id="@+id/iv_logo"
+        android:id="@+id/iv_edit_profile_logo"
         android:layout_width="150dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTv_email" />
+        app:layout_constraintTop_toBottomOf="@id/et_edit_profile_email" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_cancel"
+        android:id="@+id/btn_edit_profile_cancel"
         android:layout_width="80dp"
         android:layout_height="35dp"
         android:layout_marginEnd="50dp"
@@ -82,15 +82,15 @@
         android:textSize="13sp"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_check"
+        app:layout_constraintEnd_toStartOf="@+id/btn_edit_profile_check"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+        app:layout_constraintTop_toBottomOf="@id/iv_edit_profile_logo" />
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_check"
+        android:id="@+id/btn_edit_profile_check"
         android:layout_width="80dp"
         android:layout_height="35dp"
         android:layout_marginBottom="10dp"
@@ -102,7 +102,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_cancel"
-        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+        app:layout_constraintStart_toEndOf="@+id/btn_edit_profile_cancel"
+        app:layout_constraintTop_toBottomOf="@id/iv_edit_profile_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

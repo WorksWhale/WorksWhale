@@ -51,7 +51,7 @@
                 tools:text="민지" />
 
             <TextView
-                android:id="@+id/tv_detail_phone_number_tab"
+                android:id="@+id/tv_my_page_phone_number_tab"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="4dp"
@@ -66,18 +66,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_page_name" />
 
             <TextView
-                android:id="@+id/tv_detail_phone_number"
+                android:id="@+id/tv_my_page_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:paddingHorizontal="15dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number_tab"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_phone_number_tab"
                 tools:text="010-1234-5678" />
 
             <TextView
-                android:id="@+id/tv_detail_email_tab"
+                android:id="@+id/tv_my_page_email_tab"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="4dp"
@@ -89,17 +89,17 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_phone_number" />
 
             <TextView
-                android:id="@+id/tv_detail_email"
+                android:id="@+id/tv_my_page_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:paddingHorizontal="15dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_email_tab"
+                app:layout_constraintTop_toBottomOf="@+id/tv_my_page_email_tab"
                 tools:text="iamwhale@sea.com" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

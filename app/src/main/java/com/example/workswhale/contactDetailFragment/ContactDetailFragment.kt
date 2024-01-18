@@ -12,14 +12,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.workswhale.Contact
-import com.example.workswhale.ContactAdapter
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
 import com.example.workswhale.databinding.FragmentContactDetailBinding
-import com.example.workswhale.mainActivity.MainActivity
 
-
-class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
+class ContactDetailFragment : Fragment() {
 
     private var binding: FragmentContactDetailBinding? = null
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
@@ -57,9 +54,9 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
 
         receivedItem?.let {
             if (ContactStorage.checkStartAlphabet(it.profileImage)) {
-                binding!!.ivProfile.setImageURI(it.profileImage.toUri())
+                binding!!.ivDetailProfile.setImageURI(it.profileImage.toUri())
             } else {
-                binding!!.ivProfile.setImageResource(it.profileImage.toInt())
+                binding!!.ivDetailProfile.setImageResource(it.profileImage.toInt())
             }
             binding!!.tvDetailName.text = it.name
             binding!!.tvDetailPhoneNumber.text = it.phoneNumber
@@ -71,7 +68,7 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
         binding!!.tvDetailDepartment.text =
             requireContext().getString(departmentList[receivedItem!!.department])
 
-        binding!!.ivFavorite.setImageResource(
+        binding!!.ivDetailFavorite.setImageResource(
             if (isLiked) {
                 R.drawable.ic_contact_detail_fill_favorite
             } else {
@@ -79,16 +76,16 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
             }
         )
 
-        binding!!.ivFavorite.setOnClickListener {
+        binding!!.ivDetailFavorite.setOnClickListener {
             if (!isLiked) {
-                binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
+                binding!!.ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                 isLiked = true
                 ContactStorage.changeLiked(position)
                 Log.d(TAG, "ivFavoriteClicked: $isLiked")
                 Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
 
             } else {
-                binding!!.ivFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
+                binding!!.ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                 isLiked = false
                 ContactStorage.changeLiked(position)
                 Log.d(TAG, "ivFavoriteClicked: $isLiked")
@@ -100,7 +97,7 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
 
         with(binding) {
 
-            this!!.tvMessage.setOnClickListener {
+            this!!.tvDetailMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
                 val intent = Intent(Intent.ACTION_SENDTO)
                 intent.setData(smsUri)
@@ -108,7 +105,7 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
                 startActivity(intent)
             }
 
-            this.tvCall.setOnClickListener {
+            this.tvDetailCall.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
                 startActivity(intent)
             }
@@ -127,24 +124,5 @@ class ContactDetailFragment : Fragment(), MainActivity.onBackPressedListener {
                     putInt("position", position)
                 }
             }
-    }
-
-    override fun onBackPressed() {
-//        val bundle = Bundle() // 번들을 통해 값 전달
-//        val clickedItem = receivedItem
-//        clickedItem!!.isLiked = isLiked
-//        Log.d(TAG, "onBackPressed: $clickedItem")
-//        Log.d(TAG, "onBackPressed: $isLiked")
-//        bundle.putBoolean("isLiked", isLiked)
-//        bundle.putParcelable(
-//            "Contact.Person",
-//            clickedItem
-//        )
-        val adapter = ContactAdapter(ContactStorage.totalContactList)
-        adapter.notifyItemChanged(position)
-        adapter.notifyDataSetChanged()
-
-        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
-        requireActivity().supportFragmentManager.popBackStack()
     }
 }

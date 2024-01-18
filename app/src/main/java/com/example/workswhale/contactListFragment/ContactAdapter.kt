@@ -78,8 +78,8 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         )
     inner class TitleViewHolder(private val binding: ContactListTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Title) {
-            binding.tvListtitle.setText(departmentList[item.department])
-            binding.tvDepartmentCount.setText("(${ContactStorage.countDepartment(item.department)})")
+            binding.tvContactListDepartmentTitle.setText(departmentList[item.department])
+            binding.tvContactListDepartmentCount.setText("(${ContactStorage.countDepartment(item.department)})")
         }
     }
 
@@ -87,16 +87,16 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         fun bind(item : Contact.Person) {
             with(binding) {
                 if (ContactStorage.checkStartAlphabet(item.profileImage)) {
-                    binding.ivContactlistProfile.setImageURI(item.profileImage.toUri())
+                    binding.ivContactListPersonProfile.setImageURI(item.profileImage.toUri())
                 } else {
-                    binding.ivContactlistProfile.setImageResource(item.profileImage.toInt())
+                    binding.ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
                 }
-                tvContactlistName.setText(item.name)
-                tvContactlistMemo.setText(item.memo)
+                tvContactListPersonName.setText(item.name)
+                tvContactListPersonMemo.setText(item.memo)
                 if (item.isLiked) {
-                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
+                    ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_fill_favorite)
                 } else {
-                    ivContactlistFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
+                    ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
                 }
             }
         }

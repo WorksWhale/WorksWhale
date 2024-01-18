@@ -1,13 +1,19 @@
 package com.example.workswhale.mainActivity
 
+import android.Manifest
 import android.content.ContentValues.TAG
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.commit
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Build
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.example.workswhale.Contact
 import com.example.workswhale.contactDetailFragment.ContactDetailFragment
@@ -18,32 +24,51 @@ import com.example.workswhale.editMyProfileDialog.EditMyProfileDialog
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListener {
+    // 하단의 뒤로가기 버튼을 눌렀을 때 종료 확인 다이얼로그가 뜨는 콜백 함수
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val builder = AlertDialog.Builder(this@MainActivity,
+                R.style.MyAlertDialogStyle
+            )
+            builder.setTitle("WorksWhale")
+            builder.setMessage("앱을 종료하시겠습니까?")
+            builder.setIcon(R.drawable.ic_logo_white)
+            builder.setCancelable(false)
+            val listener = DialogInterface.OnClickListener { dialog, which ->
+                finish()
+            }
+            builder.setPositiveButton("종료", listener)
+            builder.setNegativeButton("취소", null)
+            builder.show()
+        }
+    }
+
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private var menuIcon = R.drawable.ic_main_view_type_grid_btn
-    private var menuType = 2
     lateinit var detailFragment: ContactDetailFragment
 
-    interface onBackPressedListener {
-        fun onBackPressed()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        this.onBackPressedDispatcher.addCallback(this, callback)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)
+        }
 
         window.apply {
             // 상태바의 아이콘과 배경색 변경
             statusBarColor = Color.WHITE
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
         }
-
         val adapter = ViewPagerAdapter(this)
         binding.viewPagerMain.adapter = adapter
 
-        TabLayoutMediator(binding.tabLayoutBottom, binding.viewPagerMain) { tab, position ->
+        TabLayoutMediator(binding.tabLayoutMainBottom, binding.viewPagerMain) { tab, position ->
             when (position) {
                 0 -> tab.text = "연락처"
                 1 -> tab.text = "마이 페이지"
@@ -51,31 +76,17 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
         }.attach()
 
         binding.ivMainMenu.setOnClickListener {
-            when (menuType) {
-                0 -> { // 그리드 교체
-                    menuIcon = R.drawable.ic_main_view_type_list_btn
-                    menuType = 1
-                    binding.ivMainMenu.setImageResource(menuIcon)
-                }
-                1 -> { // 리스트 교체
-                    menuIcon = R.drawable.ic_main_view_type_grid_btn
-                    menuType = 0
-                    binding.ivMainMenu.setImageResource(menuIcon)
-                }
-                else -> {
-                    val userInfo = adapter.getInfo()
-                    val userProfileImage = adapter.getImageInfo()
-                    val editMyPageDialog = EditMyProfileDialog(userInfo, userProfileImage)
-                    editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
-                        override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
-                            adapter.editInfo(profileImage, name, phoneNumber, email)
-                        }
-                    }
-                    editMyPageDialog.show(
-                        supportFragmentManager, "EditMyProfileDialog"
-                    )
+            val userInfo = adapter.getInfo()
+            val userProfileImage = adapter.getImageInfo()
+            val editMyPageDialog = EditMyProfileDialog(userInfo, userProfileImage)
+            editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
+                override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
+                    adapter.editInfo(profileImage, name, phoneNumber, email)
                 }
             }
+            editMyPageDialog.show(
+                supportFragmentManager, "EditMyProfileDialog"
+            )
         }
 
         binding.viewPagerMain.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
@@ -83,12 +94,10 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
                 super.onPageSelected(position)
                 when (position) {
                     0 -> {
-                        binding.ivMainMenu.setImageResource(menuIcon)
-                        menuType -= 2
+                        binding.ivMainMenu.isVisible = false
                     }
                     else -> {
-                        binding.ivMainMenu.setImageResource(R.drawable.ic_main_edit_user_info_btn)
-                        menuType += 2
+                        binding.ivMainMenu.isVisible = true
                     }
                 }
             }
@@ -98,22 +107,11 @@ class MainActivity : AppCompatActivity(), ContactListFragment.FragmentDataListen
     override fun onDataReceived(data: Contact.Person, position: Int) {
         supportFragmentManager.commit {
             detailFragment = ContactDetailFragment.newInstance(data, position)
-            replace(R.id.frameLayout, detailFragment)
+            replace(R.id.frame_layout_main, detailFragment)
             setReorderingAllowed(true)
             addToBackStack("")
             Log.d(TAG, "onDataReceived: $data")
         }
     }
 
-    override fun onBackPressed(){
-        //아래와 같은 코드를 추가하도록 한다
-        //해당 엑티비티에서 띄운 프래그먼트에서 뒤로가기를 누르게 되면 프래그먼트에서 구현한 onBackPressed 함수가 실행되게 된다.
-        val fragmentList = supportFragmentManager.fragments
-        for (fragment in fragmentList) {
-            if (fragment is onBackPressedListener) {
-                (fragment as onBackPressedListener).onBackPressed()
-                return
-            }
-        }
-    }
 }
