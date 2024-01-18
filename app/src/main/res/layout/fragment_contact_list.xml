@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".contactListFragment.ContactListFragment">
 
-    <ScrollView
+    <android.widget.SearchView
         android:id="@+id/sv_contact_list_search"
         android:layout_width="0dp"
         android:layout_height="40dp"
