@@ -69,6 +69,7 @@ class ContactListFragment : Fragment() {
             rvContactList.adapter = adapter
             rvContactList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             rvContactList.setHasFixedSize(true)
+                //리스트에서 클릭한 아이템의 데이터를 ContactDetailFragment에 전달
                 adapter.apply {
                 itemClick = object : ContactItemClick {
                     override fun onClick(view: View?, data: Contact) {
@@ -166,6 +167,7 @@ class ContactListFragment : Fragment() {
             getString(R.string.toast_message_make_notification, name), Toast.LENGTH_SHORT).show()
     }
 
+    // 리스트에서 isLiked가 변경된 데이터가 있으면 해당 데이터만 갱신하고 아이콘 변경
     fun updateLike(position: Int) {
         adapter.notifyItemChanged(position)
     }

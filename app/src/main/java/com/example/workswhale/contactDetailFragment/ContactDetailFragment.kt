@@ -64,6 +64,7 @@ class ContactDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //ContactListFragment에서 전달받은 데이터를 receivedItem에 저장
         arguments?.let {
             receivedItem = it.getParcelable(IntentKeys.EXTRA_CONTACT)
         }
@@ -75,6 +76,7 @@ class ContactDetailFragment : Fragment() {
     ): View {
         _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
 
+        //with로 묶어서 바인딩 처리
         with(binding) {
             receivedItem?.let {
                 if (ContactStorage.checkStartAlphabet(it.profileImage)) {
@@ -90,9 +92,11 @@ class ContactDetailFragment : Fragment() {
                 isLiked = it.isLiked
             }
 
+            // 부서 값이 Int형이므로 departmentList의 인덱스로 넣어 String 값 반환
             tvDetailDepartment.text =
                 requireContext().getString(departmentList[receivedItem!!.department])
 
+            // 가져온 데이터에서 isLiked 값에 따라 아이콘 변경
             ivDetailFavorite.setImageResource(
                 if (isLiked == true) {
                     R.drawable.ic_contact_detail_fill_favorite
@@ -101,6 +105,7 @@ class ContactDetailFragment : Fragment() {
                 }
             )
 
+            // 좋아요 아이콘 클릭 시 아이콘 상태에 따라 아이콘 변경 및 isLiked 값 변경
             ivDetailFavorite.setOnClickListener {
                 position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
                 if (isLiked == false) {
@@ -120,6 +125,7 @@ class ContactDetailFragment : Fragment() {
             val phoneNumber =
                 tvDetailPhoneNumber.text
 
+            // phoneNumber에 들어간 번호로 메시지 대화 시작
             tvDetailMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
                 val intent = Intent(Intent.ACTION_SENDTO)
@@ -128,6 +134,7 @@ class ContactDetailFragment : Fragment() {
                 startActivity(intent)
             }
 
+            // phoneNumber를 가지고 다이얼이 들어간 전화 앱을 실행
             tvDetailCall.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
                 startActivity(intent)
@@ -140,6 +147,7 @@ class ContactDetailFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         callback = object : OnBackPressedCallback(true) {
+            //상세정보에서 뒤로가기를 눌렀을 경우 변경된 값을 arguments를 통해서 전달
             override fun handleOnBackPressed() {
                 arguments?.getInt(IntentKeys.EXTRA_POSITION, position)?.let { updateLike?.update(it) }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
@@ -163,6 +171,7 @@ class ContactDetailFragment : Fragment() {
             }
     }
 
+    // 상세정보에 있는 데이터를 totalContactList와 비교하여 isLiked 값을 변경
     private fun changeLike(position: Int, receivedItem: Contact.Person) {
         ContactStorage.changeLiked(position, receivedItem)
     }
