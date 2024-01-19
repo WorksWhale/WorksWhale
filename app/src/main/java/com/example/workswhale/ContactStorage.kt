@@ -24,6 +24,7 @@ object ContactStorage {
             add(Contact.Person(R.drawable.img_person_9.toString(),"유재석","010-7878-7878",3,"abc@sparta.com","영업 3등", false, "OFF"))
             add(Contact.Person(R.drawable.img_person_10.toString(),"장원영","010-7878-7878",3,"abc@sparta.com","영업 1등", false, "OFF"))
             add(Contact.Title(4))
+            add(Contact.Person(R.drawable.img_person_11.toString(),"로날두","010-5542-7878",4,"abc@sparta.com","돈 많음", false, "OFF"))
             add(Contact.Title(5))
         }
     }

@@ -21,6 +21,7 @@ import com.example.workswhale.contactListFragment.FragmentDataListener
 import com.example.workswhale.contactListFragment.SearchViewFocusListener
 import com.example.workswhale.databinding.ActivityMainBinding
 import com.example.workswhale.editMyProfileDialog.EditMyProfileDialog
+import com.example.workswhale.editMyProfileDialog.OkClick
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity(), FragmentDataListener, UpdateLike,
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity(), FragmentDataListener, UpdateLike,
                 val userInfo = adapter.getInfo()
                 val userProfileImage = adapter.getImageInfo()
                 val editMyPageDialog = EditMyProfileDialog(userInfo, userProfileImage)
-                editMyPageDialog.okClick = object: EditMyProfileDialog.OkClick {
+                editMyPageDialog.okClick = object: OkClick {
                     override fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String) {
                         adapter.editInfo(profileImage, name, phoneNumber, email)
                     }

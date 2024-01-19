@@ -27,8 +27,7 @@
                 android:gravity="center"
                 android:text="삭제"
                 android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
+                android:textSize="18sp" />
 
 
             <LinearLayout
@@ -48,6 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:background="@color/white"
+                android:clickable="true"
                 tool:ignore="MissingConstraints">
 
                 <de.hdodenhof.circleimageview.CircleImageView

@@ -17,11 +17,11 @@ import com.example.workswhale.ConstValues
 import com.example.workswhale.databinding.DialogEditMyProfileBinding
 import java.util.regex.Pattern
 
-class EditMyProfileDialog(private val userInfo: List<String>, private val userProfileImage: Drawable) : DialogFragment() {
+interface OkClick {
+    fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String)
+}
 
-    interface OkClick {
-        fun onClick(profileImage: Drawable, name: String, phoneNumber: String, email: String)
-    }
+class EditMyProfileDialog(private val userInfo: List<String>, private val userProfileImage: Drawable) : DialogFragment() {
 
     var okClick: OkClick? = null
 
