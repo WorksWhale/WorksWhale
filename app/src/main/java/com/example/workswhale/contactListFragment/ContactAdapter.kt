@@ -97,6 +97,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 }
                 swipeDelete.setOnClickListener {
                     removeData(position)
+                    notifyDataSetChanged()
                 }
             }
         }
