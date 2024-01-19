@@ -107,7 +107,7 @@ class ContactDetailFragment : Fragment() {
                 }
             }
             val phoneNumber =
-                tvDetailPhoneNumber.text//phonNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
+                tvDetailPhoneNumber.text//phoneNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
 
             tvDetailMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
