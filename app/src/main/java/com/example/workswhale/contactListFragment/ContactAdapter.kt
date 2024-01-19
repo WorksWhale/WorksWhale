@@ -56,6 +56,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, filteredList[position])
         }
+
     }
 
     override fun getItemCount(): Int {
@@ -94,6 +95,9 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 } else {
                     ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
                 }
+                swipeDelete.setOnClickListener {
+                    removeData(position)
+                }
             }
         }
     }
@@ -127,7 +131,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
 
     // position 위치의 데이터를 삭제 후 어댑터 갱신
-    fun removeData(position: Int, view : View){
+    fun removeData(position: Int) {
         dataList.removeAt(position)
         notifyItemRemoved(position)
     }
