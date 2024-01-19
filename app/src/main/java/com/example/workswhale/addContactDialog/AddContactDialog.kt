@@ -1,5 +1,6 @@
 package com.example.workswhale.addContactDialog
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -37,6 +38,7 @@ class AddContactDialog: DialogFragment() {
     private var imageUri: Uri? = null
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
+            context?.grantUriPermission("com.example.workswhale", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             binding.ivAddContactDefaultImage.setImageURI(uri)
             binding.ivAddContactDefaultImage.scaleType = ImageView.ScaleType.CENTER_CROP
             imageUri = uri
@@ -127,7 +129,7 @@ class AddContactDialog: DialogFragment() {
                         department = department,
                         email = etAddContactEmail.text.toString(),
                         memo = etAddContactMemo.text.toString(),
-                        profileImage = imageUri.toString(),
+                        profileImage = imageUri,
                         isLiked = false,
                         alarm = timeString
                     )

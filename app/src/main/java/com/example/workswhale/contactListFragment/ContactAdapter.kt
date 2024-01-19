@@ -1,13 +1,11 @@
 package com.example.workswhale.contactListFragment
 
 import android.annotation.SuppressLint
-import android.icu.text.CaseMap.Title
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workswhale.ConstValues
 import com.example.workswhale.Contact
@@ -15,7 +13,6 @@ import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
 import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
-import java.util.Collections
 
 interface ContactItemClick {
     fun onClick(view: View?, data: Contact)
@@ -84,10 +81,10 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     inner class PersonViewHolder(private  val binding: ContactListPersonBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Person) {
             with(binding) {
-                if (ContactStorage.checkStartAlphabet(item.profileImage)) {
-                    ivContactListPersonProfile.setImageURI(item.profileImage.toUri())
+                if (item.profileImage == null) {
+                    ivContactListPersonProfile.setImageResource(R.drawable.img_default_profile)
                 } else {
-                    ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
+                    ivContactListPersonProfile.setImageURI(item.profileImage)
                 }
                 tvContactListPersonName.text = item.name
                 tvContactListPersonMemo.text = item.memo
@@ -96,11 +93,6 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 } else {
                     ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
                 }
-//                swipeDelete.setOnClickListener {
-//                    if(item.isOpen){
-//                     removeData(position)
-//                    }
-//                }
             }
         }
     }

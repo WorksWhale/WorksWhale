@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
@@ -79,10 +78,10 @@ class ContactDetailFragment : Fragment() {
         //with로 묶어서 바인딩 처리
         with(binding) {
             receivedItem?.let {
-                if (ContactStorage.checkStartAlphabet(it.profileImage)) {
-                    ivDetailProfile.setImageURI(it.profileImage.toUri())
+                if (it.profileImage == null) {
+                    ivDetailProfile.setImageResource(R.drawable.img_default_profile)
                 } else {
-                    ivDetailProfile.setImageResource(it.profileImage.toInt())
+                    ivDetailProfile.setImageURI(it.profileImage)
                 }
                 tvDetailName.text = it.name
                 tvDetailPhoneNumber.text = it.phoneNumber
