@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workswhale.Contact
@@ -140,7 +141,7 @@ class ContactListFragment : Fragment() {
             ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(rvContactList)
 
 //            // 구분선 추가
-//            binding.rvContactlistList.addItemDecoration(DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL))
+            binding.rvContactList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
             // 다른 곳 터치 시 기존 선택했던 뷰 닫기
             rvContactList.setOnTouchListener { _, _ ->

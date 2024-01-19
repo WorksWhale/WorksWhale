@@ -1,9 +1,13 @@
 package com.example.workswhale.contactListFragment
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
@@ -11,28 +15,33 @@ import com.example.workswhale.ConstValues
 import com.example.workswhale.R
 import kotlin.math.max
 
+
 // 롱터치 후 드래그, 스와이프 동작 제어
-class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : ItemTouchHelper.Callback() {
+class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : Callback() {
 
     // swipe_view 를 swipe 했을 때 <삭제> 화면이 보이도록 고정하기 위한 변수들
     private var currentPosition: Int? = null    // 현재 선택된 recycler view의 position
     private var previousPosition: Int? = null   // 이전에 선택했던 recycler view의 position
     private var currentDx = 0f                  // 현재 x 값
     private var clamp = 0f                      // 고정시킬 크기
+    private val deleteIcon = R.drawable.ic_main_view_type_grid_btn
+    private val background = ColorDrawable()
+    private val backgroundColor = Color.parseColor("#f44336")
+    private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
     // 이동 방향 결정하기
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         // 드래그 방향 : 위, 아래 인식
         // 스와이프 방향 : 왼쪽, 오른쪽 인식
         // 설정 안 하고 싶으면 0
-        return makeMovementFlags(UP or DOWN, LEFT or RIGHT)
+        return makeMovementFlags(0, RIGHT)
     }
 
     // 드래그 일어날 때 동작 (롱터치 후 드래그)
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        target: RecyclerView.ViewHolder,
     ): Boolean {
         // 리사이클러뷰에서 현재 선택된 데이터와 드래그한 위치에 있는 데이터를 교환
         val fromPos: Int = viewHolder.adapterPosition
@@ -44,7 +53,12 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
     // 스와이프 일어날 때 동작
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         // 스와와이프 끝까지 하면 해당 데이터 삭제하기 -> 스와이프 후 <삭제> 버튼 눌러야 삭제 되도록 변경
-//        recyclerViewAdapter.removeData()
+//        recyclerViewAdapter.removeData(direction)
+
+            if (viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
+
+        recyclerViewAdapter.removeData(viewHolder.layoutPosition)
+        recyclerViewAdapter.notifyDataSetChanged()
     }
 
     // -------------swipe 됐을 때 일어날 동작---------------
@@ -55,7 +69,7 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         currentDx = 0f                                      // 현재 x 위치 초기화
         previousPosition = viewHolder.adapterPosition       // 드래그 또는 스와이프 동작이 끝난 view의 position 기억하기
-        if(viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
+//        if(viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
         getDefaultUIUtil().clearView(getView(viewHolder))
     }
 
@@ -70,6 +84,67 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
     }
 
     // 아이템을 터치하거나 스와이프하는 등 뷰에 변화가 생길 경우 호출
+//    override fun onChildDraw(
+//        c: Canvas,
+//        recyclerView: RecyclerView,
+//        viewHolder: RecyclerView.ViewHolder,
+//        dX: Float,
+//        dY: Float,
+//        actionState: Int,
+//        isCurrentlyActive: Boolean,
+//    ) {
+//        val itemView = viewHolder.itemView
+//        val itemHeight = itemView.bottom - itemView.top
+//        val isCanceled = dX == 0f && !isCurrentlyActive
+//
+//        // Draw the red delete background
+//        background.color = backgroundColor
+//        background.setBounds(
+//            itemView.left + dX.toInt(),
+//            itemView.top,
+//            itemView.left,
+//            itemView.bottom
+//        )
+//        background.draw(c)
+//
+//        // Calculate position of delete icon
+//        val deleteIconTop = itemView.top + (itemHeight) / 2
+//        val deleteIconMargin = (itemHeight) / 2
+//        val deleteIconLeft = itemView.right - deleteIconMargin
+//        val deleteIconRight = itemView.right - deleteIconMargin
+//        val deleteIconBottom = deleteIconTop
+//
+//        // Draw the delete icon
+//
+//        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+//        if (actionState == ACTION_STATE_SWIPE) {
+//            if(viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
+////            val view = getView(viewHolder)
+////            val isClamped = getTag(viewHolder)      // 고정할지 말지 결정, true : 고정함 false : 고정 안 함
+////            Log.d("swipe", "isClamped = $isClamped")
+////            val newX = clampViewPositionHorizontal(dX, isClamped, isCurrentlyActive)  // newX 만큼 이동(고정 시 이동 위치/고정 해제 시 이동 위치 결정)
+////            Log.d("swipe2", "isCurrentlyActive = $isCurrentlyActive")
+////
+////            // 고정시킬 시 애니메이션 추가
+//////            if (newX == clamp) {
+//////                getView(viewHolder).animate().translationX(clamp).setDuration(100L).start()
+//////                return
+//////            }
+////
+////            currentDx = -newX
+////            getDefaultUIUtil().onDraw(
+////                c,
+////                recyclerView,
+////                view,
+////                newX,
+////                dY,
+////                actionState,
+////                isCurrentlyActive
+////            )
+//        }
+//    }
+
+    @SuppressLint("ResourceAsColor")
     override fun onChildDraw(
         c: Canvas,
         recyclerView: RecyclerView,
@@ -79,43 +154,52 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        if (actionState == ACTION_STATE_SWIPE) {
-            if(viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
-            val view = getView(viewHolder)
-            val isClamped = getTag(viewHolder)      // 고정할지 말지 결정, true : 고정함 false : 고정 안 함
-            Log.d("swipe", "isClamped = $isClamped")
-            val newX = clampViewPositionHorizontal(dX, isClamped, isCurrentlyActive)  // newX 만큼 이동(고정 시 이동 위치/고정 해제 시 이동 위치 결정)
-            Log.d("swipe2", "isCurrentlyActive = $isCurrentlyActive")
+        Log.d("ASDF", "실행 : onChildDraw")
+        val itemView = viewHolder.itemView
+        val itemHeight = itemView.bottom - itemView.top
+        val isCanceled = dX == 0f && !isCurrentlyActive
 
-            // 고정시킬 시 애니메이션 추가
-            if (newX == clamp) {
-                getView(viewHolder).animate().translationX(clamp).setDuration(100L).start()
-                return
-            }
-
-            currentDx = -newX
-            getDefaultUIUtil().onDraw(
-                c,
-                recyclerView,
-                view,
-                newX,
-                dY,
-                actionState,
-                isCurrentlyActive
-            )
+        if (isCanceled) {
+            clearCanvas(c, itemView.left + dX, itemView.top.toFloat(), itemView.left.toFloat(), itemView.bottom.toFloat())
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            return
         }
+
+        if (actionState == ACTION_STATE_SWIPE) {
+            if (viewHolder.itemViewType == ConstValues.VIEW_TYPE_TITLE) return
+        }
+
+        // Draw the red delete background
+        background.color = Color.parseColor("#f44336")
+        background.setBounds(itemView.left + dX.toInt(), itemView.top, itemView.left, itemView.bottom)
+        background.draw(c)
+
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
 
+//    private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
+//        c?.drawRect(left, top, right, bottom, clearPaint)
+//    }
+//
+//    private fun getView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(
+//        R.id.item
+//    )
+
+
+
+    private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
+        c?.drawRect(left, top, right, bottom, clearPaint)
+    }
     // 사용자가 view를 swipe 했다고 간주할 최소 속도 정하기
     override fun getSwipeEscapeVelocity(defaultValue: Float): Float = defaultValue * 10
 
     // 사용자가 view를 swipe 했다고 간주하기 위해 이동해야하는 부분 반환
     // (사용자가 손을 떼면 호출됨)
-    override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
-        // -clamp 이상 swipe시 isClamped를 true로 변경 아닐시 false로 변경
-        setTag(viewHolder, currentDx <= -clamp)
-        return 2f
-    }
+//    override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+//        // -clamp 이상 swipe시 isClamped를 true로 변경 아닐시 false로 변경
+//        setTag(viewHolder, currentDx <= -clamp)
+//        return 2f
+//    }
 
     // swipe_view 반환 -> swipe_view만 이동할 수 있게 해줌
     private fun getView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(
@@ -126,7 +210,7 @@ class SwipeHelperCallback(private val recyclerViewAdapter : ContactAdapter)  : I
     private fun clampViewPositionHorizontal(
         dX: Float,
         isClamped: Boolean,
-        isCurrentlyActive: Boolean
+        isCurrentlyActive: Boolean,
     ) : Float {
         // RIGHT 방향으로 swipe 막기
         val max = 0f
