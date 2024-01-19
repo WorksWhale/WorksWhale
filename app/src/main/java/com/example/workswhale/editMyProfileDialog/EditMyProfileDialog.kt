@@ -135,8 +135,8 @@ class EditMyProfileDialog(private val userInfo: List<String>, private val userPr
         val number = binding.etEditProfilePhoneNumber.text.toString()
         return when{
             number.isBlank() -> EditMyProfileErrorMessage.EMPTY_PHONE_NUMBER  //전화번호칸이 공백일 때 실행
-            number.substring(0 until 3) != "010" -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER  //전화번호가 010으로 시작하지 않을 때 실행
             number.length < 13 -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER_LENGTH  //전화번호의 길이가 일정 수준인지 체크하고 초과했을 때 실행
+            number.substring(0 until 3) != "010" -> EditMyProfileErrorMessage.INVALID_PHONE_NUMBER  //전화번호가 010으로 시작하지 않을 때 실행
             else -> null
         }?.message?.let{getString(it)}
     }
