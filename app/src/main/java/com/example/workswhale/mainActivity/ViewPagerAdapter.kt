@@ -8,6 +8,7 @@ import com.example.workswhale.myPageFragment.MyPageFragment
 import com.example.workswhale.contactListFragment.ContactListFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity) {
+
     private val myPageFragment = MyPageFragment()
     private val contactListFragment = ContactListFragment()
 
@@ -35,6 +36,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
         return myPageFragment.giveImageData()
     }
 
+    //ContactListFragment의 isLiked 값 상태를 바꾸는 함수
     fun updateLike(position: Int) {
         contactListFragment.updateLike(position)
     }

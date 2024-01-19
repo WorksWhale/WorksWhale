@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.example.workswhale.ConstValues
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
 import com.example.workswhale.R
@@ -16,24 +16,28 @@ import com.example.workswhale.databinding.ContactListPersonBinding
 import com.example.workswhale.databinding.ContactListTitleBinding
 import java.util.Collections
 
-class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable{
-    companion object {
-        const val VIEW_TYPE_TITLE = 1
-        const val VIEW_TYPE_LIST = 2
+interface ContactItemClick {
+    fun onClick(view: View?, data: Contact)
+}
 
-    }
-    interface ItemClick {
-        fun onClick(view: View?, data: Contact)
-    }
-    interface ItemLongClick {
-        fun onLongClick(view : View, position : Int)
-    }
-    var itemClick: ItemClick? = null
-    var itemLongClick : ItemLongClick? = null
+class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable{
+
+    var itemClick: ContactItemClick? = null
+
+    private val departmentList: List<Int>
+        get() = listOf(
+            R.string.human_resources_department,
+            R.string.public_relations_department,
+            R.string.research_development_department,
+            R.string.planning_department,
+            R.string.accounting_department,
+            R.string.sales_department
+        )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when(viewType){ // 위치에 해당하는 뷰타입 번호에 맞춰 뷰 생성(레이아웃)
-            VIEW_TYPE_TITLE -> {
+        // 위치에 해당하는 뷰타입 번호에 맞춰 뷰 생성(레이아웃)
+        return when(viewType){
+            ConstValues.VIEW_TYPE_TITLE -> {
                 TitleViewHolder(ContactListTitleBinding.inflate(LayoutInflater.from(parent.context),parent,false))
             }
             else -> {
@@ -43,7 +47,8 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(filteredList[position]) { // 각 뷰에 맞는 객체 데이터 바인딩
+        // 각 뷰에 맞는 객체 데이터 바인딩
+        when(filteredList[position]) {
             is Contact.Title -> (holder as TitleViewHolder).bind(filteredList[position] as Contact.Title)
             is Contact.Person -> (holder as PersonViewHolder).bind(filteredList[position] as Contact.Person)
         }
@@ -52,10 +57,6 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
             itemClick?.onClick(it, filteredList[position])
         }
 
-        holder.itemView.setOnLongClickListener{
-            itemLongClick?.onLongClick(it,position)
-            return@setOnLongClickListener true
-        }
     }
 
     override fun getItemCount(): Int {
@@ -67,20 +68,11 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
     override fun getItemViewType(position: Int): Int {
         return when(filteredList[position]) {
-             is Contact.Title -> VIEW_TYPE_TITLE
-             is Contact.Person -> VIEW_TYPE_LIST
+             is Contact.Title -> ConstValues.VIEW_TYPE_TITLE
+             is Contact.Person -> ConstValues.VIEW_TYPE_LIST
         }
     }
 
-    private val departmentList: List<Int>
-        get() = listOf(
-            R.string.human_resources_department,
-            R.string.public_relations_department,
-            R.string.research_development_department,
-            R.string.planning_department,
-            R.string.accounting_department,
-            R.string.sales_department
-        )
     inner class TitleViewHolder(private val binding: ContactListTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : Contact.Title) {
             binding.tvContactListDepartmentTitle.setText(departmentList[item.department])
@@ -92,9 +84,9 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
         fun bind(item : Contact.Person) {
             with(binding) {
                 if (ContactStorage.checkStartAlphabet(item.profileImage)) {
-                    binding.ivContactListPersonProfile.setImageURI(item.profileImage.toUri())
+                    ivContactListPersonProfile.setImageURI(item.profileImage.toUri())
                 } else {
-                    binding.ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
+                    ivContactListPersonProfile.setImageResource(item.profileImage.toInt())
                 }
                 tvContactListPersonName.text = item.name
                 tvContactListPersonMemo.text = item.memo
@@ -103,9 +95,14 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 } else {
                     ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
                 }
+                swipeDelete.setOnClickListener {
+                    removeData(position)
+                    notifyDataSetChanged()
+                }
             }
         }
     }
+
     // 리사이클러뷰 검색 기능 (필터)
     private var filteredList: ArrayList<Contact> = dataList
     override fun getFilter(): Filter {
@@ -135,7 +132,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     }
 
     // position 위치의 데이터를 삭제 후 어댑터 갱신
-    fun removeData(position: Int, view : View){
+    fun removeData(position: Int) {
         dataList.removeAt(position)
         notifyItemRemoved(position)
     }

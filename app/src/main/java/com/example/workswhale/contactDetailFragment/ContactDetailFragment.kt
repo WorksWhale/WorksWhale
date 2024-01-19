@@ -1,11 +1,9 @@
 package com.example.workswhale.contactDetailFragment
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +12,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.workswhale.Contact
 import com.example.workswhale.ContactStorage
+import com.example.workswhale.IntentKeys
 import com.example.workswhale.R
 import com.example.workswhale.databinding.FragmentContactDetailBinding
 
@@ -23,16 +22,16 @@ interface UpdateLike {
 
 class ContactDetailFragment : Fragment() {
 
+    private var updateLike: UpdateLike? = null
+
     private var _binding: FragmentContactDetailBinding? = null
     private val binding get() = _binding!!
-    private var isLiked: Boolean? = null
-    private var receivedItem: Contact.Person? = null
-    private var position = 0
-
-    private var updateLike: UpdateLike? = null
 
     private lateinit var callback: OnBackPressedCallback
 
+    private var isLiked: Boolean? = null
+    private var receivedItem: Contact.Person? = null
+    private var position = 0
 
     private val departmentList: List<Int>
         get() = listOf(
@@ -44,23 +43,40 @@ class ContactDetailFragment : Fragment() {
             R.string.sales_department
         )
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is UpdateLike) {
+            updateLike = context
+        } else {
+            throw RuntimeException("$context must implement FragmentDataListener")
+        }
+
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                arguments?.getInt(IntentKeys.EXTRA_POSITION, position)?.let { updateLike?.update(it) }
+                requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "arguments: $arguments")
 
+        //ContactListFragment에서 전달받은 데이터를 receivedItem에 저장
         arguments?.let {
-            receivedItem = it.getParcelable("contact")
-            Log.d(TAG, "onCreateReceivedItem: $receivedItem")
-
+            receivedItem = it.getParcelable(IntentKeys.EXTRA_CONTACT)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
 
+        //with로 묶어서 바인딩 처리
         with(binding) {
             receivedItem?.let {
                 if (ContactStorage.checkStartAlphabet(it.profileImage)) {
@@ -76,9 +92,11 @@ class ContactDetailFragment : Fragment() {
                 isLiked = it.isLiked
             }
 
+            // 부서 값이 Int형이므로 departmentList의 인덱스로 넣어 String 값 반환
             tvDetailDepartment.text =
                 requireContext().getString(departmentList[receivedItem!!.department])
 
+            // 가져온 데이터에서 isLiked 값에 따라 아이콘 변경
             ivDetailFavorite.setImageResource(
                 if (isLiked == true) {
                     R.drawable.ic_contact_detail_fill_favorite
@@ -87,53 +105,56 @@ class ContactDetailFragment : Fragment() {
                 }
             )
 
+            // 좋아요 아이콘 클릭 시 아이콘 상태에 따라 아이콘 변경 및 isLiked 값 변경
             ivDetailFavorite.setOnClickListener {
                 position = ContactStorage.totalContactList.indexOf(receivedItem as Contact)
-                Log.d(TAG, "position: $position")
                 if (isLiked == false) {
                     ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_fill_favorite)
                     isLiked = true
-                    Log.d(TAG, "receivedItem: $receivedItem")
+
                     changeLike(position, receivedItem!!)
-                    Log.d(TAG, "ivFavoriteClicked: $isLiked")
-                    Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
 
                 } else {
                     ivDetailFavorite.setImageResource(R.drawable.ic_contact_detail_empty_favorite)
                     isLiked = false
                     changeLike(position, receivedItem!!)
-                    Log.d(TAG, "ivFavoriteClicked: $isLiked")
-                    Log.d(TAG, "dataChanged: ${ContactStorage.totalContactList[position]}")
                 }
             }
-            val phoneNumber =
-                tvDetailPhoneNumber.text//phoneNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
 
+            //phoneNumber에는 010-1234-5678로 넣으면 01012345678로 변환됨
+            val phoneNumber =
+                tvDetailPhoneNumber.text
+
+            // phoneNumber에 들어간 번호로 메시지 대화 시작
             tvDetailMessage.setOnClickListener {
                 val smsUri = Uri.parse("smsto:$phoneNumber")
                 val intent = Intent(Intent.ACTION_SENDTO)
                 intent.setData(smsUri)
-                intent.putExtra("sms_body", "") //해당 값에 전달하고자 하는 문자메시지 전달
+                intent.putExtra(IntentKeys.EXTRA_SMS_BODY, "") //해당 값에 전달하고자 하는 문자메시지 전달
                 startActivity(intent)
             }
 
+            // phoneNumber를 가지고 다이얼이 들어간 전화 앱을 실행
             tvDetailCall.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
                 startActivity(intent)
             }
         }
+
         return binding.root
     }
 
-    companion object {
-        fun newInstance(data: Contact.Person) =
-            ContactDetailFragment().apply {
-                arguments = Bundle().apply {
-                    Log.d(TAG, "newInstance: $arguments")
-//                    data.isLiked = isLiked
-                    putParcelable("contact", data)
-                }
+    override fun onResume() {
+        super.onResume()
+        callback = object : OnBackPressedCallback(true) {
+            //상세정보에서 뒤로가기를 눌렀을 경우 변경된 값을 arguments를 통해서 전달
+            override fun handleOnBackPressed() {
+                arguments?.getInt(IntentKeys.EXTRA_POSITION, position)?.let { updateLike?.update(it) }
+                requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
+                requireActivity().supportFragmentManager.popBackStack()
             }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onDestroyView() {
@@ -141,27 +162,17 @@ class ContactDetailFragment : Fragment() {
         _binding = null
     }
 
+    companion object {
+        fun newInstance(data: Contact.Person) =
+            ContactDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(IntentKeys.EXTRA_CONTACT, data)
+                }
+            }
+    }
 
+    // 상세정보에 있는 데이터를 totalContactList와 비교하여 isLiked 값을 변경
     private fun changeLike(position: Int, receivedItem: Contact.Person) {
         ContactStorage.changeLiked(position, receivedItem)
-    }
-    override fun onAttach(context: Context) {
-        Log.d("FragmentLifeCycle", "Detail_onAttach()")
-        super.onAttach(context)
-        if (context is UpdateLike) {
-            updateLike = context
-        } else {
-            throw RuntimeException("$context must implement FragmentDataListener")
-        }
-
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-//                arguments?.getParcelable("Contact.Person", Contact.Person::class.java)?.let { updateLike?.update(ContactStorage.totalContactList.indexOf(receivedItem as Contact)) }
-                arguments?.getInt("position", position)?.let { updateLike?.update((it)) }
-                requireActivity().supportFragmentManager.beginTransaction().remove(this@ContactDetailFragment).commit()
-                requireActivity().supportFragmentManager.popBackStack()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 }
