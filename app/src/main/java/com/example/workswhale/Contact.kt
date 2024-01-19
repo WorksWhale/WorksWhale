@@ -15,4 +15,5 @@ sealed class Contact : Parcelable {
         val memo: String,
         var isLiked: Boolean,
         val alarm: String) : Contact()
+
 }

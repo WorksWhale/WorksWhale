@@ -1,6 +1,7 @@
 package com.example.workswhale.contactListFragment
 
 import android.annotation.SuppressLint
+import android.icu.text.CaseMap.Title
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,10 +96,11 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
                 } else {
                     ivContactListPersonFavorite.setImageResource(R.drawable.ic_main_empty_favorite)
                 }
-                swipeDelete.setOnClickListener {
-                    removeData(position)
-                    notifyDataSetChanged()
-                }
+//                swipeDelete.setOnClickListener {
+//                    if(item.isOpen){
+//                     removeData(position)
+//                    }
+//                }
             }
         }
     }
@@ -135,11 +137,7 @@ class ContactAdapter(val dataList : ArrayList<Contact>) : RecyclerView.Adapter<R
     fun removeData(position: Int) {
         dataList.removeAt(position)
         notifyItemRemoved(position)
+        notifyDataSetChanged()
     }
 
-    // 현재 선택된 데이터와 드래그한 위치에 있는 데이터를 교환
-    fun swapData(fromPos: Int, toPos: Int) {
-        Collections.swap(dataList, fromPos, toPos)
-        notifyItemMoved(fromPos, toPos)
-    }
 }
