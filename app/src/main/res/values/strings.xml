@@ -39,4 +39,26 @@
 
     <string name="contact_list_tab">연락처</string>
     <string name="my_page_tab">마이 페이지</string>
+
+    <string name="edit_hint_name">이름</string>
+    <string name="edit_hint_phone_number">전화번호</string>
+    <string name="edit_hint_department">부서</string>
+    <string name="edit_hint_email">이메일</string>
+    <string name="edit_hint_memo">메모</string>
+    <string name="edit_hint_alarm_setting">알람 설정</string>
+
+    <string name="add_contact_dialog_positive_btn">취소</string>
+    <string name="add_contact_dialog_negative_btn">저장</string>
+
+    <string name="edit_profile_dialog_negative_btn">취소</string>
+    <string name="edit_profile_dialog_positive_btn">확인</string>
+
+    <string name="name_tab">이름</string>
+    <string name="phone_number_tab">번호</string>
+    <string name="department_tab">부서</string>
+    <string name="email_tab">이메일</string>
+    <string name="memo_tab">메모</string>
+    <string name="alarm_tab">알람</string>
+
+    <string name="search_query_hint">이름 또는 번호로 검색해주세요</string>
 </resources>

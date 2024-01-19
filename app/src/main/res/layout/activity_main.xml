@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="WorksWhale"
+            android:text="@string/app_name"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -84,15 +84,15 @@
         app:tabTextAppearance="@style/tab_text"
         app:tabTextColor="@color/white">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="연락처" />
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="연락처" />-->
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="마이페이지" />
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="마이페이지" />-->
 
     </com.google.android.material.tabs.TabLayout>
 
