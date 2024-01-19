@@ -1,5 +1,6 @@
 package com.example.workswhale.contactListFragment
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -56,6 +57,7 @@ class ContactListFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
