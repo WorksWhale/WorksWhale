@@ -117,3 +117,5 @@ class SwipeHelperCallback(private val recyclerViewAdapter: ContactAdapter) :
         )
 
 }
+
+}

@@ -45,8 +45,8 @@ class MyPageFragment: Fragment() {
             tvMyPageEmail.text = email
         }
 
-        saveUserProfile(profileImage, name, phoneNumber, email)
-    }
+            saveUserProfile(profileImage, name, phoneNumber, email)
+        }
 
     fun giveData(): List<String> {
         return listOf(
