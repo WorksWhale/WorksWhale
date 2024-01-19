@@ -60,6 +60,18 @@ class MainActivity : AppCompatActivity(), FragmentDataListener, UpdateLike,
 
     var searchViewFocus: Boolean = false
 
+    override fun onStart() {
+        super.onStart()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(
+                Manifest.permission.POST_NOTIFICATIONS,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.READ_MEDIA_IMAGES
+            ), 0)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -67,7 +79,12 @@ class MainActivity : AppCompatActivity(), FragmentDataListener, UpdateLike,
         this.onBackPressedDispatcher.addCallback(this, callback)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.CALL_PHONE), 0)
+            requestPermissions(arrayOf(
+                Manifest.permission.POST_NOTIFICATIONS,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.READ_MEDIA_IMAGES
+            ), 0)
         }
 
         window.apply {
