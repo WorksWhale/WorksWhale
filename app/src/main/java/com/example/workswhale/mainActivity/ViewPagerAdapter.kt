@@ -40,4 +40,8 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
     fun updateLike(position: Int) {
         contactListFragment.updateLike(position)
     }
+
+    fun closeSearchView() {
+        contactListFragment.closeSearchView()
+    }
 }

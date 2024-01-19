@@ -28,9 +28,14 @@ interface FragmentDataListener {
     fun onDataReceived(data: Contact.Person)
 }
 
+interface SearchViewFocusListener {
+    fun onFocusChanged(hasFocus: Boolean)
+}
+
 class ContactListFragment : Fragment() {
 
     private var listener: FragmentDataListener? = null
+    private var focusListener: SearchViewFocusListener? = null
 
     private var _binding: FragmentContactListBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +46,12 @@ class ContactListFragment : Fragment() {
         super.onAttach(context)
         if (context is FragmentDataListener) {
             listener = context
+        } else {
+            throw RuntimeException("$context must implement FragmentDataListener")
+        }
+
+        if (context is SearchViewFocusListener) {
+            focusListener = context
         } else {
             throw RuntimeException("$context must implement FragmentDataListener")
         }
@@ -114,6 +125,13 @@ class ContactListFragment : Fragment() {
                 }
             svContactListSearch.setOnQueryTextListener(searchViewTextListener)
 
+            svContactListSearch.setOnQueryTextFocusChangeListener { view, hasFocus ->
+                focusListener?.onFocusChanged(hasFocus)
+                if (hasFocus.not()) {
+                    svContactListSearch.onActionViewCollapsed();
+                }
+            }
+
             // 리사이클러뷰에 스와이프, 드래그 기능 달기
             val swipeHelperCallback = SwipeHelperCallback(adapter).apply {
                 // 스와이프한 뒤 고정시킬 위치 지정
@@ -152,6 +170,10 @@ class ContactListFragment : Fragment() {
     // 리스트에서 isLiked가 변경된 데이터가 있으면 해당 데이터만 갱신하고 아이콘 변경
     fun updateLike(position: Int) {
         adapter.notifyItemChanged(position)
+    }
+
+    fun closeSearchView() {
+        binding.svContactListSearch.onActionViewCollapsed()
     }
 
     override fun onDestroyView() {
