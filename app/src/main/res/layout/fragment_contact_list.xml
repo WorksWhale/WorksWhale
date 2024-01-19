@@ -11,6 +11,7 @@
         android:id="@+id/sv_contact_list_search"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginTop="5dp"
         android:queryBackground="@drawable/shape_search_background"
         android:queryHint="이름 또는 번호로 검색해주세요"
         app:iconifiedByDefault="true"
