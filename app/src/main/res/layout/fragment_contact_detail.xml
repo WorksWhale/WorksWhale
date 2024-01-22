@@ -1,14 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactDetailFragment">
+    android:background="@color/white"
+    tools:context=".contactDetailFragment.ContactDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_detail_profile"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_default_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_detail_favorite"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/ic_contact_detail_btn_edge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_detail_profile" />
+
+            <ImageView
+                android:id="@+id/iv_detail_favorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_contact_detail_empty_favorite"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_detail_favorite"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_favorite"
+                app:layout_constraintStart_toStartOf="@+id/tv_detail_favorite"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_favorite" />
+
+            <TextView
+                android:id="@+id/tv_detail_message"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/ic_contact_detail_btn_edge"
+                app:layout_constraintEnd_toStartOf="@+id/tv_detail_call"
+                app:layout_constraintStart_toEndOf="@+id/tv_detail_favorite"
+                app:layout_constraintTop_toBottomOf="@+id/iv_detail_profile" />
+
+            <ImageView
+                android:id="@+id/iv_detail_message"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_message"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_detail_message"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_message"
+                app:layout_constraintStart_toStartOf="@+id/tv_detail_message"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_message" />
+
+            <TextView
+                android:id="@+id/tv_detail_call"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/ic_contact_detail_btn_edge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_detail_profile" />
+
+            <ImageView
+                android:id="@+id/iv_detail_call"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_call"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_detail_call"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_call"
+                app:layout_constraintStart_toStartOf="@+id/tv_detail_call"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_call" />
+
+            <TextView
+                android:id="@+id/tv_detail_name_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="@string/name_tab"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_message" />
+
+            <TextView
+                android:id="@+id/tv_detail_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                tools:text="민지"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_name_tab" />
+
+            <TextView
+                android:id="@+id/tv_detail_phone_number_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="@string/phone_number_tab"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_name" />
+
+            <TextView
+                android:id="@+id/tv_detail_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                tools:text="010-1234-5678"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number_tab" />
+
+            <TextView
+                android:id="@+id/tv_detail_department_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="@string/department_tab"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_phone_number" />
+
+            <TextView
+                android:id="@+id/tv_detail_department"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                tools:text="인사부"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_department_tab" />
+
+            <TextView
+                android:id="@+id/tv_detail_email_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="@string/email_tab"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_department" />
+
+            <TextView
+                android:id="@+id/tv_detail_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                tools:text="iamwhale@sea.com"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_email_tab" />
+
+            <TextView
+                android:id="@+id/tv_detail_memo_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="@string/memo_tab"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_email" />
+
+            <TextView
+                android:id="@+id/tv_detail_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="15dp"
+                tools:text="저번주 돈 안 갚은 팀원"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_memo_tab" />
+
+            <TextView
+                android:id="@+id/tv_detail_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:paddingHorizontal="15dp"
+                tools:text="5분 후"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_alarm_tab" />
+
+            <TextView
+                android:id="@+id/tv_detail_alarm_tab"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_my_page_gradient_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="@string/alarm_tab"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_memo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>
